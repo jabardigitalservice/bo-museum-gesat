@@ -1,6 +1,6 @@
 <template>
   <div class="md:grid md:grid-cols-3 h-screen">
-    <div class="md:col-span-1 bg-cover bg-center" :style="{ 'background-color': '#FFFFFF' }">
+    <div class="md:col-span-1 bg-cover bg-center bg-white">
       <div class="relative p-8 my-auto h-full">
         <div>
           <h1>JDS RESERVASI</h1>
