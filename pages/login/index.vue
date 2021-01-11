@@ -99,7 +99,6 @@ export default {
   methods: {
     userLogin () {
       // TODO: update function login
-      console.log('login', this.login)
       this.$toast.success('Login berhasil', {
         icon: 'check',
         iconPack: 'fontawesome',
