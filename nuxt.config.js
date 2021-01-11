@@ -46,6 +46,11 @@ export default {
     baseURL: process.env.API_URL
   },
 
+  css: [
+    // CSS file in the project
+    '~/assets/css/style.css'
+  ],
+
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
   }
