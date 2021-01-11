@@ -1,7 +1,11 @@
 <template>
   <div class="flex">
-    <Sidebar />
-    <Nuxt />
+    <SidebarDesktop />
+    <SidebarMobile />
+    <div class="flex-grow">
+      <Header />
+      <Nuxt />
+    </div>
   </div>
 </template>
 <script>

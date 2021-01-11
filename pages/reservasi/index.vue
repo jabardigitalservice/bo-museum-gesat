@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>Dashboard</p>
+    <p>Reservasi</p>
   </div>
 </template>
 <script>

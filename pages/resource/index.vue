@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>Dashboard</p>
+    <p>Resource / Aset</p>
   </div>
 </template>
 <script>
