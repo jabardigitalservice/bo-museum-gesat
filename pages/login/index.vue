@@ -75,27 +75,6 @@
                 >
                   Login
                 </button>
-                <div class="relative mb-4">
-                  <div class="absolute inset-0 flex items-center">
-                    <div class="w-full border-t border-gray-300"></div>
-                  </div>
-                  <div class="relative flex justify-center text-sm leading-5">
-                    <span class="px-2 bg-white text-gray-500">
-                      Or Log In with Google
-                    </span>
-                  </div>
-                </div>
-                <div
-                  class="w-full py-2 px-4 border border-black rounded flex justify-center items-center"
-                  style="cursor: pointer"
-                >
-                  <img
-                    class="object-center w-4 h-4"
-                    src="~/assets/img/logo-google.svg"
-                    alt=""
-                  />
-                  <span class="ml-2">Login with Google</span>
-                </div>
               </div>
             </form>
           </div>
