@@ -9,48 +9,22 @@
     </div>
     <div class="md:items-center p-4">
       <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        <div class="md:col-span-1 bg-blue text-white p-4 rounded-md">
+        <div
+          v-for="(card, i) in cards"
+          :key="i"
+          :class="['md:col-span-1 text-white p-4 rounded-md', card.bgColor]"
+        >
           <div class="md:grid md:grid-cols-5 flex item-center">
             <div class="md:col-span-4 w-full">
               <div class="text-lg">
-                Reservasi Dibuat
+                {{ card.title }}
               </div>
               <div class="text-4xl font-bold">
-                0
+                {{ card.value }}
               </div>
             </div>
             <div class="md:col-span-1 flex justify-center items-center w-full">
-              <i class="bx bx-calendar bx-md text-white" />
-            </div>
-          </div>
-        </div>
-        <div class="md:col-span-1 bg-primary text-white p-4 rounded-md">
-          <div class="md:grid md:grid-cols-5 flex item-center">
-            <div class="md:col-span-4 w-full">
-              <div class="text-lg">
-                Reservasi Disetujui
-              </div>
-              <div class="text-4xl font-bold">
-                0
-              </div>
-            </div>
-            <div class="md:col-span-1 flex justify-center items-center w-full">
-              <i class="bx bx-calendar-check bx-md text-white" />
-            </div>
-          </div>
-        </div>
-        <div class="md:col-span-1 bg-red text-white p-4 rounded-md">
-          <div class="md:grid md:grid-cols-5 flex item-center">
-            <div class="md:col-span-4 w-full">
-              <div class="text-lg">
-                Reservasi Ditolak
-              </div>
-              <div class="text-4xl font-bold">
-                0
-              </div>
-            </div>
-            <div class="md:col-span-1 flex justify-center items-center w-full">
-              <i class="bx bx-calendar-x bx-md text-white" />
+              <i :class="['bx bx-md text-white', card.icon]" />
             </div>
           </div>
         </div>
@@ -60,7 +34,32 @@
 </template>
 <script>
 export default {
-  layout: 'admin'
+  layout: 'admin',
+  data () {
+    return {
+      // TODO: get data statistic dashboard from api and apply to each value
+      cards: [
+        {
+          title: 'Reservasi Dibuat',
+          value: 0,
+          bgColor: 'bg-blue',
+          icon: 'bx-calendar'
+        },
+        {
+          title: 'Reservasi Disetujui',
+          value: 0,
+          bgColor: 'bg-primary',
+          icon: 'bx-calendar-check'
+        },
+        {
+          title: 'Reservasi Ditolak',
+          value: 0,
+          bgColor: 'bg-red',
+          icon: 'bx-calendar-x'
+        }
+      ]
+    }
+  }
 }
 
 </script>
