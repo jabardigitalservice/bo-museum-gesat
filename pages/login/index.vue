@@ -18,8 +18,8 @@
                 </label>
                 <div class="mt-2 flex w-full rounded-md shadow-sm">
                   <input
-                    name="username"
                     v-model="login.username"
+                    name="username"
                     class="form-input"
                     placeholder="Username"
                     required
@@ -34,8 +34,8 @@
                 </div>
                 <div class="mt-2 relative w-full rounded-md shadow-sm">
                   <input
-                    name="password"
                     v-model="login.password"
+                    name="password"
                     class="form-input"
                     :type="showPassword ? 'text' : 'password'"
                     placeholder="Password"

@@ -1,6 +1,6 @@
 <template>
   <transition name="slide">
-    <div v-if="isActiveSidebar" v-click-outside="closeSidebar" class="w-64 fixed z-20 h-screen py-4 bg-primary">
+    <div v-if="isActiveSidebar" v-click-outside="closeSidebar" class="w-64 fixed z-20 h-screen py-4 bg-primary sidebar">
       <div class="flex justify-center">
         <h1 class="text-white text-2xl font-medium font-sans">
           JDS Reservasi
@@ -76,5 +76,8 @@ a.nuxt-link-exact-active {
   background: #008444;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
+}
+.sidebar{
+  box-shadow: 6px 0px 10px 0px rgba(0,0,0,0.2)
 }
 </style>
