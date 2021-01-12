@@ -18,7 +18,7 @@
                 </label>
                 <div class="mt-2 flex w-full rounded-md shadow-sm">
                   <input
-                    id="username"
+                    id="name"
                     v-model="login.username"
                     class="form-input"
                     placeholder="Username"

@@ -1,11 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .form-input {
-  padding: 0.5rem;
-  display: block;
-  width: 100%;
-  line-height: 1.25rem;
-  border: solid 1px grey;
-  border-radius: 0.25rem;
-  transition-duration: 150ms;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  @apply w-full block rounded-r-md transition duration-150 ease-in-out leading-5 border border-black p-2;
 }
