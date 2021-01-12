@@ -1,8 +1,8 @@
 <template>
   <div class="md:grid md:grid-cols-3 h-screen">
-    <div class="md:col-span-1 bg-cover bg-center bg-green-500 text-white">
+    <div class="md:col-span-1 bg-cover bg-center bg-primary text-white">
       <div class="relative p-8 my-auto h-full">
-        <div class="text-xl">
+        <div class="text-4xl font-bold">
           JDS RESERVASI
         </div>
       </div>
@@ -71,7 +71,7 @@
               <div class="w-full h-full pb-8 pt-2">
                 <button
                   type="submit"
-                  class="rounded py-2 px-8 bg-green-500 text-white my-4 w-full border border-green-500"
+                  class="rounded-md py-2 px-8 bg-primary text-white my-4 w-full border border-primary hover:bg-white hover:text-primary hover:border-primary focus:outline-none"
                 >
                   Login
                 </button>
