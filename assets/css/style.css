@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.form-input {
+  @apply w-full block rounded-r-md transition duration-150 ease-in-out leading-5 border border-black p-2;
+}
