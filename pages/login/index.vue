@@ -1,9 +1,9 @@
 <template>
   <div class="md:grid md:grid-cols-3 h-screen">
-    <div class="md:col-span-1 bg-cover bg-center bg-white">
+    <div class="md:col-span-1 bg-cover bg-center bg-green-500 text-white">
       <div class="relative p-8 my-auto h-full">
-        <div>
-          <h1>JDS RESERVASI</h1>
+        <div class="text-xl">
+          JDS RESERVASI
         </div>
       </div>
     </div>
@@ -18,7 +18,7 @@
                 </label>
                 <div class="mt-2 flex w-full rounded-md shadow-sm">
                   <input
-                    id="name"
+                    name="username"
                     v-model="login.username"
                     class="form-input"
                     placeholder="Username"
@@ -34,7 +34,7 @@
                 </div>
                 <div class="mt-2 relative w-full rounded-md shadow-sm">
                   <input
-                    id="password"
+                    name="password"
                     v-model="login.password"
                     class="form-input"
                     :type="showPassword ? 'text' : 'password'"
@@ -92,8 +92,7 @@ export default {
       login: {
         username: '',
         password: ''
-      },
-      errors: null
+      }
     }
   },
   methods: {
