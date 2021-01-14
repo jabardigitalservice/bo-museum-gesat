@@ -21,3 +21,14 @@ export const rangeTimes = [
   '17.00-17.30',
   '17:30-18.00'
 ]
+
+export const statusReservation = [{
+  key: 'not_yet_approved',
+  value: 'Waiting'
+}, {
+  key: 'already_approved',
+  value: 'Approved'
+}, {
+  key: 'rejected',
+  value: 'Rejected'
+}]

@@ -18,10 +18,13 @@
     "@nuxtjs/pwa": "^3.0.2",
     "boxicons": "^2.0.7",
     "core-js": "^3.6.5",
+    "moment": "^2.27.0",
     "nuxt": "^2.14.6",
+    "nuxt-sweetalert2": "^1.0.0",
     "v-click-outside": "^3.1.2",
     "vform": "^1.0.1",
-    "vue-js-modal": "^2.0.0-rc.6"
+    "vue-js-modal": "^2.0.0-rc.6",
+    "vuejs-datepicker": "^1.6.2"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.1.0",
