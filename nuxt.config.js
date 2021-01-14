@@ -52,6 +52,12 @@ export default {
   },
 
   auth: {
+    redirect: {
+      login: '/login',
+      logout: '/login',
+      callback: '/',
+      home: '/reservasi'
+    },
     strategies: {
       keycloak: {
         scheme: 'oauth2',
@@ -74,8 +80,6 @@ export default {
         responseType: 'code',
         grantType: 'authorization_code',
         accessType: 'offline',
-        // redirectUri: process.env.KEYCLOAK_REDIRECTURI,
-        // logoutRedirectUri: process.env.KEYCLOAK_REDIRECTLOGOUTURI,
         clientId: process.env.KEYCLOAK_CLIENTID,
         scope: ['openid', 'profile', 'email','roles'],
         codeChallengeMethod: 'S256',

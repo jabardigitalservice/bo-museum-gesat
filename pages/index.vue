@@ -61,8 +61,6 @@ export default {
     }
   },
   mounted () {
-    const test = this.$auth.user.name
-    console.log(test)
     this.$axios.get('/api/asset').then((res) => {
       console.log(res)
     })
