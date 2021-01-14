@@ -10,28 +10,10 @@
     </div>
     <div class="mt-8">
       <ul>
-        <li class="pl-4">
-          <NuxtLink to="/dashboard" class="flex items-center py-4 pl-8">
-            <i class="bx bx-home bx-sm text-white" />
-            <span class="text-md font-medium text-white">Dashboard</span>
-          </NuxtLink>
-        </li>
-        <li class="pl-4">
-          <NuxtLink to="/reservasi" class="flex items-center py-4 pl-8">
-            <i class="bx bx-calendar bx-sm text-white" />
-            <span class="text-md font-medium text-white">Reservasi</span>
-          </NuxtLink>
-        </li>
-        <li class="pl-4">
-          <NuxtLink to="/resource" class="flex items-center py-4 pl-8">
-            <i class="bx bx-cabinet bx-sm text-white" />
-            <span class="text-md font-medium text-white">Resource/Aset</span>
-          </NuxtLink>
-        </li>
-        <li class="pl-4">
-          <NuxtLink to="/" class="flex items-center py-4 pl-8">
-            <i class="bx bx-log-out bx-sm text-white" />
-            <span class="text-md font-medium text-white">Logout</span>
+        <li v-for="menu in menus" :key="menu.path" class="pl-4">
+          <NuxtLink :to="menu.path" class="flex items-center py-4 pl-8">
+            <i :class="['bx bx-sm text-white', menu.iconClass]" />
+            <span class="text-md font-medium text-white">{{ menu.label }}</span>
           </NuxtLink>
         </li>
       </ul>
@@ -39,7 +21,17 @@
   </div>
 </template>
 <script>
-export default {}
+import constMenus from '@/constants/menus'
+export default {
+  data () {
+    return {
+      menus: []
+    }
+  },
+  created () {
+    this.menus = constMenus
+  }
+}
 </script>
 <style scoped>
 span {
