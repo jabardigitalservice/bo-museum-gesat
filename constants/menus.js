@@ -1,6 +1,6 @@
 const menus = [
   {
-    path: '/dashboard',
+    path: '/',
     label: 'Dashboard',
     iconClass: 'bx-home'
   },
