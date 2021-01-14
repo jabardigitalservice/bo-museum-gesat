@@ -17,7 +17,8 @@
     "boxicons": "^2.0.7",
     "core-js": "^3.6.5",
     "nuxt": "^2.14.6",
-    "v-click-outside": "^3.1.2"
+    "v-click-outside": "^3.1.2",
+    "vue-js-modal": "^2.0.0-rc.6"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.1.0",

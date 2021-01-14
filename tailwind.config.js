@@ -4,7 +4,7 @@ module.exports = {
       // Build your palette here
       transparent: 'transparent',
       current: 'currentColor',
-      primary: '#219653',
+      primary: '#219653', //green
       red: '#EB5757',
       blue: '#2F80ED',
       yellow: '#F2C94C',
