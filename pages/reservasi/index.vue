@@ -113,6 +113,7 @@
             </label>
             <div class="mt-1">
               <input
+                v-model="form.title"
                 name="title"
                 type="text"
                 autocomplete="title"
@@ -128,7 +129,7 @@
             <div class="mt-1">
               <input
                 name="asset"
-                type="text"
+                type="number"
                 autocomplete="asset"
                 required
                 class="form-input"
@@ -177,8 +178,8 @@
 
           <div>
             <button
-              type="submit"
               class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+              @click="addReservation"
             >
               Submit
             </button>
@@ -189,6 +190,7 @@
   </div>
 </template>
 <script>
+import Form from 'vform'
 import Pagination from '~/components/Pagination.vue'
 import { rangeTimes } from '~/assets/constant/enum'
 export default {
@@ -205,7 +207,10 @@ export default {
         'Tanggal Update',
         'Aksi'
       ],
-      rangeTimes
+      rangeTimes,
+      form: new Form({
+        title: ''
+      })
     }
   },
   watch: {
@@ -213,7 +218,16 @@ export default {
       // console.log(val)
     }
   },
+  created () {
+    console.log('TOKE', process.env.KEYCLOACK_TOKEN)
+  },
   methods: {
+    async getDataReservation () {
+
+    },
+    addReservation () {
+      console.log(this.form)
+    },
     changeActivePagination (val) {
       this.activeData = val
     },
