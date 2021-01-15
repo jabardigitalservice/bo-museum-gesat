@@ -61,9 +61,6 @@ export default {
     }
   },
   mounted () {
-    this.$axios.get('/api/asset').then((res) => {
-      console.log(res)
-    })
   }
 }
 
