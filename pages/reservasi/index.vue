@@ -229,6 +229,18 @@
           </div>
         </div>
         <div>
+          <label for="password" class="block text-sm">
+            Resource / Aset
+          </label>
+          <div class="mt-1">
+            <select v-model="form.asset_id" name="asset_id" required class="form-input">
+              <option v-for="item in dataAsset" :key="item.id" :value="item.id">
+                {{ item.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div>
           <label for="title" class="block text-sm">
             Tanggal
           </label>
@@ -245,45 +257,31 @@
           <label for="title" class="block text-sm">
             Rentang Waktu
           </label>
-          <div class="flex">
-            <!-- TODO: change style time range picker -->
-            <input
-              v-model="form.start_time"
-              name="start_time"
-              type="text"
-              autocomplete="start_time"
-              required
-              class="form-input"
-              placeholder="Jam Mulai"
-            >
-            <input
-              v-model="form.end_time"
-              name="end_time"
-              type="text"
-              autocomplete="end_time"
-              required
-              class="form-input"
-              placeholder="Jam Selesai"
-            >
-            <!-- <span
-              v-for="(time, idx) in rangeTimes"
-              :key="idx"
-              class="px-2 mr-1 inline-flex text-xs leading-5 font-semibold rounded-md bg-primary hover:bg-blue text-white cursor-pointer"
-            >
-              {{ time }}
-            </span> -->
-          </div>
         </div>
         <div>
-          <label for="password" class="block text-sm">
-            Resource / Aset
-          </label>
-          <div class="mt-1">
-            <select v-model="form.asset_id" name="asset_id" required class="form-input">
-              <option v-for="item in dataAsset" :key="item.id" :value="item.id">
-                {{ item.name }}
-              </option>
-            </select>
+          <div class="md:grid md:grid-cols-5 text-sm">
+            <div class="md:col-span-1 flex items-center">
+              Jam Mulai
+            </div>
+            <div class="md:col-span-4">
+              <select v-model="form.start_time" name="start_time" required class="form-input">
+                <option v-for="(item, idx) in rangeTimes" :key="idx" :value="item">
+                  {{ item }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="md:grid md:grid-cols-5 text-sm">
+            <div class="md:col-span-1 flex items-center">
+              Jam Selesai
+            </div>
+            <div class="md:col-span-4">
+              <select v-model="form.end_time" name="end_time" required class="form-input">
+                <option v-for="(item, idx) in rangeTimes" :key="idx" :value="item">
+                  {{ item }}
+                </option>
+              </select>
+            </div>
           </div>
         </div>
         <div>
