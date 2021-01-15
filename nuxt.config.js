@@ -15,6 +15,10 @@ export default {
     ]
   },
 
+  router: {
+    middleware: ['auth']
+  },
+
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
     {src: "@/plugins/vClickOutside", ssr: false},
@@ -37,12 +41,49 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     '@nuxtjs/toast',
-    'nuxt-sweetalert2'
+    'nuxt-sweetalert2',
+    '@nuxtjs/auth-next'
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
     baseURL: process.env.API_URL
+  },
+
+  auth: {
+    redirect: {
+      login: '/login',
+      logout: '/login',
+      callback: '/',
+      home: '/reservasi'
+    },
+    strategies: {
+      keycloak: {
+        scheme: 'oauth2',
+        endpoints: {
+          authorization: `${process.env.KEYCLOAK_AUTHSERVERURL}/auth/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/auth`,
+          token: `${process.env.KEYCLOAK_AUTHSERVERURL}/auth/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/token`,
+          logout: `${process.env.KEYCLOAK_AUTHSERVERURL}/auth/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/logout?redirect_uri=` + encodeURIComponent(String(process.env.KEYCLOAK_REDIRECTLOGOUTURI)),
+          userInfo: `${process.env.KEYCLOAK_AUTHSERVERURL}/auth/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/userinfo`,
+        },
+        token: {
+          property: 'access_token',
+          type: 'Bearer',
+          name: 'Authorization',
+          maxAge: 1800 // Can be dynamic ?
+        },
+        refreshToken: {
+          property: 'refresh_token',
+          maxAge: 60 * 60 * 24 * 30 // Can be dynamic ?
+        },
+        responseType: 'code',
+        grantType: 'authorization_code',
+        accessType: 'offline',
+        clientId: process.env.KEYCLOAK_CLIENTID,
+        scope: ['openid', 'profile', 'email','roles'],
+        codeChallengeMethod: 'S256',
+      }
+    }
   },
 
   css: [
@@ -53,15 +94,15 @@ export default {
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
-    extend(config,ctx){
-      if(ctx.isDev && ctx.isClient){
+    extend(config, ctx) {
+      if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
           exclude: /(node_modules)/,
-          options:{
-            fix:true
+          options: {
+            fix: true
           }
         })
       }
