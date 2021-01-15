@@ -465,8 +465,6 @@ export default {
     }
   },
   created () {
-    // TODO: appy keycloack
-    // this.$axios.defaults.headers.common.Authorization = 'Bearer ' + process.env.KEYCLOACK_TOKEN
     this.reset()
     this.getAssetList()
     this.getDataReservation()
