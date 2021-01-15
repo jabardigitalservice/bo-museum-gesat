@@ -8,6 +8,9 @@
     <div class="flex justify-center">
       <div class="mt-6 w-16 h-16 bg-white rounded-full" />
     </div>
+    <div class="flex justify-center mt-3">
+      <span class="font-medium text-white">{{ this.$auth.user.name !== null ? this.$auth.user.name : '' }}</span>
+    </div>
     <div class="mt-8">
       <ul>
         <li v-for="menu in menus" :key="menu.path" class="pl-4">
