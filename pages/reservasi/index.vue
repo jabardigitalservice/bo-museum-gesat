@@ -38,7 +38,7 @@
       </div>
       <!-- table -->
       <div class="align-middle inline-block min-w-full  overflow-x-auto">
-        <table class="w-full">
+        <table v-if="render" class="w-full">
           <thead class="bg-primary">
             <tr>
               <th v-for="x in dataHeader" :key="x" scope="col" class="thead">
@@ -91,23 +91,46 @@
                   title="Klik untuk menghapus reservasi"
                   @click="deleteData(data.id)"
                 />
-                <i class="bx bx-info-circle bx-sm cursor-pointer text-blue" title="Klik untuk melihat detail reservasi" />
+                <i
+                  class="bx bx-info-circle bx-sm cursor-pointer text-blue"
+                  title="Klik untuk melihat detail reservasi"
+                  @click="showModalDetail(data)"
+                />
               </td>
             </tr>
           </tbody>
         </table>
       </div>
       <!-- pagination -->
-      <Pagination :active-pagination="activeData" :length-data="6" @update="changeActivePagination" />
+      <Pagination :active-pagination="activeData" :length-data="meta.last_page" @update="changeActivePagination" />
     </div>
     <!-- modal filter -->
-    <modal name="filter" :adaptive="true" :height="`auto`">
-      <div class="p-8">
+    <modal name="filter" :adaptive="true" :height="450">
+      <div class="p-8 space-y-4">
         <div class="window-header mb-2">
           FILTER DATA RESERVASI
         </div>
         <div>
-          <label for="password" class="block text-sm text-gray7">
+          <label for="title" class="block text-sm">
+            Rentang Tanggal
+          </label>
+          <div class="flex mt-1">
+            <date-picker
+              v-model="params.start_date"
+              placeholder="Tanggal Awal"
+              format="yyyy-MM-dd"
+              class="form-input"
+            />
+            <date-picker
+              v-model="params.end_date"
+              placeholder="Tanggal Akhir"
+              format="yyyy-MM-dd"
+              class="form-input"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="password" class="block text-sm">
             Status
           </label>
           <div class="mt-1">
@@ -118,47 +141,80 @@
             </select>
           </div>
         </div>
-        <div>
-          <label for="title" class="block text-sm text-gray7">
-            Rentang Tanggal
-          </label>
-          <div class="flex mt-1">
-            <date-picker
-              v-model="params.start_date"
-              placeholder="Tanggal Awal"
-              format="YYYY-MM-DD"
-              class="form-input"
-            />
-            <date-picker
-              v-model="params.end_date"
-              placeholder="Tanggal Akhir"
-              format="YYYY-MM-DD"
-              class="form-input"
-            />
-          </div>
-        </div>
 
-        <div>
+        <div class="flex space-x-4">
+          <button
+            type="button"
+            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            @click="reset"
+          >
+            Clear
+          </button>
           <button
             type="button"
             class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click.stop="filterReservation"
+            @click="onFilter"
           >
             Submit
           </button>
         </div>
       </div>
     </modal>
-    <modal name="sort" :adaptive="true" :width="600" :height="600">
-      This is an example sort
+    <modal name="sort" :adaptive="true" :height="450">
+      <div class="p-8 space-y-4">
+        <div class="window-header mb-2">
+          SORT DATA RESERVASI
+        </div>
+        <div>
+          <label for="title" class="block text-sm">
+            Judul Kegiatan
+          </label>
+          <div class="mt-1">
+            <select v-model="params.sortBy" name="approval_status" required class="form-input">
+              <option v-for="item in optionsSortBy" :key="item.key" :value="item.key">
+                {{ item.value }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label for="password" class="block text-sm">
+            Urutkan berdasarkan
+          </label>
+          <div class="mt-1">
+            <select v-model="params.orderBy" name="approval_status" required class="form-input">
+              <option v-for="item in optionsOrderBy" :key="item.key" :value="item.key">
+                {{ item.value }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex space-x-4">
+          <button
+            type="button"
+            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            @click="reset"
+          >
+            Clear
+          </button>
+          <button
+            type="button"
+            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            @click="onSorting"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
     </modal>
     <modal name="add" :adaptive="true" :height="`auto`">
-      <div class="p-8">
+      <div class="p-8 space-y-4">
         <div class="window-header mb-2">
           TAMBAH RESERVASI BARU
         </div>
         <div>
-          <label for="title" class="block text-sm text-gray7">
+          <label for="title" class="block text-sm">
             Judul Kegiatan
           </label>
           <div class="mt-1">
@@ -173,19 +229,7 @@
           </div>
         </div>
         <div>
-          <label for="password" class="block text-sm text-gray7">
-            Resource / Aset
-          </label>
-          <div class="mt-1">
-            <select v-model="form.asset_id" name="asset_id" required class="form-input">
-              <option v-for="item in dataAsset" :key="item.id" :value="item.id">
-                {{ item.name }}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div>
-          <label for="title" class="block text-sm text-gray7">
+          <label for="title" class="block text-sm">
             Tanggal
           </label>
           <div class="mt-1">
@@ -198,10 +242,10 @@
           </div>
         </div>
         <div>
-          <label for="title" class="block text-sm text-gray7">
+          <label for="title" class="block text-sm">
             Rentang Waktu
           </label>
-          <div>
+          <div class="flex">
             <!-- TODO: change style time range picker -->
             <input
               v-model="form.start_time"
@@ -210,6 +254,7 @@
               autocomplete="start_time"
               required
               class="form-input"
+              placeholder="Jam Mulai"
             >
             <input
               v-model="form.end_time"
@@ -218,6 +263,7 @@
               autocomplete="end_time"
               required
               class="form-input"
+              placeholder="Jam Selesai"
             >
             <!-- <span
               v-for="(time, idx) in rangeTimes"
@@ -229,7 +275,19 @@
           </div>
         </div>
         <div>
-          <label for="description" class="block text-sm text-gray7">
+          <label for="password" class="block text-sm">
+            Resource / Aset
+          </label>
+          <div class="mt-1">
+            <select v-model="form.asset_id" name="asset_id" required class="form-input">
+              <option v-for="item in dataAsset" :key="item.id" :value="item.id">
+                {{ item.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label for="description" class="block text-sm">
             Catatan / Deskripsi Kegiatan
           </label>
           <div class="mt-1">
@@ -252,19 +310,104 @@
         </div>
       </div>
     </modal>
+    <modal name="detail" :adaptive="true" :height="`auto`">
+      <div class="p-8 space-y-4">
+        <div class="window-header mb-2">
+          DETAIL RESERVASI
+        </div>
+        <div class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            Judul Kegiatan
+          </div>
+          <div class="md:col-span-3">
+            {{ detailData.title || '-' }}
+          </div>
+        </div>
+        <div class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            Waktu Reservasi
+          </div>
+          <div class="md:col-span-3">
+            {{ `${detailData.date}, pukul ${detailData.start_time} - ${detailData.end_time}` }}
+          </div>
+        </div>
+        <div class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            Catatan Kegiatan
+          </div>
+          <div class="md:col-span-3">
+            {{ detailData.description || '-' }}
+          </div>
+        </div>
+        <div class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            Status
+          </div>
+          <div class="md:col-span-3">
+            {{ detailData.approval_status ? findStatus(detailData.approval_status) : '-' }}
+          </div>
+        </div>
+        <div class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            Catatan Admin FO
+          </div>
+          <div class="md:col-span-3">
+            {{ detailData.note || '-' }}
+          </div>
+        </div>
+        <div class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            Tanggal Reservasi Dibuat
+          </div>
+          <div class="md:col-span-3">
+            {{ detailData.created_at ? momentFormatDate(detailData.created_at) : '-' }}
+          </div>
+        </div>
+        <div class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            Tanggal Pembaruan
+          </div>
+          <div class="md:col-span-3">
+            {{ detailData.updated_at ? momentFormatDate(detailData.updated_at) : '-' }}
+          </div>
+        </div>
+        <div class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            Tanggal Verifikasi Admin
+          </div>
+          <div class="md:col-span-3">
+            {{ detailData.approval_date ? momentFormatDate(detailData.approval_date) : '-' }}
+          </div>
+        </div>
+        <div>
+          <button
+            type="button"
+            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-blue text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            @click="closeModalDetail"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </modal>
   </div>
 </template>
 <script>
 // import axios from '@nuxtjs/axios'
-import moment from 'moment'
 import Pagination from '~/components/Pagination.vue'
-import { rangeTimes, statusReservation } from '~/assets/constant/enum'
+import { rangeTimes, statusReservation, optionsSortBy, optionsOrderBy } from '~/assets/constant/enum'
+import {
+  momentFormatDate
+} from '~/utils'
 export default {
   components: { Pagination },
   layout: 'admin',
   data () {
     return {
+      errors: null,
+      render: true,
       activeData: 1,
+      meta: {},
       dataHeader: [
         'Judul Kegiatan',
         'Waktu Reservasi',
@@ -275,6 +418,8 @@ export default {
       ],
       rangeTimes,
       statusReservation,
+      optionsSortBy,
+      optionsOrderBy,
       form: {
         title: null,
         asset_id: null,
@@ -285,6 +430,7 @@ export default {
       },
       dataReservasi: [],
       dataAsset: [],
+      detailData: {},
       params: {
         search: null,
         asset_id: null,
@@ -295,12 +441,24 @@ export default {
         orderBy: null,
         page: null,
         perPage: null
-      }
+      },
+      momentFormatDate
     }
   },
   watch: {
     activeData (val) {
-      // console.log(val)
+      this.params.page = val
+      this.getDataReservation()
+    },
+    'params.start_date' () {
+      if (this.params.start_date) {
+        this.params.start_date = momentFormatDate(this.params.start_date)
+      }
+    },
+    'params.end_date' () {
+      if (this.params.end_date) {
+        this.params.end_date = momentFormatDate(this.params.end_date)
+      }
     }
   },
   created () {
@@ -315,15 +473,20 @@ export default {
       this.params.approval_status = null
       this.params.start_date = null
       this.params.end_date = null
-      this.params.sortBy = 'created_at'
+      this.params.sortBy = null
       this.params.orderBy = null
       this.params.page = null
       this.params.perPage = null
+      this.refreshTable()
+    },
+    async refreshTable () {
+      this.render = false
+      this.getDataReservation()
+      await this.$nextTick()
+      this.render = true
     },
     customFormatter (date) {
-      const newDateFormat = moment(date).locale('id').format('YYYY-MM-D')
-      this.form.date = newDateFormat
-      return newDateFormat
+      this.form.date = momentFormatDate(date)
     },
     findStatus (stat) {
       const findStats = statusReservation.find(el => el.key === stat)
@@ -344,6 +507,7 @@ export default {
         this.$axios.defaults.headers.common.Authorization = 'Bearer ' + process.env.KEYCLOACK_TOKEN
         const response = await this.$axios.get('/reservation', { params: this.params })
         this.dataReservasi = response ? response.data.data : []
+        this.meta = response ? response.data.meta : {}
       } catch (e) {
         this.errors = e
       }
@@ -353,6 +517,7 @@ export default {
         this.$axios.defaults.headers.common.Authorization = 'Bearer ' + process.env.KEYCLOACK_TOKEN
         await this.$axios.post('reservation', this.form)
         this.$modal.hide('add')
+        this.refreshTable()
       } catch (e) {
         this.errors = e
       }
@@ -373,6 +538,7 @@ export default {
       if (isConfirm) {
         try {
           await this.$axios.delete(`/reservation/${id}`)
+          this.refreshTable()
           toast.success('Berhasil menghapus data', {
             icon: 'check',
             iconPack: 'fontawesome',
@@ -384,10 +550,19 @@ export default {
       }
     },
     onSearch () {
-      this.getDataReservation()
+      this.refreshTable()
+    },
+    onFilter () {
+      this.$modal.hide('filter')
+      this.refreshTable()
+    },
+    onSorting () {
+      this.$modal.hide('sort')
+      this.refreshTable()
     },
     changeActivePagination (val) {
       this.activeData = val
+      this.refreshTable()
     },
     showModalFilter () {
       this.$modal.show('filter')
@@ -397,6 +572,13 @@ export default {
     },
     showModalAdd () {
       this.$modal.show('add')
+    },
+    showModalDetail (data) {
+      this.detailData = data
+      this.$modal.show('detail')
+    },
+    closeModalDetail () {
+      this.$modal.hide('detail')
     }
   }
 }

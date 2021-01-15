@@ -32,3 +32,25 @@ export const statusReservation = [{
   key: 'rejected',
   value: 'Rejected'
 }]
+
+export const optionsSortBy = [{
+  key: 'title',
+  value: 'Judul Kegiatan'
+}, {
+  key: 'created_at',
+  value: 'Tanggal Reservasi Dibuat'
+}, {
+  key: 'reservation_time',
+  value: 'Tanggal dan Waktu Kegiatan'
+}, {
+  key: 'status',
+  value: 'Status'
+}]
+
+export const optionsOrderBy = [{
+  key: 'asc',
+  value: 'Ascending'
+}, {
+  key: 'desc',
+  value: 'Descending'
+}]
