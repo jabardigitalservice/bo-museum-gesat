@@ -462,6 +462,8 @@ export default {
     }
   },
   created () {
+    // TODO: appy keycloack
+    this.$axios.defaults.headers.common.Authorization = 'Bearer ' + process.env.KEYCLOACK_TOKEN
     this.reset()
     this.getAssetList()
     this.getDataReservation()
@@ -494,8 +496,6 @@ export default {
     },
     async getAssetList () {
       try {
-        // const newParams = this.params
-        this.$axios.defaults.headers.common.Authorization = 'Bearer ' + process.env.KEYCLOACK_TOKEN
         const response = await this.$axios.get('/asset/list')
         this.dataAsset = response ? response.data.data : []
       } catch (e) {
@@ -504,7 +504,6 @@ export default {
     },
     async getDataReservation () {
       try {
-        this.$axios.defaults.headers.common.Authorization = 'Bearer ' + process.env.KEYCLOACK_TOKEN
         const response = await this.$axios.get('/reservation', { params: this.params })
         this.dataReservasi = response ? response.data.data : []
         this.meta = response ? response.data.meta : {}
@@ -514,7 +513,6 @@ export default {
     },
     async addReservation () {
       try {
-        this.$axios.defaults.headers.common.Authorization = 'Bearer ' + process.env.KEYCLOACK_TOKEN
         await this.$axios.post('reservation', this.form)
         this.$modal.hide('add')
         this.refreshTable()
