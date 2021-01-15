@@ -248,7 +248,6 @@
             <date-picker
               v-model="form.date"
               placeholder="YYYY-MM-DD"
-              :format="customFormatter"
               class="form-input"
             />
           </div>
@@ -448,6 +447,12 @@ export default {
       this.params.page = val
       this.getDataReservation()
     },
+    'form.date' () {
+      if (this.form.date) {
+        this.form.date = momentFormatDate(this.form.date)
+      }
+      console.log(this.form.date)
+    },
     'params.start_date' () {
       if (this.params.start_date) {
         this.params.start_date = momentFormatDate(this.params.start_date)
@@ -461,7 +466,7 @@ export default {
   },
   created () {
     // TODO: appy keycloack
-    this.$axios.defaults.headers.common.Authorization = 'Bearer ' + process.env.KEYCLOACK_TOKEN
+    // this.$axios.defaults.headers.common.Authorization = 'Bearer ' + process.env.KEYCLOACK_TOKEN
     this.reset()
     this.getAssetList()
     this.getDataReservation()
@@ -487,6 +492,7 @@ export default {
     },
     customFormatter (date) {
       this.form.date = momentFormatDate(date)
+      console.log(date, this.form.date)
     },
     findStatus (stat) {
       const findStats = statusReservation.find(el => el.key === stat)
