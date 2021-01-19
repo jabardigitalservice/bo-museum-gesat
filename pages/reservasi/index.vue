@@ -419,6 +419,7 @@ export default {
       render: true,
       activeData: 1,
       meta: {},
+      dataUser: {},
       dataHeader: [
         'Judul Kegiatan',
         'Waktu Reservasi',
@@ -485,9 +486,15 @@ export default {
     this.getDataReservation()
   },
   methods: {
-    checkAuth () {
-      // TODO: get authentication from store
-      this.isAdmin = true
+    async checkAuth () {
+      try {
+        // TODO: menyesuaikan / pasang middleware check auth
+        const response = await this.$axios.get('/user')
+        this.dataUser = response ? response.data.data : {}
+        this.dataUser && this.dataUser.role === 'admin_reservasi' ? this.isAdmin = true : this.isAdmin = false
+      } catch (e) {
+        this.errors = e
+      }
     },
     reset () {
       this.params.search = null
@@ -582,9 +589,7 @@ export default {
         reverseButtons: true
       })
       if (confirmation) {
-        console.log(confirmation)
         try {
-          console.log(approval, id)
           await this.$axios.put(`/reserved/${id}`, {
             approval_status: approval === 'approve' ? 'already_approved' : 'rejected',
             note: confirmation
@@ -617,7 +622,6 @@ export default {
       this.refreshTable()
     },
     changeActivePagination (val) {
-      console.log(val)
       this.activeData = val
       this.params.page = val
       this.refreshTable()
