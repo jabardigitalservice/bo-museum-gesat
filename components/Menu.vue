@@ -28,11 +28,24 @@ import constMenus from '@/constants/menus'
 export default {
   data () {
     return {
-      menus: []
+      role: ''
+    }
+  },
+  computed: {
+    menus () {
+      const menus = constMenus.filter((menu) => {
+        if (menu.role.includes(this.role)) {
+          return menu
+        }
+      })
+      return menus
     }
   },
   created () {
-    this.menus = constMenus
+    this.$axios.get('/user').then((res) => {
+      this.role = res.data.data.role
+      this.$auth.$storage.setUniversal('role', res.data.data.role)
+    })
   }
 }
 </script>
