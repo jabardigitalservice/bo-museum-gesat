@@ -415,7 +415,6 @@ export default {
   data () {
     return {
       errors: null,
-      isAdmin: false,
       render: true,
       activeData: 1,
       meta: {},
@@ -458,6 +457,11 @@ export default {
       momentFormatTime
     }
   },
+  computed: {
+    isAdmin () {
+      return this.$store.state.auth.role === 'admin_reservasi'
+    }
+  },
   watch: {
     activeData (val) {
       this.params.page = val
@@ -480,22 +484,11 @@ export default {
     }
   },
   created () {
-    this.checkAuth()
     this.reset()
     this.getAssetList()
     this.getDataReservation()
   },
   methods: {
-    async checkAuth () {
-      try {
-        // TODO: menyesuaikan / pasang middleware check auth
-        const response = await this.$axios.get('/user')
-        this.dataUser = response ? response.data.data : {}
-        this.dataUser && this.dataUser.role === 'admin_reservasi' ? this.isAdmin = true : this.isAdmin = false
-      } catch (e) {
-        this.errors = e
-      }
-    },
     reset () {
       this.params.search = null
       this.params.asset_id = null
