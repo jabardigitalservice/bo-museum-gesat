@@ -562,6 +562,7 @@ export default {
     },
     changeActivePagination (val) {
       this.activeData = val
+      this.params.page = val
       this.refreshTable()
     },
     showModalFilter () {
