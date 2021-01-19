@@ -11,7 +11,7 @@
           'pagination--active': mActivePagination === x + stepNumber,
           pagination: mActivePagination !== x + stepNumber,
         }"
-        @click="mActivePagination = x + stepNumber"
+        @click="clickPagination(x)"
       >
         {{ x + stepNumber }}
       </button>
@@ -53,6 +53,10 @@ export default {
     }
   },
   methods: {
+    clickPagination (numberOfPagination) {
+      this.mActivePagination = numberOfPagination + this.stepNumber
+      this.$emit('update', this.mActivePagination)
+    },
     prevPagination () {
       if (this.mActivePagination > 1) {
         this.mActivePagination--
