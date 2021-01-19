@@ -76,10 +76,10 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm">
-                  {{ data.date }}
+                  {{ data.created_at ? momentFormatDate(data.created_at) : '' }}
                 </div>
                 <div class="text-sm">
-                  {{ data.start_time && data.end_time ? `${data.start_time} - ${data.end_time}` : '' }}
+                  {{ data.created_at ? `pukul ${momentFormatTime(data.created_at)}` : '' }}
                 </div>
               </td>
               <td
@@ -389,12 +389,13 @@
     </modal>
   </div>
 </template>
+
 <script>
-// import axios from '@nuxtjs/axios'
 import Pagination from '~/components/Pagination.vue'
 import { rangeTimes, statusReservation, optionsSortBy, optionsOrderBy } from '~/assets/constant/enum'
 import {
-  momentFormatDate
+  momentFormatDate,
+  momentFormatTime
 } from '~/utils'
 export default {
   components: { Pagination },
@@ -410,7 +411,7 @@ export default {
         'Waktu Reservasi',
         'Status',
         'Catatan',
-        'Tanggal Diibuat',
+        'Reservasi Dibuat',
         'Aksi'
       ],
       rangeTimes,
@@ -439,7 +440,8 @@ export default {
         page: null,
         perPage: null
       },
-      momentFormatDate
+      momentFormatDate,
+      momentFormatTime
     }
   },
   watch: {
@@ -451,7 +453,6 @@ export default {
       if (this.form.date) {
         this.form.date = momentFormatDate(this.form.date)
       }
-      console.log(this.form.date)
     },
     'params.start_date' () {
       if (this.params.start_date) {
@@ -490,7 +491,6 @@ export default {
     },
     customFormatter (date) {
       this.form.date = momentFormatDate(date)
-      console.log(date, this.form.date)
     },
     findStatus (stat) {
       const findStats = statusReservation.find(el => el.key === stat)
