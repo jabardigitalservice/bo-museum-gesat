@@ -54,7 +54,7 @@ export default {
     redirect: {
       login: '/login',
       logout: '/login',
-      // callback: '/callback',
+      callback: '/callback',
       home: '/reservasi'
     },
     strategies: {
