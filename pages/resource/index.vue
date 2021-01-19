@@ -116,6 +116,7 @@
 import Pagination from '~/components/Pagination.vue'
 export default {
   components: { Pagination },
+  middleware: ['auth', 'admin'],
   layout: 'admin',
   data () {
     return {
@@ -132,6 +133,9 @@ export default {
     activeData (val) {
       // console.log(val)
     }
+  },
+  mounted () {
+
   },
   methods: {
     changeActivePagination (val) {

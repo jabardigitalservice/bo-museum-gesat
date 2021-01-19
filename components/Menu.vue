@@ -9,7 +9,7 @@
       <div class="mt-6 w-16 h-16 bg-white rounded-full" />
     </div>
     <div class="flex justify-center mt-3">
-      <span class="font-medium text-white">{{ this.$auth.user.name !== null ? this.$auth.user.name : '' }}</span>
+      <span class="font-medium text-white">{{ this.$auth.user !== null ? this.$auth.user.name : '' }}</span>
     </div>
     <div class="mt-8">
       <ul>
@@ -28,11 +28,24 @@ import constMenus from '@/constants/menus'
 export default {
   data () {
     return {
-      menus: []
+      role: ''
+    }
+  },
+  computed: {
+    menus () {
+      const menus = constMenus.filter((menu) => {
+        if (menu.role.includes(this.role)) {
+          return menu
+        }
+      })
+      return menus
     }
   },
   created () {
-    this.menus = constMenus
+    this.$axios.get('/user').then((res) => {
+      this.role = res.data.data.role
+      this.$auth.$storage.setUniversal('role', res.data.data.role)
+    })
   }
 }
 </script>
