@@ -5,7 +5,7 @@
         <i class="bx bx-left-arrow-alt bx-sm" />
       </button>
       <button
-        v-for="x in 5"
+        v-for="x in lengthPage"
         :key="x"
         :class="{
           'pagination--active': mActivePagination === x + stepNumber,
@@ -30,7 +30,7 @@ export default {
     },
     lengthData: {
       type: Number,
-      default: 10
+      default: 1
     }
   },
   data () {
@@ -40,6 +40,15 @@ export default {
       showNumber: {
         start: 1,
         end: 5
+      }
+    }
+  },
+  computed: {
+    lengthPage () {
+      if (this.lengthData < 5) {
+        return this.lengthData
+      } else {
+        return 5
       }
     }
   },
