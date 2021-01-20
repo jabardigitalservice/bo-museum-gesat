@@ -53,6 +53,12 @@ export default {
       return false
     }
   },
+  created () {
+    this.$axios.get('/user').then((res) => {
+      this.role = res.data.data.role
+      this.$store.commit('role/set_role', this.role)
+    })
+  },
   methods: {
     checkRole () {
       const tokenBearer = this.$auth.strategy.token.get()
@@ -60,12 +66,6 @@ export default {
       const tokendecode = VueJwtDecode.decode(token[1])
       return tokendecode
     }
-  },
-  created () {
-    this.$axios.get('/user').then((res) => {
-      this.role = res.data.data.role
-      this.$store.commit('role/set_role', this.role)
-    })
   }
 }
 </script>
