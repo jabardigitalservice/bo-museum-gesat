@@ -7,31 +7,42 @@
       </h1>
       <!-- filter and add button -->
       <div class="w-full flex flex-wrap my-3 ">
-        <div class="w-full lg:w-1/2 my-1">
-          <div class="w-1/2 lg:w-1/4">
-            <button class="btn bg-primary" @click="showModalAdd">
+        <div class="w-full lg:w-1/3 my-1">
+          <div class="w-1/2 lg:w-1/3">
+            <button v-show="!isAdmin" class="btn bg-primary" @click="showModalAdd">
               <i class="bx bx-plus bx-sm" />
               <span>Tambah</span>
             </button>
           </div>
         </div>
-        <div class="w-full lg:w-1/2 flex flex-wrap-reverse lg:flex-wrap flex-row-reverse">
-          <div class="w-1/2 lg:w-1/4 my-1 pl-1">
-            <button class="btn bg-yellow" @click="showModalSort">
-              <i class="bx bx-sort-up bx-sm" />
-              <span>Urutkan</span>
-            </button>
-          </div>
-          <div class="w-1/2 lg:w-1/4 my-1 lg:pl-1">
-            <button class="btn bg-blue" @click="showModalFilter">
-              <i class="bx bx-filter bx-sm" />
-              <span>Filter</span>
-            </button>
-          </div>
-          <div class="w-full lg:w-1/2 my-1">
-            <div class="w-full px-4 py-2 bg-white border-solid border border-gray4 rounded flex justify-between items-center">
-              <input v-model="params.search" class="w-full focus:outline-none" type="text" placeholder="Search">
-              <i class="text-gray4 bx bx-search bx-sm cursor-pointer" @click="onSearch" />
+        <div class="w-full lg:w-2/3 flex flex-wrap-reverse lg:flex-wrap flex-row-reverse">
+          <div class="md:grid md:grid-cols-5 flex item-center">
+            <div class="md:col-span-2 w-full">
+              <div class="w-full px-4 py-2 bg-white border-solid border border-gray4 rounded flex justify-between items-center">
+                <input v-model="params.search" class="w-full focus:outline-none" type="text" placeholder="Search">
+                <i class="text-gray4 bx bx-search bx-sm cursor-pointer" @click="onSearch" />
+              </div>
+            </div>
+            <div class="md:col-span-3 w-full">
+              <div class="md:grid md:grid-cols-3 flex item-center">
+                <div class="md:col-span-1 ml-2">
+                  <button class="btn bg-blue px-2" @click="showModalFilter">
+                    <i class="bx bx-filter bx-sm" />
+                    <span>Filter</span>
+                  </button>
+                </div>
+                <div class="md:col-span-1 ml-2">
+                  <button class="btn bg-yellow px-2" @click="showModalSort">
+                    <i class="bx bx-sort-up bx-sm" />
+                    <span>Urutkan</span>
+                  </button>
+                </div>
+                <div class="md:col-span-1 ml-2">
+                  <button class="btn bg-white border border-grayText" @click="initParams">
+                    <span class="text-grayText hover:text-black">Reset</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -86,15 +97,27 @@
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium"
               >
                 <i
-                  v-show="data.approval_status === 'not_yet_approved'"
+                  class="bx bx-info-circle bx-sm cursor-pointer text-blue"
+                  title="Klik untuk melihat detail reservasi"
+                  @click="showModalDetail(data)"
+                />
+                <i
+                  v-show="!isAdmin && data.approval_status === 'not_yet_approved'"
                   class="bx bx-trash bx-sm cursor-pointer text-red"
                   title="Klik untuk menghapus reservasi"
                   @click="deleteData(data.id)"
                 />
                 <i
-                  class="bx bx-info-circle bx-sm cursor-pointer text-blue"
-                  title="Klik untuk melihat detail reservasi"
-                  @click="showModalDetail(data)"
+                  v-show="isAdmin && data.approval_status === 'not_yet_approved'"
+                  class="bx bx-calendar-check bx-sm cursor-pointer text-primary"
+                  title="Setujui reservasi"
+                  @click="verifikasiData('approve', data.id)"
+                />
+                <i
+                  v-show="isAdmin && data.approval_status === 'not_yet_approved'"
+                  class="bx bx-calendar-x bx-sm cursor-pointer text-red"
+                  title="Tolak reservasi"
+                  @click="verifikasiData('reject', data.id)"
                 />
               </td>
             </tr>
@@ -141,12 +164,24 @@
             </select>
           </div>
         </div>
+        <div v-show="isAdmin">
+          <label for="asset_id" class="block text-sm">
+            Resource / Aset
+          </label>
+          <div class="mt-1">
+            <select v-model="params.asset_id" name="asset_id" required class="form-input">
+              <option v-for="item in dataAsset" :key="item.id" :value="item.id">
+                {{ item.name }}
+              </option>
+            </select>
+          </div>
+        </div>
 
         <div class="flex space-x-4">
           <button
             type="button"
             class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="reset"
+            @click="clearFilter"
           >
             Clear
           </button>
@@ -194,7 +229,7 @@
           <button
             type="button"
             class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="reset"
+            @click="clearSortby"
           >
             Clear
           </button>
@@ -229,7 +264,7 @@
           </div>
         </div>
         <div>
-          <label for="password" class="block text-sm">
+          <label for="asset_id" class="block text-sm">
             Resource / Aset
           </label>
           <div class="mt-1">
@@ -311,6 +346,14 @@
       <div class="p-8 space-y-4">
         <div class="window-header mb-2">
           DETAIL RESERVASI
+        </div>
+        <div v-show="isAdmin" class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            Nama Pegawai
+          </div>
+          <div class="md:col-span-3">
+            {{ detailData.user_fullname || '-' }}
+          </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
           <div class="md:col-span-2 text-blue">
@@ -406,6 +449,7 @@ export default {
       render: true,
       activeData: 1,
       meta: {},
+      dataUser: {},
       dataHeader: [
         'Judul Kegiatan',
         'Waktu Reservasi',
@@ -444,6 +488,11 @@ export default {
       momentFormatTime
     }
   },
+  computed: {
+    isAdmin () {
+      return this.$store.state.role.role === 'admin_reservasi'
+    }
+  },
   watch: {
     activeData (val) {
       this.params.page = val
@@ -466,21 +515,31 @@ export default {
     }
   },
   created () {
-    this.reset()
+    this.initParams()
     this.getAssetList()
-    this.getDataReservation()
   },
   methods: {
-    reset () {
+    initParams () {
       this.params.search = null
       this.params.asset_id = null
       this.params.approval_status = null
       this.params.start_date = null
       this.params.end_date = null
-      this.params.sortBy = null
+      this.params.sortBy = 'created_at'
       this.params.orderBy = null
       this.params.page = null
       this.params.perPage = null
+      this.refreshTable()
+    },
+    clearFilter () {
+      this.params.approval_status = null
+      this.params.start_date = null
+      this.params.end_date = null
+      this.refreshTable()
+    },
+    clearSortby () {
+      this.params.sortBy = null
+      this.params.orderBy = null
       this.refreshTable()
     },
     async refreshTable () {
@@ -532,7 +591,7 @@ export default {
         showCancelButton: true,
         confirmButtonText: '<i class="bx bx-sm bx-check" /> OK',
         cancelButtonText: '<i class="bx bx-sm bx-close" /> Cancel',
-        icon: 'info',
+        type: 'warning',
         reverseButtons: true
       })
       if (isConfirm) {
@@ -540,7 +599,7 @@ export default {
           await this.$axios.delete(`/reservation/${id}`)
           this.refreshTable()
           toast.success('Berhasil menghapus data', {
-            icon: 'check',
+            type: 'check',
             iconPack: 'fontawesome',
             duration: 5000
           })
@@ -549,12 +608,55 @@ export default {
         }
       }
     },
+    async verifikasiData (approval, id) {
+      const swal = this.$swal
+      const toast = this.$toast
+      const {
+        value: confirmation
+      } = await swal.fire({
+        title: approval === 'approve' ? 'Setujui Reservasi?' : 'Tolak Reservasi?',
+        showCancelButton: true,
+        confirmButtonText: '<i class="bx bx-sm bx-check" /> OK',
+        cancelButtonText: '<i class="bx bx-sm bx-close" /> Cancel',
+        type: approval === 'approve' ? 'success' : 'error',
+        input: 'text',
+        reverseButtons: true
+      })
+      if (confirmation) {
+        try {
+          await this.$axios.put(`/reserved/${id}`, {
+            approval_status: approval === 'approve' ? 'already_approved' : 'rejected',
+            note: confirmation
+          })
+          this.refreshTable()
+          toast.success('Berhasil verifikasi reservasi', {
+            icon: 'check',
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+        } catch (e) {
+          swal.fire('Terjadi kesalahan', 'Silakan hubungi Admin', 'error')
+        }
+      } else {
+        toast.error('Harap isi catatan verifikasi', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
+      }
+    },
     onSearch () {
       this.refreshTable()
     },
     onFilter () {
-      this.$modal.hide('filter')
-      this.refreshTable()
+      if (this.params.start_date <= this.params.end_date) {
+        this.$modal.hide('filter')
+        this.refreshTable()
+      } else {
+        this.$toast.error('Tanggal awal harus kurang dari atau sama dengan tanggal akhir', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
+      }
     },
     onSorting () {
       this.$modal.hide('sort')
