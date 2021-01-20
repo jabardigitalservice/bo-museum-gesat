@@ -38,7 +38,11 @@ export default {
   computed: {
     menus () {
       const menus = constMenus.filter((menu) => {
-        if (menu.role.includes(this.role)) {
+        if (this.isAdmin) {
+          if (menu.role.includes('admin_reservasi')) {
+            return menu
+          }
+        } else if (menu.role.includes('employee_reservasi')) {
           return menu
         }
       })
