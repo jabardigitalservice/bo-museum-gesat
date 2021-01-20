@@ -1,6 +1,6 @@
-export default function ({ $auth, redirect }) {
+export default function ({ store, redirect }) {
   // If the user is not authenticated
-  if ($auth.$storage.getState('role') !== 'admin_reservasi') {
+  if (store.state.role.role !== 'admin_reservasi') {
     return redirect('/404')
   }
 }

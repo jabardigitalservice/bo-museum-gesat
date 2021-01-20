@@ -55,3 +55,36 @@ export const optionsOrderBy = [{
   key: 'desc',
   value: 'Descending'
 }]
+
+export const optionsStatusResource = [
+  {
+    id: 0,
+    value: 'active',
+    label: 'Aktif'
+  },
+  {
+    id: 1,
+    value: 'not_active',
+    label: 'Tidak Aktif'
+  }
+
+]
+
+export const optionsSortResource = [
+  {
+    id: 0,
+    value: 'name',
+    label: 'Resource / Aset'
+  },
+  {
+    id: 1,
+    value: 'created_at',
+    label: 'Tanggal dibuat'
+  },
+  {
+    id: 2,
+    value: 'status',
+    label: 'Status'
+  }
+
+]

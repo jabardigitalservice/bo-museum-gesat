@@ -30,8 +30,8 @@
           </div>
           <div class="w-full lg:w-1/2 my-1">
             <div class="w-full px-4 py-2 bg-white border-solid border border-gray4 rounded flex justify-between items-center">
-              <input class="w-full focus:outline-none" type="text" placeholder="Search">
-              <i class="text-gray4 bx bx-search bx-sm cursor-pointer" />
+              <input v-model="dataSearch" class="w-full focus:outline-none" type="text" placeholder="Search" @keyup.enter="searchResource">
+              <i class="text-gray4 bx bx-search bx-sm cursor-pointer" @click="searchResource" />
             </div>
           </div>
         </div>
@@ -41,55 +41,32 @@
         <table class="w-full">
           <thead class="bg-primary">
             <tr>
-              <th v-for="x in dataHeader" :key="x" scope="col" class="thead">
-                {{ x }}
-              </th>
-              <th scope="col" class="relative px-6 py-3">
-                <span class="sr-only">Edit</span>
+              <th v-for="header in dataHeader" :key="header" scope="col" class="thead">
+                {{ header }}
               </th>
             </tr>
           </thead>
           <tbody class="tbody">
-            <tr v-for="x in 4" :key="x">
+            <tr v-for="resource in dataResource" :key="resource.id">
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="flex items-center">
-                  <div class="flex-shrink-0 h-10 w-10">
-                    <img
-                      class="h-10 w-10 rounded-full"
-                      src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=4&amp;w=256&amp;h=256&amp;q=60"
-                      alt=""
-                    >
-                  </div>
-                  <div class="ml-4">
-                    <div class="text-sm font-medium text-gray-900">
-                      Jane Cooper
-                    </div>
-                    <div class="text-sm text-gray-500">
-                      jane.cooper@example.com
-                    </div>
-                  </div>
-                </div>
+                <span> {{ resource.name }} </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">
-                  Regional Paradigm Technician
-                </div>
-                <div class="text-sm text-gray-500">
-                  Optimization
-                </div>
+                <span> {{ resource.description }} </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span
-                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red text-white"
+                  :class="{'bg-red': resource.status === 'not_active'}"
+                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary text-white capitalize"
                 >
-                  Active
+                  {{ resource.status === 'active' ? 'aktif' : 'tidak aktif' }}
                 </span>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <span> Admin </span>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-black">
+                <span> {{ momentFormatDate(resource.created_at) }} </span>
               </td>
               <td
-                class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                class="px-6 py-4 whitespace-nowrap text-sm font-medium"
               >
                 <i class="bx bx-edit bx-sm cursor-pointer" />
               </td>
@@ -98,14 +75,77 @@
         </table>
       </div>
       <!-- pagination -->
-      <Pagination :active-pagination="activeData" :length-data="6" @update="changeActivePagination" />
+      <Pagination :active-pagination="activeData" :length-data="metaResource.last_page" @update="changeActivePagination" />
     </div>
     <!-- modal filter -->
-    <modal name="filter" :adaptive="true">
-      This is an example filter
+    <modal
+      name="filter"
+      :min-width="320"
+      :max-width="500"
+      width="80%"
+      height="auto"
+      :adaptive="true"
+    >
+      <div class="bg-gray5 w-full h-full p-3">
+        <h2 class="font-medium">
+          Filter Berdasarkan :
+        </h2>
+        <div class="flex flex-col">
+          <div class="w-full flex flex-col mt-3">
+            <label class="font-medium" for="status">Status</label>
+            <select v-model="dataFilter.status" name="status" class="focus:outline-none rounded p-3 appearance-none">
+              <option v-for="status in optionsStatusResource" :key="status.id" :value="status">
+                {{ status.label }}
+              </option>
+            </select>
+          </div>
+          <div class="grid grid-cols-2 gap-4 mt-3">
+            <button class="btn bg-primary" @click.stop="applyFilter">
+              Terapkan
+            </button>
+            <button class="btn bg-yellow" @click.stop="resetFilter">
+              Reset
+            </button>
+          </div>
+        </div>
+      </div>
     </modal>
-    <modal name="sort" :adaptive="true">
-      This is an example sort
+    <modal
+      name="sort"
+      :min-width="320"
+      :max-width="500"
+      width="80%"
+      height="auto"
+      :adaptive="true"
+    >
+      <div class="bg-gray5 w-full h-full p-3">
+        <div class="flex flex-col">
+          <div class="w-full flex flex-col">
+            <label class="font-medium" for="sort">Urut Berdasarkan :</label>
+            <select v-model="dataSort.sortBy" name="sort" class="focus:outline-none rounded p-3 appearance-none">
+              <option v-for="sort in optionsSortResource" :key="sort.id" :value="sort">
+                {{ sort.label }}
+              </option>
+            </select>
+          </div>
+          <div class="w-full flex flex-col mt-3">
+            <label class="font-medium" for="order">Urutan :</label>
+            <select v-model="dataSort.orderBy" name="order" class="focus:outline-none rounded p-3 appearance-none capitalize">
+              <option v-for="order in optionsOrderBy" :key="order.key" class="capitalize" :value="order">
+                {{ order.value }}
+              </option>
+            </select>
+          </div>
+          <div class="grid grid-cols-2 gap-4 mt-3">
+            <button class="btn bg-primary" @click.stop="applySort">
+              Terapkan
+            </button>
+            <button class="btn bg-yellow" @click.stop="resetSort">
+              Reset
+            </button>
+          </div>
+        </div>
+      </div>
     </modal>
     <modal name="add" :adaptive="true">
       This is an example add
@@ -113,7 +153,13 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import Pagination from '~/components/Pagination.vue'
+import { optionsStatusResource, optionsSortResource, optionsOrderBy } from '~/assets/constant/enum'
+
+import {
+  momentFormatDate
+} from '~/utils'
 export default {
   components: { Pagination },
   middleware: ['auth', 'admin'],
@@ -123,21 +169,71 @@ export default {
       activeData: 1,
       dataHeader: [
         'Nama',
-        'Title',
+        'Deskripsi',
         'Status',
-        'Role'
-      ]
+        'Tanggal dibuat',
+        'Aksi'
+      ],
+      momentFormatDate,
+      dataSearch: '',
+      params: {
+        sortBy: 'name',
+        orderBy: 'asc'
+      },
+      optionsStatusResource,
+      optionsOrderBy,
+      optionsSortResource,
+      dataFilter: {
+        status: optionsStatusResource[0]
+      },
+      dataSort: {
+        sortBy: optionsSortResource[0],
+        orderBy: optionsOrderBy[0]
+      }
     }
+  },
+  computed: {
+    ...mapGetters('resource', [
+      'dataResource',
+      'metaResource'
+    ])
   },
   watch: {
     activeData (val) {
       // console.log(val)
     }
   },
-  mounted () {
-
+  created () {
+    this.fetchResource(this.params)
   },
   methods: {
+    fetchResource (params = {}) {
+      this.$axios.get('/asset', { params }).then((response) => {
+        this.$store.commit('resource/SET_RESOURCE', response.data)
+      })
+    },
+    applySort () {
+      this.fetchResource({ sortBy: this.dataSort.sortBy.value, orderBy: this.dataSort.orderBy.key })
+      this.$modal.hide('sort')
+    },
+    resetSort () {
+      this.dataSort.sortBy = optionsSortResource[0]
+      this.dataSort.orderBy = optionsOrderBy[0]
+      this.fetchResource(this.params)
+      this.$modal.hide('sort')
+    },
+    applyFilter () {
+      this.fetchResource({ ...this.params, status: this.dataFilter.status.value })
+      this.$modal.hide('filter')
+    },
+    resetFilter () {
+      this.dataFilter.status = optionsStatusResource[0]
+      this.fetchResource(this.params)
+      this.$modal.hide('filter')
+    },
+    searchResource () {
+      this.fetchResource({ ...this.params, name: this.dataSearch })
+    },
     changeActivePagination (val) {
       this.activeData = val
     },
