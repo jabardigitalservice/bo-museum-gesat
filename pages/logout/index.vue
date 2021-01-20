@@ -3,7 +3,7 @@
 </template>
 <script>
 export default {
-  mounted () {
+  created () {
     this.$auth.logout('keycloak')
   }
 }
