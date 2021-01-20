@@ -9,7 +9,7 @@
       <div class="w-full flex flex-wrap my-3 ">
         <div class="w-full lg:w-1/2 my-1">
           <div class="w-1/2 lg:w-1/4">
-            <button class="btn bg-primary" @click="showModalAdd">
+            <button v-show="!isAdmin" class="btn bg-primary" @click="showModalAdd">
               <i class="bx bx-plus bx-sm" />
               <span>Tambah</span>
             </button>
@@ -86,15 +86,27 @@
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium"
               >
                 <i
-                  v-show="data.approval_status === 'not_yet_approved'"
+                  class="bx bx-info-circle bx-sm cursor-pointer text-blue"
+                  title="Klik untuk melihat detail reservasi"
+                  @click="showModalDetail(data)"
+                />
+                <i
+                  v-show="!isAdmin && data.approval_status === 'not_yet_approved'"
                   class="bx bx-trash bx-sm cursor-pointer text-red"
                   title="Klik untuk menghapus reservasi"
                   @click="deleteData(data.id)"
                 />
                 <i
-                  class="bx bx-info-circle bx-sm cursor-pointer text-blue"
-                  title="Klik untuk melihat detail reservasi"
-                  @click="showModalDetail(data)"
+                  v-show="isAdmin && data.approval_status === 'not_yet_approved'"
+                  class="bx bx-calendar-check bx-sm cursor-pointer text-primary"
+                  title="Setujui reservasi"
+                  @click="verifikasiData('approve', data.id)"
+                />
+                <i
+                  v-show="isAdmin && data.approval_status === 'not_yet_approved'"
+                  class="bx bx-calendar-x bx-sm cursor-pointer text-red"
+                  title="Tolak reservasi"
+                  @click="verifikasiData('reject', data.id)"
                 />
               </td>
             </tr>
@@ -406,6 +418,7 @@ export default {
       render: true,
       activeData: 1,
       meta: {},
+      dataUser: {},
       dataHeader: [
         'Judul Kegiatan',
         'Waktu Reservasi',
@@ -442,6 +455,11 @@ export default {
       },
       momentFormatDate,
       momentFormatTime
+    }
+  },
+  computed: {
+    isAdmin () {
+      return this.$store.state.auth.role === 'admin_reservasi'
     }
   },
   watch: {
@@ -532,7 +550,7 @@ export default {
         showCancelButton: true,
         confirmButtonText: '<i class="bx bx-sm bx-check" /> OK',
         cancelButtonText: '<i class="bx bx-sm bx-close" /> Cancel',
-        icon: 'info',
+        type: 'warning',
         reverseButtons: true
       })
       if (isConfirm) {
@@ -540,6 +558,37 @@ export default {
           await this.$axios.delete(`/reservation/${id}`)
           this.refreshTable()
           toast.success('Berhasil menghapus data', {
+            type: 'check',
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+        } catch (e) {
+          swal.fire('Terjadi kesalahan', 'Silakan hubungi Admin', 'error')
+        }
+      }
+    },
+    async verifikasiData (approval, id) {
+      const swal = this.$swal
+      const toast = this.$toast
+      const {
+        value: confirmation
+      } = await swal.fire({
+        title: approval === 'approve' ? 'Setujui Reservasi?' : 'Tolak Reservasi?',
+        showCancelButton: true,
+        confirmButtonText: '<i class="bx bx-sm bx-check" /> OK',
+        cancelButtonText: '<i class="bx bx-sm bx-close" /> Cancel',
+        type: approval === 'approve' ? 'success' : 'error',
+        input: 'text',
+        reverseButtons: true
+      })
+      if (confirmation) {
+        try {
+          await this.$axios.put(`/reserved/${id}`, {
+            approval_status: approval === 'approve' ? 'already_approved' : 'rejected',
+            note: confirmation
+          })
+          this.refreshTable()
+          toast.success('Berhasil verifikasi reservasi', {
             icon: 'check',
             iconPack: 'fontawesome',
             duration: 5000
@@ -547,6 +596,11 @@ export default {
         } catch (e) {
           swal.fire('Terjadi kesalahan', 'Silakan hubungi Admin', 'error')
         }
+      } else {
+        toast.error('Harap isi catatan verifikasi', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
       }
     },
     onSearch () {

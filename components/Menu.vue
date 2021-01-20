@@ -9,7 +9,7 @@
       <div class="mt-6 w-16 h-16 bg-white rounded-full" />
     </div>
     <div class="flex justify-center mt-3">
-      <span class="font-medium text-white">{{ this.$auth.user !== null ? this.$auth.user.name : '' }}</span>
+      <span class="font-medium text-white">{{ this.$auth.user && this.$auth.user.name ? this.$auth.user.name : '' }}</span>
     </div>
     <div class="mt-8">
       <ul>
@@ -44,7 +44,7 @@ export default {
   created () {
     this.$axios.get('/user').then((res) => {
       this.role = res.data.data.role
-      this.$auth.$storage.setUniversal('role', res.data.data.role)
+      this.$store.commit('auth/set_role', this.role)
     })
   }
 }
