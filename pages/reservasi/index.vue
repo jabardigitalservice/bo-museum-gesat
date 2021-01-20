@@ -158,7 +158,7 @@
           <button
             type="button"
             class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="reset"
+            @click="clearFilter"
           >
             Clear
           </button>
@@ -206,7 +206,7 @@
           <button
             type="button"
             class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="reset"
+            @click="clearSortby"
           >
             Clear
           </button>
@@ -484,21 +484,31 @@ export default {
     }
   },
   created () {
-    this.reset()
+    this.initParams()
     this.getAssetList()
-    this.getDataReservation()
   },
   methods: {
-    reset () {
+    initParams () {
       this.params.search = null
       this.params.asset_id = null
       this.params.approval_status = null
       this.params.start_date = null
       this.params.end_date = null
-      this.params.sortBy = null
+      this.params.sortBy = 'created_at'
       this.params.orderBy = null
       this.params.page = null
       this.params.perPage = null
+      this.refreshTable()
+    },
+    clearFilter () {
+      this.params.approval_status = null
+      this.params.start_date = null
+      this.params.end_date = null
+      this.refreshTable()
+    },
+    clearSortby () {
+      this.params.sortBy = null
+      this.params.orderBy = null
       this.refreshTable()
     },
     async refreshTable () {
@@ -607,8 +617,15 @@ export default {
       this.refreshTable()
     },
     onFilter () {
-      this.$modal.hide('filter')
-      this.refreshTable()
+      if (this.params.start_date <= this.params.end_date) {
+        this.$modal.hide('filter')
+        this.refreshTable()
+      } else {
+        this.$toast.error('Tanggal awal harus kurang dari atau sama dengan tanggal akhir', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
+      }
     },
     onSorting () {
       this.$modal.hide('sort')
