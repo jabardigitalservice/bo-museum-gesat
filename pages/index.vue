@@ -33,34 +33,20 @@
   </div>
 </template>
 <script>
+import { cardsDashboard } from '~/assets/constant/enum'
 export default {
   layout: 'admin',
   data () {
     return {
-      // TODO: get data statistic dashboard from api and apply to each value
-      cards: [
-        {
-          title: 'Reservasi Dibuat',
-          value: 0,
-          bgColor: 'bg-blue',
-          icon: 'bx-calendar'
-        },
-        {
-          title: 'Reservasi Disetujui',
-          value: 0,
-          bgColor: 'bg-primary',
-          icon: 'bx-calendar-check'
-        },
-        {
-          title: 'Reservasi Ditolak',
-          value: 0,
-          bgColor: 'bg-red',
-          icon: 'bx-calendar-x'
-        }
-      ]
+      cards: cardsDashboard
     }
   },
   mounted () {
+    this.$axios.get('/dashboard/reservation-statistic').then((res) => {
+      this.cards[0].value = res.data && res.data.all ? res.data.all : 0
+      this.cards[1].value = res.data && res.data.already_approved ? res.data.already_approved : 0
+      this.cards[2].value = res.data && res.data.rejected ? res.data.rejected : 0
+    })
   }
 }
 
