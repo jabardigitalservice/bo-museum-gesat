@@ -51,9 +51,8 @@ export default {
     isAdmin () {
       if (this.checkRole().realm_access.roles.includes('admin_reservasi')) {
         return true
-      } else {
-        return false
       }
+      return false
     }
   },
   methods: {
