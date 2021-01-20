@@ -7,31 +7,42 @@
       </h1>
       <!-- filter and add button -->
       <div class="w-full flex flex-wrap my-3 ">
-        <div class="w-full lg:w-1/2 my-1">
-          <div class="w-1/2 lg:w-1/4">
+        <div class="w-full lg:w-1/3 my-1">
+          <div class="w-1/2 lg:w-1/3">
             <button v-show="!isAdmin" class="btn bg-primary" @click="showModalAdd">
               <i class="bx bx-plus bx-sm" />
               <span>Tambah</span>
             </button>
           </div>
         </div>
-        <div class="w-full lg:w-1/2 flex flex-wrap-reverse lg:flex-wrap flex-row-reverse">
-          <div class="w-1/2 lg:w-1/4 my-1 pl-1">
-            <button class="btn bg-yellow" @click="showModalSort">
-              <i class="bx bx-sort-up bx-sm" />
-              <span>Urutkan</span>
-            </button>
-          </div>
-          <div class="w-1/2 lg:w-1/4 my-1 lg:pl-1">
-            <button class="btn bg-blue" @click="showModalFilter">
-              <i class="bx bx-filter bx-sm" />
-              <span>Filter</span>
-            </button>
-          </div>
-          <div class="w-full lg:w-1/2 my-1">
-            <div class="w-full px-4 py-2 bg-white border-solid border border-gray4 rounded flex justify-between items-center">
-              <input v-model="params.search" class="w-full focus:outline-none" type="text" placeholder="Search">
-              <i class="text-gray4 bx bx-search bx-sm cursor-pointer" @click="onSearch" />
+        <div class="w-full lg:w-2/3 flex flex-wrap-reverse lg:flex-wrap flex-row-reverse">
+          <div class="md:grid md:grid-cols-5 flex item-center">
+            <div class="md:col-span-2 w-full">
+              <div class="w-full px-4 py-2 bg-white border-solid border border-gray4 rounded flex justify-between items-center">
+                <input v-model="params.search" class="w-full focus:outline-none" type="text" placeholder="Search">
+                <i class="text-gray4 bx bx-search bx-sm cursor-pointer" @click="onSearch" />
+              </div>
+            </div>
+            <div class="md:col-span-3 w-full">
+              <div class="md:grid md:grid-cols-3 flex item-center">
+                <div class="md:col-span-1 ml-2">
+                  <button class="btn bg-blue px-2" @click="showModalFilter">
+                    <i class="bx bx-filter bx-sm" />
+                    <span>Filter</span>
+                  </button>
+                </div>
+                <div class="md:col-span-1 ml-2">
+                  <button class="btn bg-yellow px-2" @click="showModalSort">
+                    <i class="bx bx-sort-up bx-sm" />
+                    <span>Urutkan</span>
+                  </button>
+                </div>
+                <div class="md:col-span-1 ml-2">
+                  <button class="btn bg-white border border-grayText" @click="initParams">
+                    <span class="text-grayText hover:text-black">Reset</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -153,6 +164,18 @@
             </select>
           </div>
         </div>
+        <div v-show="isAdmin">
+          <label for="asset_id" class="block text-sm">
+            Resource / Aset
+          </label>
+          <div class="mt-1">
+            <select v-model="params.asset_id" name="asset_id" required class="form-input">
+              <option v-for="item in dataAsset" :key="item.id" :value="item.id">
+                {{ item.name }}
+              </option>
+            </select>
+          </div>
+        </div>
 
         <div class="flex space-x-4">
           <button
@@ -241,7 +264,7 @@
           </div>
         </div>
         <div>
-          <label for="password" class="block text-sm">
+          <label for="asset_id" class="block text-sm">
             Resource / Aset
           </label>
           <div class="mt-1">
@@ -323,6 +346,14 @@
       <div class="p-8 space-y-4">
         <div class="window-header mb-2">
           DETAIL RESERVASI
+        </div>
+        <div v-show="isAdmin" class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            Nama Pegawai
+          </div>
+          <div class="md:col-span-3">
+            {{ detailData.user_fullname || '-' }}
+          </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
           <div class="md:col-span-2 text-blue">
@@ -459,7 +490,7 @@ export default {
   },
   computed: {
     isAdmin () {
-      return this.$store.state.auth.role === 'admin_reservasi'
+      return this.$store.state.role.role === 'admin_reservasi'
     }
   },
   watch: {

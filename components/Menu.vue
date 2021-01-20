@@ -44,7 +44,7 @@ export default {
   created () {
     this.$axios.get('/user').then((res) => {
       this.role = res.data.data.role
-      this.$store.commit('auth/set_role', this.role)
+      this.$store.commit('role/set_role', this.role)
     })
   }
 }
