@@ -4,12 +4,6 @@ export const state = () => ({
   metaResource: {}
 })
 
-// getters
-export const getters = {
-  dataResource: state => state.dataResource,
-  metaResource: state => state.metaResource
-}
-
 // mutations
 export const mutations = {
   SET_RESOURCE (state, payload) {

@@ -30,8 +30,8 @@
           </div>
           <div class="w-full lg:w-1/2 my-1">
             <div class="w-full px-4 py-2 bg-white border-solid border border-gray4 rounded flex justify-between items-center">
-              <input v-model="dataSearch" class="w-full focus:outline-none" type="text" placeholder="Search" @keyup.enter="searchResource">
-              <i class="text-gray4 bx bx-search bx-sm cursor-pointer" @click="searchResource" />
+              <input v-model="params.name" class="w-full focus:outline-none" type="text" placeholder="Search" @keyup.enter="fetchResource">
+              <i class="text-gray4 bx bx-search bx-sm cursor-pointer" @click="fetchResource" />
             </div>
           </div>
         </div>
@@ -93,14 +93,14 @@
         <div class="flex flex-col">
           <div class="w-full flex flex-col mt-3">
             <label class="font-medium" for="status">Status</label>
-            <select v-model="dataFilter.status" name="status" class="focus:outline-none rounded p-3 appearance-none">
-              <option v-for="status in optionsStatusResource" :key="status.id" :value="status">
+            <select v-model="params.status" name="status" class="focus:outline-none rounded p-3 appearance-none">
+              <option v-for="status in optionsStatusResource" :key="status.value" :value="status.value">
                 {{ status.label }}
               </option>
             </select>
           </div>
           <div class="grid grid-cols-2 gap-4 mt-3">
-            <button class="btn bg-primary" @click.stop="applyFilter">
+            <button class="btn bg-primary" @click.stop="fetchResource">
               Terapkan
             </button>
             <button class="btn bg-yellow" @click.stop="resetFilter">
@@ -122,25 +122,25 @@
         <div class="flex flex-col">
           <div class="w-full flex flex-col">
             <label class="font-medium" for="sort">Urut Berdasarkan :</label>
-            <select v-model="dataSort.sortBy" name="sort" class="focus:outline-none rounded p-3 appearance-none">
-              <option v-for="sort in optionsSortResource" :key="sort.id" :value="sort">
+            <select v-model="params.sortBy" name="sort" class="focus:outline-none rounded p-3 appearance-none">
+              <option v-for="sort in optionsSortResource" :key="sort.value" :value="sort.value">
                 {{ sort.label }}
               </option>
             </select>
           </div>
           <div class="w-full flex flex-col mt-3">
             <label class="font-medium" for="order">Urutan :</label>
-            <select v-model="dataSort.orderBy" name="order" class="focus:outline-none rounded p-3 appearance-none capitalize">
-              <option v-for="order in optionsOrderBy" :key="order.key" class="capitalize" :value="order">
+            <select v-model="params.orderBy" name="order" class="focus:outline-none rounded p-3 appearance-none capitalize">
+              <option v-for="order in optionsOrderBy" :key="order.key" class="capitalize" :value="order.key">
                 {{ order.value }}
               </option>
             </select>
           </div>
           <div class="grid grid-cols-2 gap-4 mt-3">
-            <button class="btn bg-primary" @click.stop="applySort">
+            <button class="btn bg-primary" @click.stop="fetchResource">
               Terapkan
             </button>
-            <button class="btn bg-yellow" @click.stop="resetSort">
+            <button class="btn bg-yellow" @click.stop="fetchResource">
               Reset
             </button>
           </div>
@@ -153,7 +153,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import Pagination from '~/components/Pagination.vue'
 import { optionsStatusResource, optionsSortResource, optionsOrderBy } from '~/assets/constant/enum'
 
@@ -174,70 +174,59 @@ export default {
         'Tanggal dibuat',
         'Aksi'
       ],
-      momentFormatDate,
-      dataSearch: '',
       params: {
         sortBy: 'name',
-        orderBy: 'asc'
+        orderBy: 'asc',
+        name: null,
+        page: null,
+        status: null
       },
+      momentFormatDate,
       optionsStatusResource,
       optionsOrderBy,
-      optionsSortResource,
-      dataFilter: {
-        status: optionsStatusResource[0]
-      },
-      dataSort: {
-        sortBy: optionsSortResource[0],
-        orderBy: optionsOrderBy[0]
-      }
+      optionsSortResource
     }
   },
   computed: {
-    ...mapGetters('resource', [
+    ...mapState('resource', [
       'dataResource',
       'metaResource'
     ])
   },
   watch: {
     activeData (val) {
-      // console.log(val)
+      this.params.page = val
+      this.fetchResource()
     }
   },
   created () {
-    this.fetchResource(this.params)
+    this.fetchResource()
   },
   methods: {
-    fetchResource (params = {}) {
-      this.$axios.get('/asset', { params }).then((response) => {
+    initParams () {
+      this.params.sortBy = 'name'
+      this.params.orderBy = 'asc'
+      this.params.status = null
+      this.params.null = null
+      this.params.page = null
+    },
+    fetchResource () {
+      this.$modal.hide('sort')
+      this.$modal.hide('filter')
+      this.$axios.get('/asset', { params: this.params }).then((response) => {
         this.$store.commit('resource/SET_RESOURCE', response.data)
       })
-    },
-    applySort () {
-      this.fetchResource({ sortBy: this.dataSort.sortBy.value, orderBy: this.dataSort.orderBy.key })
-      this.$modal.hide('sort')
-    },
-    resetSort () {
-      this.dataSort.sortBy = optionsSortResource[0]
-      this.dataSort.orderBy = optionsOrderBy[0]
-      this.fetchResource(this.params)
-      this.$modal.hide('sort')
-    },
-    applyFilter () {
-      this.fetchResource({ ...this.params, status: this.dataFilter.status.value })
-      this.$modal.hide('filter')
+      this.initParams()
     },
     resetFilter () {
-      this.dataFilter.status = optionsStatusResource[0]
-      this.fetchResource(this.params)
-      this.$modal.hide('filter')
-    },
-    searchResource () {
-      this.fetchResource({ ...this.params, name: this.dataSearch })
+      this.params.status = null
+      this.fetchResource()
     },
     changeActivePagination (val) {
       this.activeData = val
     },
     showModalFilter () {
+      this.params.status = 'active'
       this.$modal.show('filter')
     },
     showModalSort () {
