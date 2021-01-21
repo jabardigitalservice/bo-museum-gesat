@@ -56,6 +56,32 @@ export const optionsOrderBy = [{
   value: 'Descending'
 }]
 
+export const optionsStatusResource = [
+  {
+    value: 'active',
+    label: 'Aktif'
+  },
+  {
+    value: 'not_active',
+    label: 'Tidak Aktif'
+  }
+
+]
+
+export const optionsSortResource = [
+  {
+    value: 'name',
+    label: 'Resource / Aset'
+  },
+  {
+    value: 'created_at',
+    label: 'Tanggal dibuat'
+  },
+  {
+    value: 'status',
+    label: 'Status'
+  }
+]
 export const cardsDashboard = [
   {
     title: 'Reservasi Dibuat',
