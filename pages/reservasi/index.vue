@@ -284,6 +284,7 @@
               v-model="form.date"
               placeholder="YYYY-MM-DD"
               class="form-input"
+              :disabled-dates="disabledDates"
             />
           </div>
         </div>
@@ -331,7 +332,14 @@
           </div>
         </div>
 
-        <div>
+        <div class="flex space-x-4">
+          <button
+            type="button"
+            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            @click="clearFormReservation"
+          >
+            Clear
+          </button>
           <button
             type="button"
             class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
@@ -361,6 +369,14 @@
           </div>
           <div class="md:col-span-3">
             {{ detailData.title || '-' }}
+          </div>
+        </div>
+        <div class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            Resource / Aset
+          </div>
+          <div class="md:col-span-3">
+            {{ detailData.asset_name || '-' }}
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
@@ -458,6 +474,11 @@ export default {
         'Reservasi Dibuat',
         'Aksi'
       ],
+      disabledDates: {
+        // disable datepicker from unlimited past to yesterday
+        // note: 86400000 is in ms = 1 day
+        to: new Date(Date.now() - 86400000)
+      },
       rangeTimes,
       statusReservation,
       optionsSortBy,
@@ -501,6 +522,10 @@ export default {
     'form.date' () {
       if (this.form.date) {
         this.form.date = momentFormatDate(this.form.date)
+        if (this.form.asset_id) {
+          console.log('ada aset dan tanggal')
+          console.log(this.form.asset_id, this.form.date)
+        }
       }
     },
     'params.start_date' () {
@@ -541,6 +566,14 @@ export default {
       this.params.sortBy = null
       this.params.orderBy = null
       this.refreshTable()
+    },
+    clearFormReservation () {
+      this.form.title = null
+      this.form.asset_id = null
+      this.form.description = null
+      this.form.date = null
+      this.form.start_time = null
+      this.form.end_time = null
     },
     async refreshTable () {
       this.render = false
