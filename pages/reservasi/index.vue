@@ -365,6 +365,14 @@
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
           <div class="md:col-span-2 text-blue">
+            Resource / Aset
+          </div>
+          <div class="md:col-span-3">
+            {{ detailData.asset_name || '-' }}
+          </div>
+        </div>
+        <div class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
             Waktu Reservasi
           </div>
           <div class="md:col-span-3">
