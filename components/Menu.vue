@@ -29,7 +29,7 @@ import { isAdmin } from '~/utils'
 export default {
   data () {
     return {
-      isAdmin
+
     }
   },
   computed: {
@@ -45,6 +45,9 @@ export default {
       })
       return menus
     }
+  },
+  methods: {
+    isAdmin
   }
 }
 </script>
