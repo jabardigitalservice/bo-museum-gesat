@@ -53,7 +53,7 @@ export default {
   auth: {
     redirect: {
       login: '/login',
-      logout: '/login',
+      logout: '/logout',
       callback: '/callback',
       home: '/reservasi'
     },

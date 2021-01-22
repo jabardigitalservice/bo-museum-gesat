@@ -1,6 +1,7 @@
-export default function ({ store, redirect }) {
+import { isAdmin } from '~/utils'
+export default function ({ $auth, redirect }) {
   // If the user is not authenticated
-  if (store.state.role.role !== 'admin_reservasi') {
+  if (!isAdmin($auth)) {
     return redirect('/404')
   }
 }

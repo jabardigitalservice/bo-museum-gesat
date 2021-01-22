@@ -1,4 +1,5 @@
 import moment from 'moment'
+import VueJwtDecode from 'vue-jwt-decode'
 
 /* function to convert date use moment js */
 // if input date in timezone
@@ -18,4 +19,14 @@ export function momentFormatTime (date) {
 // if input is time in hh:mm:ss, remove seconds
 export function momentTimeHHmm (time) {
   return moment(time, 'HH:mm:ss').format('HH:mm')
+}
+
+export function isAdmin ($auth) {
+  const tokenBearer = $auth.strategy.token.get()
+  const token = tokenBearer.split(' ')
+  const tokenDecode = VueJwtDecode.decode(token[1])
+  if (tokenDecode.realm_access.roles.includes('admin_reservasi')) {
+    return true
+  }
+  return false
 }

@@ -449,7 +449,8 @@ import {
   momentFormatDate,
   momentFormatDateId,
   momentFormatTime,
-  momentTimeHHmm
+  momentTimeHHmm,
+  isAdmin as admin
 } from '~/utils'
 export default {
   components: { Pagination },
@@ -496,14 +497,19 @@ export default {
         perPage: null
       },
       momentFormatDate,
+<<<<<<< HEAD
       momentFormatDateId,
       momentFormatTime,
       momentTimeHHmm
+=======
+      momentFormatTime,
+      admin
+>>>>>>> b421cf5513d9b49351d1dc851d10e5eca9eec57a
     }
   },
   computed: {
     isAdmin () {
-      return this.$store.state.role.role === 'admin_reservasi'
+      return admin(this.$auth)
     }
   },
   watch: {

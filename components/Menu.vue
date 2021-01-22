@@ -25,27 +25,26 @@
 </template>
 <script>
 import constMenus from '@/constants/menus'
+import { isAdmin } from '~/utils'
 export default {
   data () {
     return {
-      role: ''
+      isAdmin
     }
   },
   computed: {
     menus () {
       const menus = constMenus.filter((menu) => {
-        if (menu.role.includes(this.role)) {
+        if (this.isAdmin(this.$auth)) {
+          if (menu.role.includes('admin_reservasi')) {
+            return menu
+          }
+        } else if (menu.role.includes('employee_reservasi')) {
           return menu
         }
       })
       return menus
     }
-  },
-  created () {
-    this.$axios.get('/user').then((res) => {
-      this.role = res.data.data.role
-      this.$store.commit('role/set_role', this.role)
-    })
   }
 }
 </script>
