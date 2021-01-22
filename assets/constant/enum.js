@@ -55,3 +55,50 @@ export const optionsOrderBy = [{
   key: 'desc',
   value: 'Descending'
 }]
+
+export const optionsStatusResource = [
+  {
+    value: 'active',
+    label: 'Aktif'
+  },
+  {
+    value: 'not_active',
+    label: 'Tidak Aktif'
+  }
+
+]
+
+export const optionsSortResource = [
+  {
+    value: 'name',
+    label: 'Resource / Aset'
+  },
+  {
+    value: 'created_at',
+    label: 'Tanggal dibuat'
+  },
+  {
+    value: 'status',
+    label: 'Status'
+  }
+]
+export const cardsDashboard = [
+  {
+    title: 'Reservasi Dibuat',
+    value: 0,
+    bgColor: 'bg-blue',
+    icon: 'bx-calendar'
+  },
+  {
+    title: 'Reservasi Disetujui',
+    value: 0,
+    bgColor: 'bg-primary',
+    icon: 'bx-calendar-check'
+  },
+  {
+    title: 'Reservasi Ditolak',
+    value: 0,
+    bgColor: 'bg-red',
+    icon: 'bx-calendar-x'
+  }
+]
