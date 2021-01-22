@@ -66,10 +66,10 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm">
-                  {{ data.date }}
+                  {{ data.date ? momentFormatDateId(data.date) : '' }}
                 </div>
                 <div class="text-sm">
-                  {{ data.start_time && data.end_time ? `${data.start_time} - ${data.end_time}` : '' }}
+                  {{ data.start_time && data.end_time ? `pukul ${momentTimeHHmm(data.start_time)} - ${momentTimeHHmm(data.end_time)}` : '' }}
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
@@ -87,7 +87,7 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm">
-                  {{ data.created_at ? momentFormatDate(data.created_at) : '' }}
+                  {{ data.created_at ? momentFormatDateId(data.created_at) : '' }}
                 </div>
                 <div class="text-sm">
                   {{ data.created_at ? `pukul ${momentFormatTime(data.created_at)}` : '' }}
@@ -368,7 +368,8 @@
             Waktu Reservasi
           </div>
           <div class="md:col-span-3">
-            {{ `${detailData.date}, pukul ${detailData.start_time} - ${detailData.end_time}` }}
+            <div>{{ detailData.date ? momentFormatDateId(detailData.date) : '' }}</div>
+            <div>{{ detailData.start_time && detailData.end_time ? `pukul ${detailData.start_time} - ${detailData.end_time}` : '' }}</div>
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
@@ -400,7 +401,7 @@
             Tanggal Reservasi Dibuat
           </div>
           <div class="md:col-span-3">
-            {{ detailData.created_at ? momentFormatDate(detailData.created_at) : '-' }}
+            {{ detailData.created_at ? `${momentFormatDateId(detailData.created_at)}, pukul ${momentFormatTime(detailData.created_at)}` : '-' }}
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
@@ -408,7 +409,7 @@
             Tanggal Pembaruan
           </div>
           <div class="md:col-span-3">
-            {{ detailData.updated_at ? momentFormatDate(detailData.updated_at) : '-' }}
+            {{ detailData.updated_at ? `${momentFormatDateId(detailData.updated_at)}, pukul ${momentFormatTime(detailData.updated_at)}` : '-' }}
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
@@ -416,7 +417,7 @@
             Tanggal Verifikasi Admin
           </div>
           <div class="md:col-span-3">
-            {{ detailData.approval_date ? momentFormatDate(detailData.approval_date) : '-' }}
+            {{ detailData.approval_date ? `${momentFormatDateId(detailData.approval_date)}, pukul ${momentFormatTime(detailData.approval_date)}` : '-' }}
           </div>
         </div>
         <div>
@@ -438,7 +439,9 @@ import Pagination from '~/components/Pagination.vue'
 import { rangeTimes, statusReservation, optionsSortBy, optionsOrderBy } from '~/assets/constant/enum'
 import {
   momentFormatDate,
-  momentFormatTime
+  momentFormatDateId,
+  momentFormatTime,
+  momentTimeHHmm
 } from '~/utils'
 export default {
   components: { Pagination },
@@ -485,7 +488,9 @@ export default {
         perPage: null
       },
       momentFormatDate,
-      momentFormatTime
+      momentFormatDateId,
+      momentFormatTime,
+      momentTimeHHmm
     }
   },
   computed: {
