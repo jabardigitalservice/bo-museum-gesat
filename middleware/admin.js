@@ -1,6 +1,7 @@
+import { isAdmin } from '~/utils'
 export default function ({ $auth, redirect }) {
   // If the user is not authenticated
-  if ($auth.$storage.getState('role') !== 'admin_reservasi') {
+  if (!isAdmin($auth)) {
     return redirect('/404')
   }
 }

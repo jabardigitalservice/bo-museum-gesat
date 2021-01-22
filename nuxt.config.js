@@ -21,9 +21,9 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    {src: "@/plugins/vClickOutside", ssr: false},
-    {src: "@/plugins/vModal", ssr: false},
-    {src: "@/plugins/vue-datepicker", ssr: false}
+    { src: "@/plugins/vClickOutside", ssr: false },
+    { src: "@/plugins/vModal", ssr: false },
+    { src: "@/plugins/vue-datepicker", ssr: false }
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -53,7 +53,7 @@ export default {
   auth: {
     redirect: {
       login: '/login',
-      logout: '/login',
+      logout: '/logout',
       callback: '/callback',
       home: '/reservasi'
     },
@@ -80,7 +80,7 @@ export default {
         grantType: 'authorization_code',
         accessType: 'offline',
         clientId: process.env.KEYCLOAK_CLIENTID,
-        scope: ['openid', 'profile', 'email','roles'],
+        scope: ['openid', 'profile', 'email', 'roles'],
         codeChallengeMethod: 'S256',
       }
     }
