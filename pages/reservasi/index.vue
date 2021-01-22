@@ -438,7 +438,8 @@ import Pagination from '~/components/Pagination.vue'
 import { rangeTimes, statusReservation, optionsSortBy, optionsOrderBy } from '~/assets/constant/enum'
 import {
   momentFormatDate,
-  momentFormatTime
+  momentFormatTime,
+  isAdmin as admin
 } from '~/utils'
 export default {
   components: { Pagination },
@@ -485,12 +486,13 @@ export default {
         perPage: null
       },
       momentFormatDate,
-      momentFormatTime
+      momentFormatTime,
+      admin
     }
   },
   computed: {
     isAdmin () {
-      return this.$store.state.role.role === 'admin_reservasi'
+      return admin(this.$auth)
     }
   },
   watch: {

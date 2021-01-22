@@ -25,18 +25,17 @@
 </template>
 <script>
 import constMenus from '@/constants/menus'
-import VueJwtDecode from 'vue-jwt-decode'
-
+import { isAdmin } from '~/utils'
 export default {
   data () {
     return {
-      role: ''
+      isAdmin
     }
   },
   computed: {
     menus () {
       const menus = constMenus.filter((menu) => {
-        if (this.isAdmin) {
+        if (this.isAdmin(this.$auth)) {
           if (menu.role.includes('admin_reservasi')) {
             return menu
           }
@@ -45,26 +44,6 @@ export default {
         }
       })
       return menus
-    },
-    isAdmin () {
-      if (this.checkRole().realm_access.roles.includes('admin_reservasi')) {
-        return true
-      }
-      return false
-    }
-  },
-  created () {
-    this.$axios.get('/user').then((res) => {
-      this.role = res.data.data.role
-      this.$store.commit('role/set_role', this.role)
-    })
-  },
-  methods: {
-    checkRole () {
-      const tokenBearer = this.$auth.strategy.token.get()
-      const token = tokenBearer.split(' ')
-      const tokendecode = VueJwtDecode.decode(token[1])
-      return tokendecode
     }
   }
 }
