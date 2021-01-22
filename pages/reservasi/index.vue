@@ -288,9 +288,23 @@
             />
           </div>
         </div>
+        <div v-show="dataVerifiedReservasi.length > 0">
+          <label for="title" class="block text-sm">
+            Data verified reservasi
+          </label>
+          <div class="mt-1">
+            <span
+              v-for="(item, idx) in dataVerifiedReservasi"
+              :key="idx"
+              class="px-1 py-1 mr-1 text-xs bg-red text-white rounded"
+            >
+              {{ item.start_time && item.end_time ? `${item.start_time} - ${item.end_time}` : '' }}
+            </span>
+          </div>
+        </div>
         <div>
           <label for="title" class="block text-sm">
-            Rentang Waktu
+            Rentang Waktu (pilih diluar range verified reservasi)
           </label>
         </div>
         <div>
@@ -493,6 +507,7 @@ export default {
         end_time: null
       },
       dataReservasi: [],
+      dataVerifiedReservasi: [],
       dataAsset: [],
       detailData: {},
       params: {
@@ -522,12 +537,9 @@ export default {
       this.getDataReservation()
     },
     'form.date' () {
-      if (this.form.date) {
-        this.form.date = momentFormatDate(this.form.date)
-        if (this.form.asset_id) {
-          console.log('ada aset dan tanggal')
-          console.log(this.form.asset_id, this.form.date)
-        }
+      this.form.date = momentFormatDate(this.form.date)
+      if (this.form.asset_id) {
+        this.getVerifiedReservation()
       }
     },
     'params.start_date' () {
@@ -605,6 +617,14 @@ export default {
         this.meta = response ? response.data.meta : {}
       } catch (e) {
         this.errors = e
+      }
+    },
+    async getVerifiedReservation () {
+      try {
+        const response = await this.$axios.get('/reserved', { params: this.params })
+        this.dataVerifiedReservasi = response ? response.data.data : []
+      } catch (errors) {
+        this.errors = errors
       }
     },
     async addReservation () {
