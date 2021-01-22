@@ -68,7 +68,7 @@
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium"
               >
-                <i class="bx bx-edit bx-sm cursor-pointer" />
+                <i class="bx bx-edit bx-sm cursor-pointer" @click="editResource(resource)" />
               </td>
             </tr>
           </tbody>
@@ -147,8 +147,48 @@
         </div>
       </div>
     </modal>
-    <modal name="add" :adaptive="true">
-      This is an example add
+    <modal
+      name="add"
+      :min-width="320"
+      :max-width="500"
+      width="80%"
+      height="auto"
+      :adaptive="true"
+    >
+      <div class="bg-gray5 w-full h-full p-3">
+        <h2 class="font-medium text-xl">
+          Tambahkan Resource / Aset Baru
+        </h2>
+        <div class="flex flex-col">
+          <div class="w-full flex flex-col mt-3">
+            <label class="font-medium" for="status">Nama Resource / Aset</label>
+            <input v-model="form.name" type="text" class="focus:outline-none p-3 rounded">
+          </div>
+          <div class="w-full flex flex-col mt-3">
+            <label class="font-medium" for="status">Deskripsi</label>
+            <textarea v-model="form.description" class="focus:outline-none rounded p-3" cols="10" rows="10" />
+          </div>
+          <div class="w-full flex flex-col mt-3">
+            <label class="font-medium" for="status">Status</label>
+            <select v-model="form.status" name="status" class="focus:outline-none rounded p-3 appearance-none">
+              <option v-for="status in optionsStatusResource" :key="status.value" :value="status.value">
+                {{ status.label }}
+              </option>
+            </select>
+          </div>
+          <div class="grid grid-cols-2 gap-4 mt-3">
+            <button v-if="submitForm == 'store'" :class="{'bg-gray4': formIsEmpty}" class="btn bg-primary" :disabled="formIsEmpty" @click.stop="storeResource">
+              Submit
+            </button>
+            <button v-else :class="{'bg-gray4': formIsEmpty}" class="btn bg-primary" :disabled="formIsEmpty" @click.stop="updateResource">
+              Update
+            </button>
+            <button class="btn bg-yellow" @click.stop="closeAdd">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
     </modal>
   </div>
 </template>
@@ -181,17 +221,31 @@ export default {
         page: null,
         status: null
       },
+      form: {
+        name: null,
+        description: null,
+        status: 'active'
+      },
       momentFormatDate,
       optionsStatusResource,
       optionsOrderBy,
-      optionsSortResource
+      optionsSortResource,
+      submitForm: 'store'
     }
   },
   computed: {
     ...mapState('resource', [
       'dataResource',
       'metaResource'
-    ])
+    ]),
+    formIsEmpty () {
+      if (this.form.name === null) {
+        return true
+      } else if (this.form.name === '') {
+        return true
+      }
+      return false
+    }
   },
   watch: {
     activeData (val) {
@@ -209,6 +263,43 @@ export default {
       this.params.status = null
       this.params.null = null
       this.params.page = null
+    },
+    initForm () {
+      this.form.name = null
+      this.form.description = null
+      this.form.status = 'active'
+    },
+    closeAdd () {
+      this.$modal.hide('add')
+    },
+    editResource (data) {
+      this.form = data
+      this.submitForm = 'update'
+      this.$modal.show('add')
+    },
+    updateResource (id) {
+      this.$modal.hide('add')
+      this.$axios.put(`/asset/${id}`, this.form).then((response) => {
+        this.initParams()
+        this.fetchResource()
+      })
+    },
+    storeResource () {
+      this.$modal.hide('add')
+      this.$axios.post('/asset', this.form).then((response) => {
+        this.initParams()
+        this.fetchResource()
+      }
+      ).catch((e) => {
+        const error = e.response.data
+        if (error.errors && error.errors.name) {
+          this.$toast.error(error.errors.name, {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+        }
+      })
+      this.initForm()
     },
     fetchResource () {
       this.$modal.hide('sort')
@@ -233,6 +324,8 @@ export default {
       this.$modal.show('sort')
     },
     showModalAdd () {
+      this.initForm()
+      this.submitForm = 'store'
       this.$modal.show('add')
     }
   }
