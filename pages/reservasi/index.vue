@@ -497,14 +497,10 @@ export default {
         perPage: null
       },
       momentFormatDate,
-<<<<<<< HEAD
       momentFormatDateId,
       momentFormatTime,
-      momentTimeHHmm
-=======
-      momentFormatTime,
+      momentTimeHHmm,
       admin
->>>>>>> b421cf5513d9b49351d1dc851d10e5eca9eec57a
     }
   },
   computed: {
