@@ -66,7 +66,7 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm">
-                  {{ getDisplayDateTimeManually(data.date, data.start_time, data.end_time) }}
+                  {{ data.date && data.start_time && data.end_time ? getDisplayDateTimeManually(data.date, data.start_time, data.end_time) : '' }}
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
@@ -370,7 +370,7 @@
             Waktu Reservasi
           </div>
           <div class="md:col-span-3">
-            {{ getDisplayDateTimeManually(detailData.date, detailData.start_time, detailData.end_time) }}
+            <div>{{ detailData.date && detailData.start_time && detailData.end_time ? getDisplayDateTimeManually(detailData.date, detailData.start_time, detailData.end_time) : '-' }}</div>
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
