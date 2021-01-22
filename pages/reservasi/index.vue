@@ -288,11 +288,11 @@
             />
           </div>
         </div>
-        <div v-show="dataVerifiedReservasi.length > 0">
+        <div>
           <label for="title" class="block text-sm">
-            Data verified reservasi
+            Daftar verified reservasi
           </label>
-          <div class="mt-1">
+          <div v-if="dataVerifiedReservasi.length > 0" class="mt-1">
             <span
               v-for="(item, idx) in dataVerifiedReservasi"
               :key="idx"
@@ -300,6 +300,12 @@
             >
               {{ item.start_time && item.end_time ? `${item.start_time} - ${item.end_time}` : '' }}
             </span>
+          </div>
+          <div v-else-if="dataVerifiedReservasi.length === 0 && form.asset_id && form.date" class="mt-1 text-sm text-gray4">
+            Belum ada reservasi untuk resource dan tanggal yang dipilih
+          </div>
+          <div v-else class="mt-1 text-sm text-gray4">
+            Silahkan pilih resource dan tanggal untuk melihat ketersediaan jam pakai
           </div>
         </div>
         <div>
@@ -621,7 +627,7 @@ export default {
     },
     async getVerifiedReservation () {
       try {
-        const response = await this.$axios.get('/reserved', { params: this.params })
+        const response = await this.$axios.get('/reserved', { params: this.form })
         this.dataVerifiedReservasi = response ? response.data.data : []
       } catch (errors) {
         this.errors = errors
