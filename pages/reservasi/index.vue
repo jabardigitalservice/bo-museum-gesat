@@ -66,10 +66,7 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm">
-                  {{ data.date }}
-                </div>
-                <div class="text-sm">
-                  {{ data.start_time && data.end_time ? `${data.start_time} - ${data.end_time}` : '' }}
+                  {{ data.date && data.start_time && data.end_time ? getDisplayDateTimeManually(data.date, data.start_time, data.end_time) : '' }}
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
@@ -87,10 +84,7 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm">
-                  {{ data.created_at ? momentFormatDate(data.created_at) : '' }}
-                </div>
-                <div class="text-sm">
-                  {{ data.created_at ? `pukul ${momentFormatTime(data.created_at)}` : '' }}
+                  {{ data.created_at ? getDisplayDateTime(data.created_at) : '' }}
                 </div>
               </td>
               <td
@@ -404,7 +398,7 @@
             Waktu Reservasi
           </div>
           <div class="md:col-span-3">
-            {{ `${detailData.date}, pukul ${detailData.start_time} - ${detailData.end_time}` }}
+            <div>{{ detailData.date && detailData.start_time && detailData.end_time ? getDisplayDateTimeManually(detailData.date, detailData.start_time, detailData.end_time) : '-' }}</div>
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
@@ -436,7 +430,7 @@
             Tanggal Reservasi Dibuat
           </div>
           <div class="md:col-span-3">
-            {{ detailData.created_at ? momentFormatDate(detailData.created_at) : '-' }}
+            {{ detailData.created_at ? getDisplayDateTime(detailData.created_at) : '-' }}
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
@@ -444,7 +438,7 @@
             Tanggal Pembaruan
           </div>
           <div class="md:col-span-3">
-            {{ detailData.updated_at ? momentFormatDate(detailData.updated_at) : '-' }}
+            {{ detailData.updated_at ? getDisplayDateTime(detailData.updated_at) : '-' }}
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
@@ -452,7 +446,7 @@
             Tanggal Verifikasi Admin
           </div>
           <div class="md:col-span-3">
-            {{ detailData.approval_date ? momentFormatDate(detailData.approval_date) : '-' }}
+            {{ detailData.approval_date ? getDisplayDateTime(detailData.approval_date) : '-' }}
           </div>
         </div>
         <div>
@@ -474,7 +468,9 @@ import Pagination from '~/components/Pagination.vue'
 import { rangeTimes, statusReservation, optionsSortBy, optionsOrderBy } from '~/assets/constant/enum'
 import {
   momentFormatDate,
+  momentFormatDateId,
   momentFormatTime,
+  momentTimeHHmm,
   isAdmin as admin
 } from '~/utils'
 export default {
@@ -528,7 +524,9 @@ export default {
         perPage: null
       },
       momentFormatDate,
+      momentFormatDateId,
       momentFormatTime,
+      momentTimeHHmm,
       admin
     }
   },
@@ -743,6 +741,23 @@ export default {
     },
     closeModalDetail () {
       this.$modal.hide('detail')
+    },
+    getDisplayDateTime (date) {
+      if (date) {
+        const dateString = momentFormatDateId(date)
+        const timeString = momentFormatTime(date)
+        return `${dateString}, pukul ${timeString}`
+      }
+      return '-'
+    },
+    getDisplayDateTimeManually (date, startTime, endTime) {
+      if (date && startTime && endTime) {
+        const dateString = momentFormatDateId(date)
+        const startTimeString = momentTimeHHmm(startTime)
+        const endTimeString = momentTimeHHmm(endTime)
+        return `${dateString}, pukul ${startTimeString}-${endTimeString}`
+      }
+      return '-'
     }
   }
 }
