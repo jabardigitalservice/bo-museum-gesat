@@ -63,7 +63,7 @@
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-black">
-                <span> {{ momentFormatDate(resource.created_at) }} </span>
+                <span> {{ momentFormatDateId(resource.created_at) }} </span>
               </td>
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium"
@@ -196,9 +196,8 @@
 import { mapState } from 'vuex'
 import Pagination from '~/components/Pagination.vue'
 import { optionsStatusResource, optionsSortResource, optionsOrderBy } from '~/assets/constant/enum'
-
 import {
-  momentFormatDate
+  momentFormatDateId
 } from '~/utils'
 export default {
   components: { Pagination },
