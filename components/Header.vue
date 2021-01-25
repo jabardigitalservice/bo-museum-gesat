@@ -4,6 +4,7 @@
       <i class="bx bx-menu bx-md cursor-pointer gray1" />
     </div>
     <div
+      v-if="false"
       v-click-outside="clickOutAvatar"
       class="bg-gray5 h-10 w-10 rounded-full cursor-pointer relative flex justify-end"
       @click="toggleAvatar"
