@@ -51,7 +51,7 @@
               <td class="px-6 py-4 whitespace-nowrap">
                 <span> {{ resource.name }} </span>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
+              <td style="max-width:250px" class="px-6 py-4 truncate">
                 <span> {{ resource.description }} </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
@@ -69,6 +69,7 @@
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium"
               >
                 <i class="bx bx-edit bx-sm cursor-pointer" @click="editResource(resource)" />
+                <i class="bx bx-trash bx-sm cursor-pointer text-red" @click="deleteResouce(resource.id)" />
               </td>
             </tr>
           </tbody>
@@ -100,7 +101,7 @@
             </select>
           </div>
           <div class="grid grid-cols-2 gap-4 mt-3">
-            <button class="btn bg-primary" @click.stop="fetchResource">
+            <button class="btn bg-primary" @click.stop="applyFilterAndSort">
               Terapkan
             </button>
             <button class="btn bg-yellow" @click.stop="resetFilter">
@@ -110,6 +111,7 @@
         </div>
       </div>
     </modal>
+    <!-- modal sortby -->
     <modal
       name="sort"
       :min-width="320"
@@ -137,16 +139,17 @@
             </select>
           </div>
           <div class="grid grid-cols-2 gap-4 mt-3">
-            <button class="btn bg-primary" @click.stop="fetchResource">
+            <button class="btn bg-primary" @click.stop="applyFilterAndSort">
               Terapkan
             </button>
-            <button class="btn bg-yellow" @click.stop="fetchResource">
+            <button class="btn bg-yellow" @click.stop="applyFilterAndSort">
               Reset
             </button>
           </div>
         </div>
       </div>
     </modal>
+    <!-- modal add / edit -->
     <modal
       name="add"
       :min-width="320"
@@ -266,15 +269,37 @@ export default {
       this.$modal.hide('add')
     },
     editResource (data) {
-      this.form = data
+      this.form = { ...data }
       this.submitForm = 'update'
       this.$modal.show('add')
+    },
+    deleteResouce (id) {
+      this.$swal.fire({
+        title: 'Hapus Data?',
+        showCancelButton: true,
+        type: 'warning',
+        dangerMode: true
+      }).then((isConfirm) => {
+        if (isConfirm.value) {
+          this.$axios.delete(`/asset/${id}`).then(() => {
+            this.initParams()
+            this.fetchResource()
+            this.activeData = 1
+          }).catch(() => {
+            this.$toast.error('Terjadi Kesalahan', {
+              iconPack: 'fontawesome',
+              duration: 5000
+            })
+          })
+        }
+      })
     },
     updateResource () {
       this.$modal.hide('add')
       this.$axios.put(`/asset/${this.form?.id}`, this.form).then((response) => {
         this.initParams()
         this.fetchResource()
+        this.activeData = 1
       }).catch((e) => {
         const error = e.response.data
         if (error.errors && error.errors.name) {
@@ -284,13 +309,13 @@ export default {
           })
         }
       })
-      this.initForm()
     },
     storeResource () {
       this.$modal.hide('add')
       this.$axios.post('/asset', this.form).then((response) => {
         this.initParams()
         this.fetchResource()
+        this.activeData = 1
       }
       ).catch((e) => {
         const error = e.response.data
@@ -308,12 +333,18 @@ export default {
       this.$modal.hide('filter')
       this.$axios.get('/asset', { params: this.params }).then((response) => {
         this.$store.commit('resource/SET_RESOURCE', response.data)
+        console.log(response.data)
       })
       this.initParams()
     },
     resetFilter () {
       this.params.status = null
       this.fetchResource()
+      this.activeData = 1
+    },
+    applyFilterAndSort () {
+      this.fetchResource()
+      this.activeData = 1
     },
     changeActivePagination (val) {
       this.activeData = val
