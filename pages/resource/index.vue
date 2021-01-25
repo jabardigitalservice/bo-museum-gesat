@@ -93,7 +93,7 @@
         <div class="flex flex-col">
           <div class="w-full flex flex-col mt-3">
             <label class="font-medium" for="status">Status</label>
-            <select v-model="params.status" name="status" class="focus:outline-none rounded p-3 appearance-none">
+            <select v-model="params.status" name="status" class="focus:outline-none rounded p-3 appearance-none border-2 border-gray2">
               <option v-for="status in optionsStatusResource" :key="status.value" :value="status.value">
                 {{ status.label }}
               </option>
@@ -122,7 +122,7 @@
         <div class="flex flex-col">
           <div class="w-full flex flex-col">
             <label class="font-medium" for="sort">Urut Berdasarkan :</label>
-            <select v-model="params.sortBy" name="sort" class="focus:outline-none rounded p-3 appearance-none">
+            <select v-model="params.sortBy" name="sort" class="focus:outline-none rounded p-3 appearance-none border-2 border-gray2">
               <option v-for="sort in optionsSortResource" :key="sort.value" :value="sort.value">
                 {{ sort.label }}
               </option>
@@ -130,7 +130,7 @@
           </div>
           <div class="w-full flex flex-col mt-3">
             <label class="font-medium" for="order">Urutan :</label>
-            <select v-model="params.orderBy" name="order" class="focus:outline-none rounded p-3 appearance-none capitalize">
+            <select v-model="params.orderBy" name="order" class="focus:outline-none rounded p-3 appearance-none border-2 border-gray2 capitalize">
               <option v-for="order in optionsOrderBy" :key="order.key" class="capitalize" :value="order.key">
                 {{ order.value }}
               </option>
@@ -162,15 +162,15 @@
         <div class="flex flex-col">
           <div class="w-full flex flex-col mt-3">
             <label class="font-medium" for="status">Nama Resource / Aset</label>
-            <input v-model="form.name" type="text" class="focus:outline-none p-3 rounded">
+            <input v-model="form.name" type="text" class="focus:outline-none p-3 rounded border-2 border-gray2">
           </div>
           <div class="w-full flex flex-col mt-3">
             <label class="font-medium" for="status">Deskripsi</label>
-            <textarea v-model="form.description" class="focus:outline-none rounded p-3" cols="10" rows="10" />
+            <textarea v-model="form.description" class="focus:outline-none rounded p-3 border-2 border-gray2" cols="10" rows="10" />
           </div>
           <div class="w-full flex flex-col mt-3">
             <label class="font-medium" for="status">Status</label>
-            <select v-model="form.status" name="status" class="focus:outline-none rounded p-3 appearance-none">
+            <select v-model="form.status" name="status" class="focus:outline-none rounded p-3 appearance-none border-2 border-gray2">
               <option v-for="status in optionsStatusResource" :key="status.value" :value="status.value">
                 {{ status.label }}
               </option>
@@ -225,7 +225,7 @@ export default {
         description: null,
         status: 'active'
       },
-      momentFormatDate,
+      momentFormatDateId,
       optionsStatusResource,
       optionsOrderBy,
       optionsSortResource,
@@ -244,12 +244,6 @@ export default {
         return true
       }
       return false
-    }
-  },
-  watch: {
-    activeData (val) {
-      this.params.page = val
-      this.fetchResource()
     }
   },
   created () {
@@ -276,12 +270,21 @@ export default {
       this.submitForm = 'update'
       this.$modal.show('add')
     },
-    updateResource (id) {
+    updateResource () {
       this.$modal.hide('add')
-      this.$axios.put(`/asset/${id}`, this.form).then((response) => {
+      this.$axios.put(`/asset/${this.form?.id}`, this.form).then((response) => {
         this.initParams()
         this.fetchResource()
+      }).catch((e) => {
+        const error = e.response.data
+        if (error.errors && error.errors.name) {
+          this.$toast.error(error.errors.name, {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+        }
       })
+      this.initForm()
     },
     storeResource () {
       this.$modal.hide('add')
@@ -314,6 +317,8 @@ export default {
     },
     changeActivePagination (val) {
       this.activeData = val
+      this.params.page = val
+      this.fetchResource()
     },
     showModalFilter () {
       this.params.status = 'active'
