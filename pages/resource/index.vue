@@ -333,7 +333,6 @@ export default {
       this.$modal.hide('filter')
       this.$axios.get('/asset', { params: this.params }).then((response) => {
         this.$store.commit('resource/SET_RESOURCE', response.data)
-        console.log(response.data)
       })
       this.initParams()
     },
