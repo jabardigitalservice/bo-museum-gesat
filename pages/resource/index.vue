@@ -51,7 +51,7 @@
               <td class="px-6 py-4 whitespace-nowrap">
                 <span> {{ resource.name }} </span>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
+              <td style="max-width:250px" class="px-6 py-4 truncate">
                 <span> {{ resource.description }} </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
@@ -63,12 +63,13 @@
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-black">
-                <span> {{ momentFormatDate(resource.created_at) }} </span>
+                <span> {{ momentFormatDateId(resource.created_at) }} </span>
               </td>
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium"
               >
-                <i class="bx bx-edit bx-sm cursor-pointer" />
+                <i class="bx bx-edit bx-sm cursor-pointer" @click="editResource(resource)" />
+                <i class="bx bx-trash bx-sm cursor-pointer text-red" @click="deleteResouce(resource.id)" />
               </td>
             </tr>
           </tbody>
@@ -93,14 +94,14 @@
         <div class="flex flex-col">
           <div class="w-full flex flex-col mt-3">
             <label class="font-medium" for="status">Status</label>
-            <select v-model="params.status" name="status" class="focus:outline-none rounded p-3 appearance-none">
+            <select v-model="params.status" name="status" class="focus:outline-none rounded p-3 appearance-none border-2 border-gray2">
               <option v-for="status in optionsStatusResource" :key="status.value" :value="status.value">
                 {{ status.label }}
               </option>
             </select>
           </div>
           <div class="grid grid-cols-2 gap-4 mt-3">
-            <button class="btn bg-primary" @click.stop="fetchResource">
+            <button class="btn bg-primary" @click.stop="applyFilterAndSort">
               Terapkan
             </button>
             <button class="btn bg-yellow" @click.stop="resetFilter">
@@ -110,6 +111,7 @@
         </div>
       </div>
     </modal>
+    <!-- modal sortby -->
     <modal
       name="sort"
       :min-width="320"
@@ -122,7 +124,7 @@
         <div class="flex flex-col">
           <div class="w-full flex flex-col">
             <label class="font-medium" for="sort">Urut Berdasarkan :</label>
-            <select v-model="params.sortBy" name="sort" class="focus:outline-none rounded p-3 appearance-none">
+            <select v-model="params.sortBy" name="sort" class="focus:outline-none rounded p-3 appearance-none border-2 border-gray2">
               <option v-for="sort in optionsSortResource" :key="sort.value" :value="sort.value">
                 {{ sort.label }}
               </option>
@@ -130,25 +132,66 @@
           </div>
           <div class="w-full flex flex-col mt-3">
             <label class="font-medium" for="order">Urutan :</label>
-            <select v-model="params.orderBy" name="order" class="focus:outline-none rounded p-3 appearance-none capitalize">
+            <select v-model="params.orderBy" name="order" class="focus:outline-none rounded p-3 appearance-none border-2 border-gray2 capitalize">
               <option v-for="order in optionsOrderBy" :key="order.key" class="capitalize" :value="order.key">
                 {{ order.value }}
               </option>
             </select>
           </div>
           <div class="grid grid-cols-2 gap-4 mt-3">
-            <button class="btn bg-primary" @click.stop="fetchResource">
+            <button class="btn bg-primary" @click.stop="applyFilterAndSort">
               Terapkan
             </button>
-            <button class="btn bg-yellow" @click.stop="fetchResource">
+            <button class="btn bg-yellow" @click.stop="applyFilterAndSort">
               Reset
             </button>
           </div>
         </div>
       </div>
     </modal>
-    <modal name="add" :adaptive="true">
-      This is an example add
+    <!-- modal add / edit -->
+    <modal
+      name="add"
+      :min-width="320"
+      :max-width="500"
+      width="80%"
+      height="auto"
+      :adaptive="true"
+    >
+      <div class="bg-gray5 w-full h-full p-3">
+        <h2 class="font-medium text-xl">
+          Tambahkan Resource / Aset Baru
+        </h2>
+        <div class="flex flex-col">
+          <div class="w-full flex flex-col mt-3">
+            <label class="font-medium" for="status">Nama Resource / Aset</label>
+            <input v-model="form.name" type="text" class="focus:outline-none p-3 rounded border-2 border-gray2">
+          </div>
+          <div class="w-full flex flex-col mt-3">
+            <label class="font-medium" for="status">Deskripsi</label>
+            <textarea v-model="form.description" class="focus:outline-none rounded p-3 border-2 border-gray2" cols="10" rows="10" />
+          </div>
+          <div class="w-full flex flex-col mt-3">
+            <label class="font-medium" for="status">Status</label>
+            <select v-model="form.status" name="status" class="focus:outline-none rounded p-3 appearance-none border-2 border-gray2">
+              <option v-for="status in optionsStatusResource" :key="status.value" :value="status.value">
+                {{ status.label }}
+              </option>
+            </select>
+          </div>
+          <div class="grid grid-cols-2 gap-4 mt-3">
+            <button v-if="submitForm == 'store'" :class="{'bg-gray4': formIsEmpty}" class="btn bg-primary" :disabled="formIsEmpty" @click.stop="storeResource">
+              Submit
+            </button>
+            <button v-else :class="{'bg-gray4': formIsEmpty}" class="btn bg-primary" :disabled="formIsEmpty" @click.stop="updateResource">
+              Update
+            </button>
+            <button class="btn bg-yellow" @click.stop="closeAdd">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
     </modal>
   </div>
 </template>
@@ -156,9 +199,8 @@
 import { mapState } from 'vuex'
 import Pagination from '~/components/Pagination.vue'
 import { optionsStatusResource, optionsSortResource, optionsOrderBy } from '~/assets/constant/enum'
-
 import {
-  momentFormatDate
+  momentFormatDateId
 } from '~/utils'
 export default {
   components: { Pagination },
@@ -181,22 +223,30 @@ export default {
         page: null,
         status: null
       },
-      momentFormatDate,
+      form: {
+        name: null,
+        description: null,
+        status: 'active'
+      },
+      momentFormatDateId,
       optionsStatusResource,
       optionsOrderBy,
-      optionsSortResource
+      optionsSortResource,
+      submitForm: 'store'
     }
   },
   computed: {
     ...mapState('resource', [
       'dataResource',
       'metaResource'
-    ])
-  },
-  watch: {
-    activeData (val) {
-      this.params.page = val
-      this.fetchResource()
+    ]),
+    formIsEmpty () {
+      if (this.form.name === null) {
+        return true
+      } else if (this.form.name === '') {
+        return true
+      }
+      return false
     }
   },
   created () {
@@ -210,20 +260,96 @@ export default {
       this.params.null = null
       this.params.page = null
     },
+    initForm () {
+      this.form.name = null
+      this.form.description = null
+      this.form.status = 'active'
+    },
+    closeAdd () {
+      this.$modal.hide('add')
+    },
+    editResource (data) {
+      this.form = { ...data }
+      this.submitForm = 'update'
+      this.$modal.show('add')
+    },
+    deleteResouce (id) {
+      this.$swal.fire({
+        title: 'Hapus Data?',
+        showCancelButton: true,
+        type: 'warning',
+        dangerMode: true
+      }).then((isConfirm) => {
+        if (isConfirm.value) {
+          this.$axios.delete(`/asset/${id}`).then(() => {
+            this.initParams()
+            this.fetchResource()
+            this.activeData = 1
+          }).catch(() => {
+            this.$toast.error('Terjadi Kesalahan', {
+              iconPack: 'fontawesome',
+              duration: 5000
+            })
+          })
+        }
+      })
+    },
+    updateResource () {
+      this.$modal.hide('add')
+      this.$axios.put(`/asset/${this.form?.id}`, this.form).then((response) => {
+        this.initParams()
+        this.fetchResource()
+        this.activeData = 1
+      }).catch((e) => {
+        const error = e.response.data
+        if (error.errors && error.errors.name) {
+          this.$toast.error(error.errors.name, {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+        }
+      })
+    },
+    storeResource () {
+      this.$modal.hide('add')
+      this.$axios.post('/asset', this.form).then((response) => {
+        this.initParams()
+        this.fetchResource()
+        this.activeData = 1
+      }
+      ).catch((e) => {
+        const error = e.response.data
+        if (error.errors && error.errors.name) {
+          this.$toast.error(error.errors.name, {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+        }
+      })
+      this.initForm()
+    },
     fetchResource () {
       this.$modal.hide('sort')
       this.$modal.hide('filter')
       this.$axios.get('/asset', { params: this.params }).then((response) => {
         this.$store.commit('resource/SET_RESOURCE', response.data)
+        console.log(response.data)
       })
       this.initParams()
     },
     resetFilter () {
       this.params.status = null
       this.fetchResource()
+      this.activeData = 1
+    },
+    applyFilterAndSort () {
+      this.fetchResource()
+      this.activeData = 1
     },
     changeActivePagination (val) {
       this.activeData = val
+      this.params.page = val
+      this.fetchResource()
     },
     showModalFilter () {
       this.params.status = 'active'
@@ -233,6 +359,8 @@ export default {
       this.$modal.show('sort')
     },
     showModalAdd () {
+      this.initForm()
+      this.submitForm = 'store'
       this.$modal.show('add')
     }
   }
