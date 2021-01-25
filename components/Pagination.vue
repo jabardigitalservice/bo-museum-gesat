@@ -52,6 +52,11 @@ export default {
       }
     }
   },
+  watch: {
+    activePagination (val) {
+      this.mActivePagination = val
+    }
+  },
   methods: {
     clickPagination (numberOfPagination) {
       this.mActivePagination = numberOfPagination + this.stepNumber
