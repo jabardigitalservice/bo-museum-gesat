@@ -287,16 +287,23 @@
         </div>
         <div>
           <label for="title" class="block text-sm">
-            Daftar verified reservasi
+            Daftar Reservasi yang sudah ada
           </label>
           <div v-if="dataVerifiedReservasi.length > 0" class="mt-1">
             <span
               v-for="(item, idx) in dataVerifiedReservasi"
               :key="idx"
               class="px-1 py-1 mr-1 text-xs bg-red text-white rounded"
+              :class="item.approval_status === 'already_approved' ? 'bg-red' : 'bg-yellow'"
             >
-              {{ item.start_time && item.end_time ? `${item.start_time} - ${item.end_time}` : '' }}
+              {{ item.start_time && item.end_time ? `${momentFormatTime(item.start_time)} - ${momentFormatTime(item.end_time)}` : '' }}
             </span>
+            <div class="mt-1">
+              <i class="bx bxs-circle text-yellow" />
+              <span class="text-xs text-gray4">Menunggu Apporval admin</span>
+              <i class="bx bxs-circle text-red" />
+              <span class="text-xs text-gray4">Approved</span>
+            </div>
           </div>
           <div v-else-if="dataVerifiedReservasi.length === 0 && form.asset_id && form.date" class="mt-1 text-sm text-gray4">
             Belum ada reservasi untuk resource dan tanggal yang dipilih
@@ -307,7 +314,7 @@
         </div>
         <div>
           <label for="title" class="block text-sm">
-            Rentang Waktu (pilih diluar range verified reservasi)
+            Rentang Waktu (pilih diluar range daftar reservasi yang sudah ada)
           </label>
         </div>
         <div>
@@ -475,7 +482,6 @@ import {
   momentFormatDate,
   momentFormatDateId,
   momentFormatTime,
-  momentTimeHHmm,
   isAdmin as admin
 } from '~/utils'
 export default {
@@ -533,7 +539,6 @@ export default {
       momentFormatDate,
       momentFormatDateId,
       momentFormatTime,
-      momentTimeHHmm,
       admin
     }
   },
@@ -779,8 +784,8 @@ export default {
     getDisplayDateTimeManually (date, startTime, endTime) {
       if (date && startTime && endTime) {
         const dateString = momentFormatDateId(date)
-        const startTimeString = momentTimeHHmm(startTime)
-        const endTimeString = momentTimeHHmm(endTime)
+        const startTimeString = momentFormatTime(startTime)
+        const endTimeString = momentFormatTime(endTime)
         return `${dateString}, pukul ${startTimeString}-${endTimeString}`
       }
       return '-'

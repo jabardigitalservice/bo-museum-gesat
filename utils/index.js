@@ -21,13 +21,9 @@ export function momentFormatDateId (date) {
 // if input date in timezone
 export function momentFormatTime (date) {
   if (moment(date).isValid()) {
-    return moment(date).format('HH:mm')
+    return moment.utc(date).locale('id').format('HH:mm')
   }
   return ''
-}
-// if input is time in hh:mm:ss, remove seconds
-export function momentTimeHHmm (time) {
-  return moment(time, 'HH:mm:ss').format('HH:mm')
 }
 
 export function isAdmin ($auth) {
