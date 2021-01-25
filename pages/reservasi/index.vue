@@ -245,6 +245,7 @@
         <div>
           <label for="title" class="block text-sm">
             Judul Kegiatan
+            <span class="text-red">*</span>
           </label>
           <div class="mt-1">
             <input
@@ -260,6 +261,7 @@
         <div>
           <label for="asset_id" class="block text-sm">
             Resource / Aset
+            <span class="text-red">*</span>
           </label>
           <div class="mt-1">
             <select v-model="form.asset_id" name="asset_id" required class="form-input">
@@ -272,6 +274,7 @@
         <div>
           <label for="title" class="block text-sm">
             Tanggal
+            <span class="text-red">*</span>
           </label>
           <div class="mt-1">
             <date-picker
@@ -308,23 +311,23 @@
           </label>
         </div>
         <div>
-          <div class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:grid md:grid-cols-6 text-sm space-x-2">
             <div class="md:col-span-1 flex items-center">
               Jam Mulai
+              <span class="text-red">*</span>
             </div>
-            <div class="md:col-span-4">
+            <div class="md:col-span-2">
               <select v-model="form.start_time" name="start_time" required class="form-input">
                 <option v-for="(item, idx) in rangeTimes" :key="idx" :value="item">
                   {{ item }}
                 </option>
               </select>
             </div>
-          </div>
-          <div class="md:grid md:grid-cols-5 text-sm">
             <div class="md:col-span-1 flex items-center">
               Jam Selesai
+              <span class="text-red">*</span>
             </div>
-            <div class="md:col-span-4">
+            <div class="md:col-span-2">
               <select v-model="form.end_time" name="end_time" required class="form-input">
                 <option v-for="(item, idx) in rangeTimes" :key="idx" :value="item">
                   {{ item }}
@@ -332,6 +335,7 @@
               </select>
             </div>
           </div>
+          <div class="md:grid md:grid-cols-5 text-sm" />
         </div>
         <div>
           <label for="description" class="block text-sm">
@@ -464,6 +468,7 @@
 </template>
 
 <script>
+// import moment from 'moment'
 import Pagination from '~/components/Pagination.vue'
 import { rangeTimes, statusReservation, optionsSortBy, optionsOrderBy } from '~/assets/constant/enum'
 import {
@@ -474,7 +479,9 @@ import {
   isAdmin as admin
 } from '~/utils'
 export default {
-  components: { Pagination },
+  components: {
+    Pagination
+  },
   layout: 'admin',
   data () {
     return {
@@ -546,6 +553,14 @@ export default {
         this.getVerifiedReservation()
       }
     },
+    'form.start_time' () {
+      console.log('start', this.form.start_time)
+      this.onSelectTime()
+    },
+    'form.end_time' () {
+      console.log('end', this.form.end_time)
+      this.onSelectTime()
+    },
     'params.start_date' () {
       if (this.params.start_date) {
         this.params.start_date = momentFormatDate(this.params.start_date)
@@ -592,6 +607,7 @@ export default {
       this.form.date = null
       this.form.start_time = null
       this.form.end_time = null
+      this.dataVerifiedReservasi = []
     },
     async refreshTable () {
       this.render = false
@@ -636,8 +652,16 @@ export default {
         await this.$axios.post('reservation', this.form)
         this.$modal.hide('add')
         this.refreshTable()
-      } catch (e) {
-        this.errors = e
+      } catch (err) {
+        if (err.response && err.response.status === 422) {
+          const { errors } = err.response.data || {}
+          const arrayErrors = errors ? Object.values(errors) : []
+          arrayErrors.forEach(element => this.$toast.error(element, {
+            icon: 'times',
+            iconPack: 'fontawesome',
+            duration: 5000
+          }))
+        }
       }
     },
     async deleteData (id) {
@@ -758,6 +782,16 @@ export default {
         return `${dateString}, pukul ${startTimeString}-${endTimeString}`
       }
       return '-'
+    },
+    onSelectTime () {
+      if (this.form.start_time && this.form.end_time) {
+        if (this.form.start_time > this.form.end_time) {
+          this.$toast.error('Jam mulai harus kurang dari jam selesai', {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+        }
+      }
     }
   }
 }
