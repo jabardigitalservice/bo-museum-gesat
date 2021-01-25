@@ -554,11 +554,9 @@ export default {
       }
     },
     'form.start_time' () {
-      console.log('start', this.form.start_time)
       this.onSelectTime()
     },
     'form.end_time' () {
-      console.log('end', this.form.end_time)
       this.onSelectTime()
     },
     'params.start_date' () {
