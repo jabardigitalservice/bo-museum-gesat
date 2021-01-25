@@ -646,6 +646,10 @@ export default {
       }
     },
     async addReservation () {
+      if (this.form.date && this.form.start_time && this.form.end_time) {
+        this.form.start_time = `${this.form.date} ${this.form.start_time}`
+        this.form.end_time = `${this.form.date} ${this.form.end_time}`
+      }
       try {
         await this.$axios.post('reservation', this.form)
         this.$modal.hide('add')
@@ -782,13 +786,11 @@ export default {
       return '-'
     },
     onSelectTime () {
-      if (this.form.start_time && this.form.end_time) {
-        if (this.form.start_time > this.form.end_time) {
-          this.$toast.error('Jam mulai harus kurang dari jam selesai', {
-            iconPack: 'fontawesome',
-            duration: 5000
-          })
-        }
+      if (this.form.start_time && this.form.end_time && this.form.start_time > this.form.end_time) {
+        this.$toast.error('Jam mulai harus kurang dari jam selesai', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
       }
     }
   }
