@@ -135,13 +135,11 @@
             <date-picker
               v-model="params.start_date"
               placeholder="Tanggal Awal"
-              format="yyyy-MM-dd"
               class="form-input"
             />
             <date-picker
               v-model="params.end_date"
               placeholder="Tanggal Akhir"
-              format="yyyy-MM-dd"
               class="form-input"
             />
           </div>
@@ -279,7 +277,7 @@
           <div class="mt-1">
             <date-picker
               v-model="form.date"
-              placeholder="YYYY-MM-DD"
+              placeholder="DD MMMM YYYY"
               class="form-input"
               :disabled-dates="disabledDates"
             />
