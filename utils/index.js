@@ -1,5 +1,6 @@
 import moment from 'moment'
 import VueJwtDecode from 'vue-jwt-decode'
+require('moment-timezone')
 
 /* function to convert date use moment js */
 // if input date in timezone
@@ -22,6 +23,13 @@ export function momentFormatDateId (date) {
 export function momentFormatTime (date) {
   if (moment(date).isValid()) {
     return moment.utc(date).locale('id').format('HH:mm')
+  }
+  return ''
+}
+
+export function momentFormatTimeToTz (date) {
+  if (moment(date).isValid()) {
+    return moment.utc(date).tz('Asia/Jakarta').locale('id').format('DD MMMM YYYY HH:mm')
   }
   return ''
 }

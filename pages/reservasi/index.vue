@@ -480,6 +480,7 @@ import {
   momentFormatDate,
   momentFormatDateId,
   momentFormatTime,
+  momentFormatTimeToTz,
   isAdmin as admin
 } from '~/utils'
 export default {
@@ -537,6 +538,7 @@ export default {
       momentFormatDate,
       momentFormatDateId,
       momentFormatTime,
+      momentFormatTimeToTz,
       admin
     }
   },
@@ -773,9 +775,8 @@ export default {
     },
     getDisplayDateTime (date) {
       if (date) {
-        const dateString = momentFormatDateId(date)
-        const timeString = momentFormatTime(date)
-        return `${dateString}, pukul ${timeString}`
+        const dateString = momentFormatTimeToTz(date)
+        return `${dateString}`
       }
       return '-'
     },
