@@ -1,19 +1,21 @@
 import moment from 'moment'
 import VueJwtDecode from 'vue-jwt-decode'
 require('moment-timezone')
+const locale = 'id'
+moment.locale(locale)
 
 /* function to convert date use moment js */
 // if input date in timezone
 export function momentFormatDate (date) {
   if (moment(date).isValid()) {
-    return moment(date).locale('id').format('YYYY-MM-DD')
+    return moment(date).format('YYYY-MM-DD')
   }
   return ''
 }
 // indonesian standard format DD MMMM YYYY
 export function momentFormatDateId (date) {
   if (moment(date).isValid()) {
-    return moment(date).locale('id').format('DD MMMM YYYY')
+    return moment(date).format('DD MMMM YYYY')
   }
   return ''
 }
@@ -22,14 +24,14 @@ export function momentFormatDateId (date) {
 // if input date in timezone
 export function momentFormatTime (date) {
   if (moment(date).isValid()) {
-    return moment.utc(date).locale('id').format('HH:mm')
+    return moment.utc(date).format('HH:mm')
   }
   return ''
 }
 
 export function momentFormatTimeToTz (date) {
   if (moment(date).isValid()) {
-    return moment.utc(date).tz('Asia/Jakarta').locale('id').format('DD MMMM YYYY HH:mm')
+    return moment.utc(date).tz('Asia/Jakarta').format('DD MMMM YYYY HH:mm')
   }
   return ''
 }
@@ -45,9 +47,7 @@ export function isAdmin ($auth) {
 }
 
 export function generateTimes () {
-  const locale = 'id'
   const hours = []
-  moment.locale(locale) // optional - can remove if you are only dealing with one locale
   for (let hour = 0; hour < 24; hour++) {
     hours.push(moment({ hour }).format('HH:mm'))
     hours.push(
