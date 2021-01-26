@@ -43,3 +43,19 @@ export function isAdmin ($auth) {
   }
   return false
 }
+
+export function generateTimes () {
+  const locale = 'id'
+  const hours = []
+  moment.locale(locale) // optional - can remove if you are only dealing with one locale
+  for (let hour = 0; hour < 24; hour++) {
+    hours.push(moment({ hour }).format('HH:mm'))
+    hours.push(
+      moment({
+        hour,
+        minute: 30
+      }).format('HH:mm')
+    )
+  }
+  return hours
+}

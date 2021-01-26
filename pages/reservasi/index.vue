@@ -475,8 +475,9 @@
 <script>
 // import moment from 'moment'
 import Pagination from '~/components/Pagination.vue'
-import { rangeTimes, statusReservation, optionsSortBy, optionsOrderBy } from '~/assets/constant/enum'
+import { statusReservation, optionsSortBy, optionsOrderBy } from '~/assets/constant/enum'
 import {
+  generateTimes,
   momentFormatDate,
   momentFormatDateId,
   momentFormatTime,
@@ -508,7 +509,7 @@ export default {
         // note: 86400000 is in ms = 1 day
         to: new Date(Date.now() - 86400000)
       },
-      rangeTimes,
+      rangeTimes: [],
       statusReservation,
       optionsSortBy,
       optionsOrderBy,
@@ -535,6 +536,7 @@ export default {
         page: null,
         perPage: null
       },
+      generateTimes,
       momentFormatDate,
       momentFormatDateId,
       momentFormatTime,
@@ -576,6 +578,7 @@ export default {
     }
   },
   created () {
+    this.rangeTimes = generateTimes()
     this.initParams()
     this.getAssetList()
   },
