@@ -24,7 +24,7 @@
   </div>
 </template>
 <script>
-import constMenus from '@/constants/menus'
+import { menus } from '~/assets/constant/enum'
 import { isAdmin } from '~/utils'
 export default {
   data () {
@@ -34,7 +34,7 @@ export default {
   },
   computed: {
     menus () {
-      const menus = constMenus.filter((menu) => {
+      const list = menus.filter((menu) => {
         if (this.isAdmin(this.$auth)) {
           if (menu.role.includes('admin_reservasi')) {
             return menu
@@ -43,7 +43,7 @@ export default {
           return menu
         }
       })
-      return menus
+      return list
     }
   },
   methods: {
