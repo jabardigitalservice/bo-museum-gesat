@@ -731,7 +731,8 @@ export default {
         } catch (e) {
           swal.fire('Terjadi kesalahan', 'Silakan hubungi Admin', 'error')
         }
-      } else {
+      }
+      if (confirmation !== undefined) {
         toast.error('Harap isi catatan verifikasi', {
           iconPack: 'fontawesome',
           duration: 5000
