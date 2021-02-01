@@ -277,7 +277,7 @@
           <div class="mt-1">
             <date-picker
               v-model="form.date"
-              placeholder="DD MMMM YYYY"
+              placeholder="DD MMM YYYY"
               class="form-input"
               :disabled-dates="disabledDates"
             />
@@ -661,6 +661,7 @@ export default {
       try {
         await this.$axios.post('reservation', this.form)
         this.$modal.hide('add')
+        this.$swal.fire('Success', 'Silakan cek email, harap tunggu konfirmasi dari admin', 'info')
         this.refreshTable()
       } catch (err) {
         if (err.response && err.response.status === 422) {
@@ -730,7 +731,8 @@ export default {
         } catch (e) {
           swal.fire('Terjadi kesalahan', 'Silakan hubungi Admin', 'error')
         }
-      } else {
+      }
+      if (confirmation !== undefined) {
         toast.error('Harap isi catatan verifikasi', {
           iconPack: 'fontawesome',
           duration: 5000
