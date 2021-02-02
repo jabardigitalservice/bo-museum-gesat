@@ -16,6 +16,7 @@
     "@nuxtjs/axios": "^5.12.2",
     "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/pwa": "^3.0.2",
+    "@nuxtjs/sentry": "^5.0.0",
     "boxicons": "^2.0.7",
     "core-js": "^3.6.5",
     "moment": "^2.27.0",
