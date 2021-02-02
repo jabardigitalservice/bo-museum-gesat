@@ -5,6 +5,7 @@
       <h1 class="text-4xl font-normal text-gray1">
         Reservasi
       </h1>
+      <Statistik />
       <!-- filter and add button -->
       <div class="w-full flex flex-wrap my-3 ">
         <div class="w-full lg:w-1/3 my-1">
