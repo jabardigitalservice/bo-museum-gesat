@@ -39,7 +39,7 @@ export default {
       this.cards[0].value = all || 0
       this.cards[1].value = waiting || 0
       this.cards[2].value = approved || 0
-      this.cards[2].value = rejected || 0
+      this.cards[3].value = rejected || 0
     })
   }
 }
