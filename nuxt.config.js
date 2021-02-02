@@ -42,8 +42,14 @@ export default {
     '@nuxtjs/pwa',
     '@nuxtjs/toast',
     'nuxt-sweetalert2',
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
+    '@nuxtjs/sentry'
   ],
+
+  sentry: {
+    dsn: process.env.SENTRY_LARAVEL_DSN, // project's DSN here
+    config: {}, // Additional config
+  },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
