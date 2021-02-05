@@ -121,3 +121,12 @@ export const menus = [
     ]
   }
 ]
+
+export const thResourceAsset = [
+  'Nama',
+  'Deskripsi',
+  'Kapasitas',
+  'Status',
+  'Tanggal dibuat',
+  'Aksi'
+]

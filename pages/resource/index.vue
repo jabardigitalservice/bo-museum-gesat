@@ -55,6 +55,9 @@
                 <span> {{ resource.description }} </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
+                <span> {{ resource.capacity }} </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
                 <span
                   :class="{'bg-red': resource.status === 'not_active'}"
                   class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary text-white capitalize"
@@ -202,7 +205,7 @@
 <script>
 import { mapState } from 'vuex'
 import Pagination from '~/components/Pagination.vue'
-import { optionsStatusResource, optionsSortResource, optionsOrderBy } from '~/assets/constant/enum'
+import { optionsStatusResource, optionsSortResource, optionsOrderBy, thResourceAsset } from '~/assets/constant/enum'
 import {
   momentFormatDateId
 } from '~/utils'
@@ -213,13 +216,7 @@ export default {
   data () {
     return {
       activeData: 1,
-      dataHeader: [
-        'Nama',
-        'Deskripsi',
-        'Status',
-        'Tanggal dibuat',
-        'Aksi'
-      ],
+      dataHeader: thResourceAsset,
       params: {
         sortBy: 'name',
         orderBy: 'asc',
