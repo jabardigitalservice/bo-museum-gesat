@@ -55,6 +55,9 @@
                 <span> {{ resource.description }} </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
+                <span> {{ resource.capacity }} </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
                 <span
                   :class="{'bg-red': resource.status === 'not_active'}"
                   class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary text-white capitalize"
@@ -179,6 +182,10 @@
               </option>
             </select>
           </div>
+          <div class="w-full flex flex-col mt-3">
+            <label class="font-medium" for="status">Kapasitas</label>
+            <input v-model="form.capacity" type="number" class="focus:outline-none p-3 rounded border-2 border-gray2">
+          </div>
           <div class="grid grid-cols-2 gap-4 mt-3">
             <button v-if="submitForm == 'store'" :class="{'bg-gray4': formIsEmpty}" class="btn bg-primary" :disabled="formIsEmpty" @click.stop="storeResource">
               Submit
@@ -198,7 +205,7 @@
 <script>
 import { mapState } from 'vuex'
 import Pagination from '~/components/Pagination.vue'
-import { optionsStatusResource, optionsSortResource, optionsOrderBy } from '~/assets/constant/enum'
+import { optionsStatusResource, optionsSortResource, optionsOrderBy, thResourceAsset } from '~/assets/constant/enum'
 import {
   momentFormatDateId
 } from '~/utils'
@@ -209,13 +216,7 @@ export default {
   data () {
     return {
       activeData: 1,
-      dataHeader: [
-        'Nama',
-        'Deskripsi',
-        'Status',
-        'Tanggal dibuat',
-        'Aksi'
-      ],
+      dataHeader: thResourceAsset,
       params: {
         sortBy: 'name',
         orderBy: 'asc',
@@ -226,7 +227,8 @@ export default {
       form: {
         name: null,
         description: null,
-        status: 'active'
+        status: 'active',
+        capacity: null
       },
       momentFormatDateId,
       optionsStatusResource,
@@ -264,6 +266,7 @@ export default {
       this.form.name = null
       this.form.description = null
       this.form.status = 'active'
+      this.form.capacity = null
     },
     closeAdd () {
       this.$modal.hide('add')
