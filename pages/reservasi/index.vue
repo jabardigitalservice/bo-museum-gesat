@@ -734,7 +734,7 @@ export default {
           swal.fire('Terjadi kesalahan', 'Silakan hubungi Admin', 'error')
         }
       }
-      if (confirmation === undefined) {
+      if (confirmation === undefined || !confirmation) {
         toast.error('Harap isi catatan verifikasi', {
           iconPack: 'fontawesome',
           duration: 5000
