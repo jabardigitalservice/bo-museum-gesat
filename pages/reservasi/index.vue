@@ -724,16 +724,16 @@ export default {
             note: confirmation
           })
           this.refreshTable()
-          toast.success('Berhasil verifikasi reservasi', {
-            icon: 'check',
-            iconPack: 'fontawesome',
-            duration: 5000
-          })
+          swal.fire(
+            'Success',
+            'Verifikasi data reservasi berhasil',
+            'success'
+          )
         } catch (e) {
           swal.fire('Terjadi kesalahan', 'Silakan hubungi Admin', 'error')
         }
       }
-      if (confirmation !== undefined) {
+      if (confirmation === undefined) {
         toast.error('Harap isi catatan verifikasi', {
           iconPack: 'fontawesome',
           duration: 5000
