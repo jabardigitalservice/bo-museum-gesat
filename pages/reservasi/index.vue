@@ -661,6 +661,7 @@ export default {
       }
       try {
         await this.$axios.post('reservation', this.form)
+        await this.$nextTick()
         this.$modal.hide('add')
         this.$swal.fire('Success', 'Silakan cek email, harap tunggu konfirmasi dari admin', 'info')
         this.refreshTable()
