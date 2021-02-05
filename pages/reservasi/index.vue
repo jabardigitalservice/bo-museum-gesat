@@ -661,6 +661,7 @@ export default {
       }
       try {
         await this.$axios.post('reservation', this.form)
+        await this.$nextTick()
         this.$modal.hide('add')
         this.$swal.fire('Success', 'Silakan cek email, harap tunggu konfirmasi dari admin', 'info')
         this.refreshTable()
@@ -724,16 +725,16 @@ export default {
             note: confirmation
           })
           this.refreshTable()
-          toast.success('Berhasil verifikasi reservasi', {
-            icon: 'check',
-            iconPack: 'fontawesome',
-            duration: 5000
-          })
+          swal.fire(
+            'Success',
+            'Verifikasi data reservasi berhasil',
+            'success'
+          )
         } catch (e) {
           swal.fire('Terjadi kesalahan', 'Silakan hubungi Admin', 'error')
         }
       }
-      if (confirmation !== undefined) {
+      if (confirmation === undefined || !confirmation) {
         toast.error('Harap isi catatan verifikasi', {
           iconPack: 'fontawesome',
           duration: 5000
