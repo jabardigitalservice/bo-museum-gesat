@@ -179,6 +179,10 @@
               </option>
             </select>
           </div>
+          <div class="w-full flex flex-col mt-3">
+            <label class="font-medium" for="status">Kapasitas</label>
+            <input v-model="form.capacity" type="number" class="focus:outline-none p-3 rounded border-2 border-gray2">
+          </div>
           <div class="grid grid-cols-2 gap-4 mt-3">
             <button v-if="submitForm == 'store'" :class="{'bg-gray4': formIsEmpty}" class="btn bg-primary" :disabled="formIsEmpty" @click.stop="storeResource">
               Submit
@@ -226,7 +230,8 @@ export default {
       form: {
         name: null,
         description: null,
-        status: 'active'
+        status: 'active',
+        capacity: null
       },
       momentFormatDateId,
       optionsStatusResource,
@@ -264,6 +269,7 @@ export default {
       this.form.name = null
       this.form.description = null
       this.form.status = 'active'
+      this.form.capacity = null
     },
     closeAdd () {
       this.$modal.hide('add')
