@@ -39,8 +39,10 @@
                   </button>
                 </div>
                 <div class="md:col-span-1 ml-2">
-                  <button class="btn bg-white border border-grayText" @click="initParams">
-                    <span class="text-grayText hover:text-black">Reset</span>
+                  <button class="btn" :class="isHasParams ? 'bg-red border border-red' : 'bg-white border border-grayText'" @click="initParams">
+                    <span class="hover:text-black" :class="isHasParams ? 'text-white' : 'text-grayText'">
+                      Reset
+                    </span>
                   </button>
                 </div>
               </div>
@@ -532,11 +534,12 @@ export default {
         approval_status: null,
         start_date: null,
         end_date: null,
-        sortBy: 'created_at',
+        sortBy: null,
         orderBy: null,
         page: null,
         perPage: null
       },
+      isHasParams: false,
       generateTimes,
       momentFormatDate,
       momentFormatDateId,
@@ -590,21 +593,28 @@ export default {
       this.params.approval_status = null
       this.params.start_date = null
       this.params.end_date = null
-      this.params.sortBy = 'created_at'
+      this.params.sortBy = null
       this.params.orderBy = null
       this.params.page = null
       this.params.perPage = null
+      this.isHasParams = false
       this.refreshTable()
+    },
+    checkParams () {
+      // check if another params not null, if true: reset button still red / isHasparams = true
+      Object.values(this.params).find(element => element !== null) === undefined ? this.isHasParams = false : this.isHasParams = true
     },
     clearFilter () {
       this.params.approval_status = null
       this.params.start_date = null
       this.params.end_date = null
+      this.checkParams()
       this.refreshTable()
     },
     clearSortby () {
       this.params.sortBy = null
       this.params.orderBy = null
+      this.checkParams()
       this.refreshTable()
     },
     clearFormReservation () {
@@ -742,9 +752,11 @@ export default {
       }
     },
     onSearch () {
+      this.checkParams()
       this.refreshTable()
     },
     onFilter () {
+      this.checkParams()
       if (this.params.start_date <= this.params.end_date) {
         this.$modal.hide('filter')
         this.refreshTable()
@@ -756,6 +768,7 @@ export default {
       }
     },
     onSorting () {
+      this.checkParams()
       this.$modal.hide('sort')
       this.refreshTable()
     },
