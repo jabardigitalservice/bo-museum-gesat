@@ -1,5 +1,5 @@
 <template>
-  <div class="hidden md:w-64 md:block h-screen py-4 bg-primary">
+  <div class="hidden fix-width-sidebar-desktop md:block h-screen py-4 bg-primary">
     <Menu />
   </div>
 </template>
@@ -8,3 +8,8 @@ export default {
 
 }
 </script>
+<style>
+.fix-width-sidebar-desktop{
+  width: 310px;
+}
+</style>

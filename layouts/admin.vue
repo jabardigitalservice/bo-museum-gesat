@@ -2,7 +2,7 @@
   <div class="flex w-screen h-screen">
     <SidebarDesktop />
     <SidebarMobile />
-    <div class="flex-grow overflow-x-auto">
+    <div class="w-full overflow-x-auto">
       <Header />
       <Nuxt />
     </div>
