@@ -564,13 +564,13 @@ export default {
     },
     'form.asset_id' () {
       if (this.form.asset_id) {
-        this.getVerifiedReservation()
         this.isDisabledSelectDate = false
       }
     },
     'form.date' () {
       this.form.date = momentFormatDate(this.form.date)
       if (this.form.date) {
+        this.getVerifiedReservation()
         this.isDisabledSelectTime = false
         if (this.form.date === momentGetCurrentDate()) {
           this.rangeTimes = filterTimeAfterCurrent(this.rangeTimes)
