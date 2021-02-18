@@ -282,6 +282,7 @@
               v-model="form.date"
               placeholder="DD MMM YYYY"
               class="form-input"
+              :disabled="isDisabledSelectDate"
               :disabled-dates="disabledDates"
             />
           </div>
@@ -325,7 +326,7 @@
               <span class="text-red">*</span>
             </div>
             <div class="md:col-span-2">
-              <select v-model="form.start_time" name="start_time" required class="form-input">
+              <select v-model="form.start_time" name="start_time" required class="form-input" :disabled="isDisabledSelectTime">
                 <option v-for="(item, idx) in rangeTimes" :key="idx" :value="item">
                   {{ item }}
                 </option>
@@ -336,7 +337,7 @@
               <span class="text-red">*</span>
             </div>
             <div class="md:col-span-2">
-              <select v-model="form.end_time" name="end_time" required class="form-input">
+              <select v-model="form.end_time" name="end_time" required class="form-input" :disabled="isDisabledSelectTime">
                 <option v-for="(item, idx) in rangeTimes" :key="idx" :value="item">
                   {{ item }}
                 </option>
@@ -476,7 +477,6 @@
 </template>
 
 <script>
-// import moment from 'moment'
 import Pagination from '~/components/Pagination.vue'
 import { statusReservation, optionsSortBy, optionsOrderBy } from '~/assets/constant/enum'
 import {
@@ -485,6 +485,8 @@ import {
   momentFormatDateId,
   momentFormatTime,
   momentFormatTimeToTz,
+  momentGetCurrentDate,
+  filterTimeAfterCurrent,
   isAdmin as admin
 } from '~/utils'
 export default {
@@ -545,7 +547,9 @@ export default {
       momentFormatDateId,
       momentFormatTime,
       momentFormatTimeToTz,
-      admin
+      admin,
+      isDisabledSelectDate: true,
+      isDisabledSelectTime: true
     }
   },
   computed: {
@@ -558,10 +562,21 @@ export default {
       this.params.page = val
       this.getDataReservation()
     },
-    'form.date' () {
-      this.form.date = momentFormatDate(this.form.date)
+    'form.asset_id' () {
       if (this.form.asset_id) {
         this.getVerifiedReservation()
+        this.isDisabledSelectDate = false
+      }
+    },
+    'form.date' () {
+      this.form.date = momentFormatDate(this.form.date)
+      if (this.form.date) {
+        this.isDisabledSelectTime = false
+        if (this.form.date === momentGetCurrentDate()) {
+          this.rangeTimes = filterTimeAfterCurrent(this.rangeTimes)
+        } else {
+          this.rangeTimes = generateTimes()
+        }
       }
     },
     'form.start_time' () {
