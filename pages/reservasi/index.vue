@@ -640,6 +640,9 @@ export default {
       this.form.start_time = null
       this.form.end_time = null
       this.dataVerifiedReservasi = []
+      this.rangeTimes = generateTimes()
+      this.isDisabledSelectDate = true
+      this.isDisabledSelectTime = true
     },
     async refreshTable () {
       this.render = false
