@@ -21,10 +21,10 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    { src: "@/plugins/vClickOutside", ssr: false },
-    { src: "@/plugins/vModal", ssr: false },
-    { src: "@/plugins/vue-datepicker", ssr: false },
-    { src: "@/plugins/vue-full-calendar", ssr: false }
+    { src: '@/plugins/vClickOutside', ssr: false },
+    { src: '@/plugins/vModal', ssr: false },
+    { src: '@/plugins/vue-datepicker', ssr: false },
+    { src: '@/plugins/vue-full-calendar', ssr: false }
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -49,7 +49,7 @@ export default {
 
   sentry: {
     dsn: process.env.SENTRY_LARAVEL_DSN, // project's DSN here
-    config: {}, // Additional config
+    config: {} // Additional config
   },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
@@ -71,7 +71,7 @@ export default {
           authorization: `${process.env.KEYCLOAK_AUTHSERVERURL}/auth/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/auth`,
           token: `${process.env.KEYCLOAK_AUTHSERVERURL}/auth/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/token`,
           logout: `${process.env.KEYCLOAK_AUTHSERVERURL}/auth/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/logout?redirect_uri=` + encodeURIComponent(String(process.env.KEYCLOAK_REDIRECTLOGOUTURI)),
-          userInfo: `${process.env.KEYCLOAK_AUTHSERVERURL}/auth/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/userinfo`,
+          userInfo: `${process.env.KEYCLOAK_AUTHSERVERURL}/auth/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/userinfo`
         },
         token: {
           property: 'access_token',
@@ -88,7 +88,7 @@ export default {
         accessType: 'offline',
         clientId: process.env.KEYCLOAK_CLIENTID,
         scope: ['openid', 'profile', 'email', 'roles'],
-        codeChallengeMethod: 'S256',
+        codeChallengeMethod: 'S256'
       }
     }
   },
@@ -101,7 +101,7 @@ export default {
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
-    extend(config, ctx) {
+    extend (config, ctx) {
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
           enforce: 'pre',
