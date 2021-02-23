@@ -23,8 +23,7 @@ export default {
   plugins: [
     { src: '@/plugins/vClickOutside', ssr: false },
     { src: '@/plugins/vModal', ssr: false },
-    { src: '@/plugins/vue-datepicker', ssr: false },
-    { src: '@/plugins/vue-full-calendar', ssr: false }
+    { src: '@/plugins/vue-datepicker', ssr: false }
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
