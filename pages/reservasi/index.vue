@@ -64,6 +64,11 @@
             <tr v-for="(data, i) in dataReservasi" :key="i">
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-md">
+                  {{ data.user_fullname }}
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-md">
                   {{ data.title }}
                 </div>
               </td>
@@ -72,7 +77,7 @@
                   {{ data.date && data.start_time && data.end_time ? getDisplayDateTimeManually(data.date, data.start_time, data.end_time) : '' }}
                 </div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
+              <td v-if="false" class="px-6 py-4 whitespace-nowrap">
                 <span
                   class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-white"
                   :class="data.approval_status === 'not_yet_approved' ? 'bg-yellow' : data.approval_status === 'already_approved' ? 'bg-primary' : 'bg-red'"
@@ -421,7 +426,7 @@
             {{ detailData.description || '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
+        <div v-if="false" class="md:grid md:grid-cols-5 text-sm">
           <div class="md:col-span-2 text-blue">
             Status
           </div>
@@ -429,7 +434,7 @@
             {{ detailData.approval_status ? findStatus(detailData.approval_status) : '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
+        <div v-if="false" class="md:grid md:grid-cols-5 text-sm">
           <div class="md:col-span-2 text-blue">
             Catatan Admin FO
           </div>
@@ -453,7 +458,7 @@
             {{ detailData.updated_at ? getDisplayDateTime(detailData.updated_at) : '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
+        <div v-if="false" class="md:grid md:grid-cols-5 text-sm">
           <div class="md:col-span-2 text-blue">
             Tanggal Verifikasi Admin
           </div>
@@ -500,9 +505,9 @@ export default {
       meta: {},
       dataUser: {},
       dataHeader: [
+        'Nama',
         'Judul Kegiatan',
         'Waktu Reservasi',
-        'Status',
         'Catatan',
         'Reservasi Dibuat',
         'Aksi'
