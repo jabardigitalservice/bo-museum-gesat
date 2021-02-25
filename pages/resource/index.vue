@@ -158,10 +158,10 @@
       :min-width="320"
       :max-width="500"
       width="80%"
-      height="auto"
+      height="80%"
       :adaptive="true"
     >
-      <div class="bg-gray5 w-full h-full p-3">
+      <div class="bg-gray5 w-full h-full p-3 overflow-auto">
         <h2 class="font-medium text-xl">
           Tambahkan Resource / Aset Baru
         </h2>
@@ -243,9 +243,7 @@ export default {
       'metaResource'
     ]),
     formIsEmpty () {
-      if (this.form.name === null) {
-        return true
-      } else if (this.form.name === '') {
+      if (this.form.name === null || this.form.name === '' || this.form.capacity === null) {
         return true
       }
       return false
@@ -299,7 +297,7 @@ export default {
     },
     updateResource () {
       this.$modal.hide('add')
-      this.$axios.put(`/asset/${this.form?.id}`, this.form).then((response) => {
+      this.$axios.put(`/asset/${this.form?.id}`, this.form).then(() => {
         this.initParams()
         this.fetchResource()
         this.activeData = 1
