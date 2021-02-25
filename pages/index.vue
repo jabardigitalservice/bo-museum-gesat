@@ -6,6 +6,7 @@
       </h1>
       <div>
         <FullCalendar
+          ref="fullCalendar"
           :options="calendarOptions"
         >
           <template v-slot:eventContent="arg" class="overflow-hidden">
@@ -82,7 +83,6 @@ import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import { toMoment } from '@fullcalendar/moment'
 import listPlugin from '@fullcalendar/list'
 import allLocales from '@fullcalendar/core/locales-all'
-import { isAdmin } from '~/utils'
 export default {
   layout: 'admin',
   components: {
@@ -120,8 +120,8 @@ export default {
         initialEvents: [],
         events: this.getReservations,
         nowIndicator: true,
-        editable: false,
-        selectable: !isAdmin(this.$auth),
+        editable: true,
+        selectable: true,
         selectMirror: true,
         dayMaxEvents: true,
         weekends: true,
@@ -139,7 +139,8 @@ export default {
         */
       },
       // currentEvents: [],
-      eventGuid: 0
+      eventGuid: 0,
+      calendarApi: null
     }
   },
   methods: {
@@ -148,8 +149,11 @@ export default {
       this.$axios.put(`/reservation/${this.form.id}`, this.form)
     },
     addReservation () {
-      this.$axios.post('/reservation', this.form)
-      // calendarApi.refetchEvents()
+      const calendarApi = this.$refs.fullCalendar.getApi()
+      this.$axios.post('/reservation', this.form).then(() => {
+        this.$modal.hide('add')
+        calendarApi.refetchEvents()
+      })
     },
     clearFormReservation () {
       this.form.title = null
@@ -180,7 +184,7 @@ export default {
       return stillEvent.allDay && movingEvent.allDay
     },
     getReservations (fetchInfo, successCallback, failureCallback) {
-      this.$axios.get('/reservation?page=all').then((response) => {
+      this.$axios.get('/reservation?perPage=all').then((response) => {
         const reservations = response.data.data
         this.$axios.get('/asset/list').then((resources) => {
           const reservationsMap = reservations.map((reservation) => {
@@ -190,8 +194,8 @@ export default {
             const newObj = {}
             newObj.id = reservation.id
             newObj.title = reservation.title
-            newObj.start = toMoment(reservation.start_time).format()
-            newObj.end = toMoment(reservation.end_time).format()
+            newObj.start = reservation.start_time.slice(0, -8)
+            newObj.end = reservation.end_time.slice(0, -8)
             newObj.resourceId = resource?.id
             newObj.extendedProps = {
               name: reservation.user_fullname,
