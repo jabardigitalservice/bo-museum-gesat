@@ -63,24 +63,6 @@ export const cardsDashboard = [
     value: 0,
     bgColor: 'bg-blue',
     icon: 'bx-calendar'
-  },
-  {
-    title: 'Reservasi Menunggu Approval',
-    value: 0,
-    bgColor: 'bg-yellow',
-    icon: 'bx-calendar-exclamation'
-  },
-  {
-    title: 'Reservasi Disetujui',
-    value: 0,
-    bgColor: 'bg-primary',
-    icon: 'bx-calendar-check'
-  },
-  {
-    title: 'Reservasi Ditolak',
-    value: 0,
-    bgColor: 'bg-red',
-    icon: 'bx-calendar-x'
   }
 ]
 
