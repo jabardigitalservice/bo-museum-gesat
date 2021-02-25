@@ -35,11 +35,8 @@ export default {
   mounted () {
     this.$axios.get('/dashboard/reservation-statistic').then((res) => {
       // note: identifier can't use camel case
-      const { all, already_approved: approved, not_yet_approved: waiting, rejected } = res.data || {}
-      this.cards[0].value = all || 0
-      this.cards[1].value = waiting || 0
-      this.cards[2].value = approved || 0
-      this.cards[3].value = rejected || 0
+      const { all } = res.data || {}
+      this.cards[0].value = all
     })
   }
 }

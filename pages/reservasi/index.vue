@@ -8,7 +8,7 @@
       <Statistik />
       <!-- filter and add button -->
       <div class="w-full flex flex-wrap my-3 ">
-        <div class="w-full lg:w-1/3 my-1">
+        <div v-if="false" class="w-full lg:w-1/3 my-1">
           <div class="w-1/2 lg:w-1/3">
             <button v-show="!isAdmin" class="btn bg-primary" @click="showModalAdd">
               <i class="bx bx-plus bx-sm" />
@@ -16,7 +16,7 @@
             </button>
           </div>
         </div>
-        <div class="w-full lg:w-2/3 flex flex-wrap-reverse lg:flex-wrap flex-row-reverse">
+        <div class="w-full flex flex-wrap-reverse lg:flex-wrap flex-row-reverse">
           <div class="md:grid md:grid-cols-5 flex item-center">
             <div class="md:col-span-2 w-full">
               <div class="w-full px-4 py-2 bg-white border-solid border border-gray4 rounded flex justify-between items-center">
@@ -64,6 +64,11 @@
             <tr v-for="(data, i) in dataReservasi" :key="i">
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-md">
+                  {{ data.user_fullname }}
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-md">
                   {{ data.title }}
                 </div>
               </td>
@@ -72,7 +77,7 @@
                   {{ data.date && data.start_time && data.end_time ? getDisplayDateTimeManually(data.date, data.start_time, data.end_time) : '' }}
                 </div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
+              <td v-if="false" class="px-6 py-4 whitespace-nowrap">
                 <span
                   class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-white"
                   :class="data.approval_status === 'not_yet_approved' ? 'bg-yellow' : data.approval_status === 'already_approved' ? 'bg-primary' : 'bg-red'"
@@ -238,145 +243,6 @@
         </div>
       </div>
     </modal>
-    <modal name="add" :adaptive="true" :height="`auto`">
-      <div class="p-8 space-y-4">
-        <div class="window-header mb-2">
-          TAMBAH RESERVASI BARU
-        </div>
-        <div>
-          <label for="title" class="block text-sm">
-            Judul Kegiatan
-            <span class="text-red">*</span>
-          </label>
-          <div class="mt-1">
-            <input
-              v-model="form.title"
-              name="title"
-              type="text"
-              autocomplete="title"
-              required
-              class="form-input"
-            >
-          </div>
-        </div>
-        <div>
-          <label for="asset_id" class="block text-sm">
-            Resource / Aset
-            <span class="text-red">*</span>
-          </label>
-          <div class="mt-1">
-            <select v-model="form.asset_id" name="asset_id" required class="form-input">
-              <option v-for="item in dataAsset" :key="item.id" :value="item.id">
-                {{ item.name }}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div>
-          <label for="title" class="block text-sm">
-            Tanggal
-            <span class="text-red">*</span>
-          </label>
-          <div class="mt-1">
-            <date-picker
-              v-model="form.date"
-              placeholder="DD MMM YYYY"
-              class="form-input"
-              :disabled="isDisabledSelectDate"
-              :disabled-dates="disabledDates"
-            />
-          </div>
-        </div>
-        <div>
-          <label for="title" class="block text-sm">
-            Daftar Reservasi yang sudah ada
-          </label>
-          <div v-if="dataVerifiedReservasi.length > 0" class="mt-1">
-            <span
-              v-for="(item, idx) in dataVerifiedReservasi"
-              :key="idx"
-              class="px-1 py-1 mr-1 text-xs bg-red text-white rounded"
-              :class="item.approval_status === 'already_approved' ? 'bg-red' : 'bg-yellow'"
-            >
-              {{ item.start_time && item.end_time ? `${momentFormatTime(item.start_time)} - ${momentFormatTime(item.end_time)}` : '' }}
-            </span>
-            <div class="mt-1">
-              <i class="bx bxs-circle text-yellow" />
-              <span class="text-xs text-gray4">Menunggu Apporval admin</span>
-              <i class="bx bxs-circle text-red" />
-              <span class="text-xs text-gray4">Approved</span>
-            </div>
-          </div>
-          <div v-else-if="dataVerifiedReservasi.length === 0 && form.asset_id && form.date" class="mt-1 text-sm text-gray4">
-            Belum ada reservasi untuk resource dan tanggal yang dipilih
-          </div>
-          <div v-else class="mt-1 text-sm text-gray4">
-            Silahkan pilih resource dan tanggal untuk melihat ketersediaan jam pakai
-          </div>
-        </div>
-        <div>
-          <label for="title" class="block text-sm">
-            Rentang Waktu (pilih diluar range daftar reservasi yang sudah ada)
-          </label>
-        </div>
-        <div>
-          <div class="md:grid md:grid-cols-6 text-sm space-x-2">
-            <div class="md:col-span-1 flex items-center">
-              Jam Mulai
-              <span class="text-red">*</span>
-            </div>
-            <div class="md:col-span-2">
-              <select v-model="form.start_time" name="start_time" required class="form-input" :disabled="isDisabledSelectTime">
-                <option v-for="(item, idx) in rangeTimes" :key="idx" :value="item">
-                  {{ item }}
-                </option>
-              </select>
-            </div>
-            <div class="md:col-span-1 flex items-center">
-              Jam Selesai
-              <span class="text-red">*</span>
-            </div>
-            <div class="md:col-span-2">
-              <select v-model="form.end_time" name="end_time" required class="form-input" :disabled="isDisabledSelectTime">
-                <option v-for="(item, idx) in rangeTimes" :key="idx" :value="item">
-                  {{ item }}
-                </option>
-              </select>
-            </div>
-          </div>
-          <div class="md:grid md:grid-cols-5 text-sm" />
-        </div>
-        <div>
-          <label for="description" class="block text-sm">
-            Catatan / Deskripsi Kegiatan
-          </label>
-          <div class="mt-1">
-            <textarea
-              v-model="form.description"
-              name="description"
-              class="form-input"
-            />
-          </div>
-        </div>
-
-        <div class="flex space-x-4">
-          <button
-            type="button"
-            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="clearFormReservation"
-          >
-            Clear
-          </button>
-          <button
-            type="button"
-            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="addReservation"
-          >
-            Submit
-          </button>
-        </div>
-      </div>
-    </modal>
     <modal name="detail" :adaptive="true" :height="`auto`">
       <div class="p-8 space-y-4">
         <div class="window-header mb-2">
@@ -422,7 +288,7 @@
             {{ detailData.description || '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
+        <div v-if="false" class="md:grid md:grid-cols-5 text-sm">
           <div class="md:col-span-2 text-blue">
             Status
           </div>
@@ -430,7 +296,7 @@
             {{ detailData.approval_status ? findStatus(detailData.approval_status) : '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
+        <div v-if="false" class="md:grid md:grid-cols-5 text-sm">
           <div class="md:col-span-2 text-blue">
             Catatan Admin FO
           </div>
@@ -454,7 +320,7 @@
             {{ detailData.updated_at ? getDisplayDateTime(detailData.updated_at) : '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
+        <div v-if="false" class="md:grid md:grid-cols-5 text-sm">
           <div class="md:col-span-2 text-blue">
             Tanggal Verifikasi Admin
           </div>
@@ -477,6 +343,7 @@
 </template>
 
 <script>
+// import moment from 'moment'
 import Pagination from '~/components/Pagination.vue'
 import { statusReservation, optionsSortBy, optionsOrderBy } from '~/assets/constant/enum'
 import {
@@ -485,8 +352,6 @@ import {
   momentFormatDateId,
   momentFormatTime,
   momentFormatTimeToTz,
-  momentGetCurrentDate,
-  filterTimeAfterCurrent,
   isAdmin as admin
 } from '~/utils'
 export default {
@@ -502,9 +367,9 @@ export default {
       meta: {},
       dataUser: {},
       dataHeader: [
+        'Nama',
         'Judul Kegiatan',
         'Waktu Reservasi',
-        'Status',
         'Catatan',
         'Reservasi Dibuat',
         'Aksi'
@@ -518,14 +383,6 @@ export default {
       statusReservation,
       optionsSortBy,
       optionsOrderBy,
-      form: {
-        title: null,
-        asset_id: null,
-        description: null,
-        date: null,
-        start_time: null,
-        end_time: null
-      },
       dataReservasi: [],
       dataVerifiedReservasi: [],
       dataAsset: [],
@@ -547,9 +404,7 @@ export default {
       momentFormatDateId,
       momentFormatTime,
       momentFormatTimeToTz,
-      admin,
-      isDisabledSelectDate: true,
-      isDisabledSelectTime: true
+      admin
     }
   },
   computed: {
@@ -562,21 +417,10 @@ export default {
       this.params.page = val
       this.getDataReservation()
     },
-    'form.asset_id' () {
-      if (this.form.asset_id) {
-        this.isDisabledSelectDate = false
-      }
-    },
     'form.date' () {
       this.form.date = momentFormatDate(this.form.date)
-      if (this.form.date) {
+      if (this.form.asset_id) {
         this.getVerifiedReservation()
-        this.isDisabledSelectTime = false
-        if (this.form.date === momentGetCurrentDate()) {
-          this.rangeTimes = filterTimeAfterCurrent(this.rangeTimes)
-        } else {
-          this.rangeTimes = generateTimes()
-        }
       }
     },
     'form.start_time' () {
@@ -632,18 +476,6 @@ export default {
       this.checkParams()
       this.refreshTable()
     },
-    clearFormReservation () {
-      this.form.title = null
-      this.form.asset_id = null
-      this.form.description = null
-      this.form.date = null
-      this.form.start_time = null
-      this.form.end_time = null
-      this.dataVerifiedReservasi = []
-      this.rangeTimes = generateTimes()
-      this.isDisabledSelectDate = true
-      this.isDisabledSelectTime = true
-    },
     async refreshTable () {
       this.render = false
       this.getDataReservation()
@@ -680,29 +512,6 @@ export default {
         this.dataVerifiedReservasi = response ? response.data.data : []
       } catch (errors) {
         this.errors = errors
-      }
-    },
-    async addReservation () {
-      if (this.form.date && this.form.start_time && this.form.end_time) {
-        this.form.start_time = `${this.form.date} ${this.form.start_time}`
-        this.form.end_time = `${this.form.date} ${this.form.end_time}`
-      }
-      try {
-        await this.$axios.post('reservation', this.form)
-        await this.$nextTick()
-        this.$modal.hide('add')
-        this.$swal.fire('Success', 'Silakan cek email, harap tunggu konfirmasi dari admin', 'info')
-        this.refreshTable()
-      } catch (err) {
-        if (err.response && err.response.status === 422) {
-          const { errors } = err.response.data || {}
-          const arrayErrors = errors ? Object.values(errors) : []
-          arrayErrors.forEach(element => this.$toast.error(element, {
-            icon: 'times',
-            iconPack: 'fontawesome',
-            duration: 5000
-          }))
-        }
       }
     },
     async deleteData (id) {
@@ -800,9 +609,6 @@ export default {
     },
     showModalSort () {
       this.$modal.show('sort')
-    },
-    showModalAdd () {
-      this.$modal.show('add')
     },
     showModalDetail (data) {
       this.detailData = data
