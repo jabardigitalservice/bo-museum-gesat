@@ -148,7 +148,7 @@ import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import { toMoment } from '@fullcalendar/moment'
 import listPlugin from '@fullcalendar/list'
 import allLocales from '@fullcalendar/core/locales-all'
-import { momentFormatDateId, momentFormatTime2 } from '~/utils'
+import { momentFormatDateId, momentFormatTimeISO } from '~/utils'
 export default {
   layout: 'admin',
   components: {
@@ -218,8 +218,8 @@ export default {
     getDisplayDateTimeManually (date, startTime, endTime) {
       if (date && startTime && endTime) {
         const dateString = momentFormatDateId(date)
-        const startTimeString = momentFormatTime2(startTime)
-        const endTimeString = momentFormatTime2(endTime)
+        const startTimeString = momentFormatTimeISO(startTime)
+        const endTimeString = momentFormatTimeISO(endTime)
         return `${dateString}, pukul ${startTimeString}-${endTimeString}`
       }
       return '-'
@@ -235,7 +235,6 @@ export default {
           iconPack: 'fontawesome',
           duration: 5000
         })
-        calendarApi.refetchEvents()
         calendarApi.refetchEvents()
       }).catch((e) => {
         if (e.response.data?.code === 403) {

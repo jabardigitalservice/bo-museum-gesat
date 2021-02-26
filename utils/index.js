@@ -29,7 +29,7 @@ export function momentFormatTime (date) {
   return ''
 }
 
-export function momentFormatTime2 (date) {
+export function momentFormatTimeISO (date) {
   if (moment(date).isValid()) {
     return moment(date).format('HH:mm')
   }
