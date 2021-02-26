@@ -243,10 +243,16 @@ export default {
       'metaResource'
     ]),
     formIsEmpty () {
-      if (this.form.name === null || this.form.name === '' || this.form.capacity === null) {
-        return true
-      }
-      return false
+      const isFormEmpty = [
+        this.form.name,
+        this.form.capacity
+      ].some((value) => {
+        if (typeof value === 'string') {
+          return value.length === 0
+        }
+        return typeof value === 'undefined' || value === null
+      })
+      return isFormEmpty
     }
   },
   created () {

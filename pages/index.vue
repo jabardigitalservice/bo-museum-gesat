@@ -208,10 +208,15 @@ export default {
   },
   computed: {
     formIsEmpty () {
-      if (this.form.title === null) {
-        return true
-      }
-      return false
+      const isFormEmpty = [
+        this.form.name
+      ].some((value) => {
+        if (typeof value === 'string') {
+          return value.length === 0
+        }
+        return typeof value === 'undefined' || value === null
+      })
+      return isFormEmpty
     }
   },
   methods: {
