@@ -43,6 +43,10 @@ export function momentFormatTimeToTz (date) {
   return ''
 }
 
+export function momentGetCurrentDate () {
+  return moment().format('YYYY-MM-DD')
+}
+
 export function isAdmin ($auth) {
   const tokenBearer = $auth.strategy.token.get()
   const token = tokenBearer.split(' ')
@@ -54,15 +58,26 @@ export function isAdmin ($auth) {
 }
 
 export function generateTimes () {
-  const hours = []
+  const times = []
   for (let hour = 0; hour < 24; hour++) {
-    hours.push(moment({ hour }).format('HH:mm'))
-    hours.push(
+    times.push(moment({ hour }).format('HH:mm'))
+    times.push(
       moment({
         hour,
         minute: 30
       }).format('HH:mm')
     )
   }
-  return hours
+  return times
+}
+
+export function filterTimeAfterCurrent (times) {
+  const currentTime = moment().format('HH:mm')
+  const filteredTimes = []
+  for (let i = 0; i < times.length; i++) {
+    if (times[i] > currentTime) {
+      filteredTimes.push(times[i])
+    }
+  }
+  return filteredTimes
 }
