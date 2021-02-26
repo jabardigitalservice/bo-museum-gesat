@@ -29,6 +29,13 @@ export function momentFormatTime (date) {
   return ''
 }
 
+export function momentFormatTime2 (date) {
+  if (moment(date).isValid()) {
+    return moment(date).format('HH:mm')
+  }
+  return ''
+}
+
 export function momentFormatTimeToTz (date) {
   if (moment(date).isValid()) {
     return moment.utc(date).tz('Asia/Jakarta').format('DD MMMM YYYY HH:mm')
