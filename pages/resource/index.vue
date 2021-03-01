@@ -196,9 +196,9 @@
           </div>
           <div class="w-full flex flex-col mt-3">
             <label class="font-medium" for="status">Tipe Resource</label>
-            <select v-model="form.resource_type" name="status" class="focus:outline-none rounded p-3 appearance-none border-2 border-gray2">
-              <option v-for="type in optionsResourceType" :key="type.value" :value="type.value">
-                {{ type.label }}
+            <select v-model="form.resource_type" name="status" class="capitalize focus:outline-none rounded p-3 appearance-none border-2 border-gray2">
+              <option v-for="(type, index) in optionsResourceType" :key="index" class="capitalize" :value="type">
+                {{ type }}
               </option>
             </select>
           </div>

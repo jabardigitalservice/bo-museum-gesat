@@ -43,16 +43,7 @@ export const optionsStatusResource = [
 
 ]
 
-export const optionsResourceType = [
-  {
-    value: 'offline',
-    label: 'Offline'
-  },
-  {
-    value: 'online',
-    label: 'Online'
-  }
-]
+export const optionsResourceType = ['offline', 'online']
 
 export const optionsSortResource = [
   {
