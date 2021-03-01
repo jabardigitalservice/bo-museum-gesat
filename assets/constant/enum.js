@@ -43,6 +43,17 @@ export const optionsStatusResource = [
 
 ]
 
+export const optionsResourceType = [
+  {
+    value: 'offline',
+    label: 'Offline'
+  },
+  {
+    value: 'online',
+    label: 'Online'
+  }
+]
+
 export const optionsSortResource = [
   {
     value: 'name',
@@ -108,6 +119,7 @@ export const thResourceAsset = [
   'Nama',
   'Deskripsi',
   'Kapasitas',
+  'Tipe',
   'Status',
   'Tanggal dibuat',
   'Aksi'

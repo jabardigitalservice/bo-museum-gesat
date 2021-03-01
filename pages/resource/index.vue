@@ -59,6 +59,14 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span
+                  :class="{'bg-gray3': resource.resource_type === 'offline'}"
+                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue text-white capitalize"
+                >
+                  {{ resource.resource_type }}
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span
                   :class="{'bg-red': resource.status === 'not_active'}"
                   class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary text-white capitalize"
                 >
@@ -186,6 +194,14 @@
             <label class="font-medium" for="status">Kapasitas</label>
             <input v-model="form.capacity" type="number" class="focus:outline-none p-3 rounded border-2 border-gray2">
           </div>
+          <div class="w-full flex flex-col mt-3">
+            <label class="font-medium" for="status">Tipe Resource</label>
+            <select v-model="form.resource_type" name="status" class="focus:outline-none rounded p-3 appearance-none border-2 border-gray2">
+              <option v-for="type in optionsResourceType" :key="type.value" :value="type.value">
+                {{ type.label }}
+              </option>
+            </select>
+          </div>
           <div class="grid grid-cols-2 gap-4 mt-3">
             <button v-if="submitForm == 'store'" :class="{'bg-gray4': formIsEmpty}" class="btn bg-primary" :disabled="formIsEmpty" @click.stop="storeResource">
               Submit
@@ -205,7 +221,7 @@
 <script>
 import { mapState } from 'vuex'
 import Pagination from '~/components/Pagination.vue'
-import { optionsStatusResource, optionsSortResource, optionsOrderBy, thResourceAsset } from '~/assets/constant/enum'
+import { optionsStatusResource, optionsResourceType, optionsSortResource, optionsOrderBy, thResourceAsset } from '~/assets/constant/enum'
 import {
   momentFormatDateId
 } from '~/utils'
@@ -228,12 +244,14 @@ export default {
         name: null,
         description: null,
         status: 'active',
-        capacity: null
+        capacity: 0,
+        resource_type: 'online'
       },
       momentFormatDateId,
       optionsStatusResource,
       optionsOrderBy,
       optionsSortResource,
+      optionsResourceType,
       submitForm: 'store'
     }
   },
@@ -245,7 +263,8 @@ export default {
     formIsEmpty () {
       const isFormEmpty = [
         this.form.name,
-        this.form.capacity
+        this.form.capacity,
+        this.form.resource_type
       ].some((value) => {
         if (typeof value === 'string') {
           return value.length === 0
@@ -271,6 +290,7 @@ export default {
       this.form.description = null
       this.form.status = 'active'
       this.form.capacity = null
+      this.form.resource_type = 'online'
     },
     closeAdd () {
       this.$modal.hide('add')
