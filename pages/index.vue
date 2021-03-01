@@ -209,7 +209,7 @@ export default {
   computed: {
     formIsEmpty () {
       const isFormEmpty = [
-        this.form.name
+        this.form.title
       ].some((value) => {
         if (typeof value === 'string') {
           return value.length === 0
