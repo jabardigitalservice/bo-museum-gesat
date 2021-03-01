@@ -62,17 +62,17 @@
           </thead>
           <tbody class="tbody">
             <tr v-for="(data, i) in dataReservasi" :key="i">
-              <td class="px-6 py-4 whitespace-nowrap">
+              <td style="min-width:256px" class="px-6 py-4 whitespace-nowrap">
                 <div class="text-md">
                   {{ data.user_fullname }}
                 </div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
+              <td style="min-width:200px" class="px-6 py-4 whitespace-nowrap">
                 <div class="text-md">
                   {{ data.title }}
                 </div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
+              <td style="min-width:280px" class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm">
                   {{ data.date && data.start_time && data.end_time ? getDisplayDateTimeManually(data.date, data.start_time, data.end_time) : '' }}
                 </div>
@@ -90,7 +90,7 @@
                   {{ data.description }}
                 </span>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
+              <td style="min-width:256px" class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm">
                   {{ data.created_at ? getDisplayDateTime(data.created_at) : '' }}
                 </div>

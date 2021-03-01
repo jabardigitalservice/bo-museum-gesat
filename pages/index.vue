@@ -58,16 +58,81 @@
           <button
             type="button"
             class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="clearFormReservation"
+            @click="closeFormReservation"
           >
-            Clear
+            Close
           </button>
           <button
+            :class="{'bg-gray4': formIsEmpty}"
+            :disabled="formIsEmpty"
             type="button"
             class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
             @click="addReservation"
           >
             Submit
+          </button>
+        </div>
+      </div>
+    </modal>
+    <modal name="detail" :adaptive="true" :height="`auto`">
+      <div class="p-8 space-y-4">
+        <div class="window-header mb-2">
+          DETAIL RESERVASI
+        </div>
+        <div class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            Nama Pegawai
+          </div>
+          <div class="md:col-span-3">
+            {{ detailData.extendedProps.name || '-' }}
+          </div>
+        </div>
+        <div class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            Judul Kegiatan
+          </div>
+          <div class="md:col-span-3">
+            {{ detailData.title || '-' }}
+          </div>
+        </div>
+        <div class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            Resource / Aset
+          </div>
+          <div class="md:col-span-3">
+            {{ detailData.extendedProps.resourceName || '-' }}
+          </div>
+        </div>
+        <div class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            Waktu Reservasi
+          </div>
+          <div class="md:col-span-3">
+            <div>{{ detailData.start && detailData.end ? getDisplayDateTimeManually(detailData.start, detailData.startStr, detailData.endStr) : '-' }}</div>
+          </div>
+        </div>
+        <div class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            Catatan Kegiatan
+          </div>
+          <div class="md:col-span-3">
+            {{ detailData.extendedProps.catatan || '-' }}
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <button
+            type="button"
+            class="w-1/2 flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            @click="closeModalDetail"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            class="w-1/2 flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-red text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            @click="deleteData"
+          >
+            Delete
           </button>
         </div>
       </div>
@@ -83,6 +148,7 @@ import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import { toMoment } from '@fullcalendar/moment'
 import listPlugin from '@fullcalendar/list'
 import allLocales from '@fullcalendar/core/locales-all'
+import { momentFormatDateId, momentFormatTimeISO } from '~/utils'
 export default {
   layout: 'admin',
   components: {
@@ -132,28 +198,89 @@ export default {
         selectOverlap: this.handleSelectOverlap,
         eventAllow: this.handleEventAllow,
         eventChange: this.handleUpdate
-        /* you can update a remote database when these fire:
-        eventAdd:
-
-        eventRemove:
-        */
       },
-      // currentEvents: [],
-      eventGuid: 0,
-      calendarApi: null
+      calendarApi: null,
+      detailData: {
+        extendedProps: {}
+      },
+      clickInfo: {}
+    }
+  },
+  computed: {
+    formIsEmpty () {
+      const isFormEmpty = [
+        this.form.name
+      ].some((value) => {
+        if (typeof value === 'string') {
+          return value.length === 0
+        }
+        return typeof value === 'undefined' || value === null
+      })
+      return isFormEmpty
     }
   },
   methods: {
+    getDisplayDateTimeManually (date, startTime, endTime) {
+      if (date && startTime && endTime) {
+        const dateString = momentFormatDateId(date)
+        const startTimeString = momentFormatTimeISO(startTime)
+        const endTimeString = momentFormatTimeISO(endTime)
+        return `${dateString}, pukul ${startTimeString}-${endTimeString}`
+      }
+      return '-'
+    },
     handleUpdate () {
-      this.$modal.show('add')
-      this.$axios.put(`/reservation/${this.form.id}`, this.form)
+      const calendarApi = this.$refs.fullCalendar.getApi()
+      this.$toast.info('Sedang diproses', {
+        iconPack: 'fontawesome',
+        duration: 5000
+      })
+      this.$axios.put(`/reservation/${this.form.id}`, this.form).then((res) => {
+        this.$toast.success('Berhasil diubah.', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
+        calendarApi.refetchEvents()
+      }).catch((e) => {
+        if (e.response.data?.code === 403) {
+          this.$toast.error('Anda tidak ada akses untuk mengubah data ini.', {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+          calendarApi.refetchEvents()
+        }
+      })
     },
     addReservation () {
       const calendarApi = this.$refs.fullCalendar.getApi()
-      this.$axios.post('/reservation', this.form).then(() => {
-        this.$modal.hide('add')
-        calendarApi.refetchEvents()
+      this.$toast.info('Sedang memproses', {
+        iconPack: 'fontawesome',
+        duration: 5000
       })
+      this.$modal.hide('add')
+      this.$axios.post('/reservation', this.form).then(() => {
+        this.$toast.success('Reservasi berhasil dibuat', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
+        calendarApi.refetchEvents()
+      }).catch((e) => {
+        if (e.response.data?.code === 403) {
+          this.$toast.error('Anda tidak ada akses untuk menambah data ini.', {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+        } else {
+          this.$toast.error('Terjadi Kesalahan', {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+        }
+      })
+    },
+    closeFormReservation () {
+      this.clearFormReservation()
+      this.$modal.hide('add')
     },
     clearFormReservation () {
       this.form.title = null
@@ -163,8 +290,16 @@ export default {
       const now = new Date()
       now.setMinutes(now.getMinutes() + 30)
       if (toMoment(new Date(), draggedEvent._context.calendarApi).format() > dropInfo.startStr) {
+        this.$toast.error('Tidak dapat melakukan reservasi sebelum waktu sekarang', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
         return false
       } else if (toMoment(now, draggedEvent._context.calendarApi).format() > draggedEvent.startStr) {
+        this.$toast.error('Dalam waktu 30 menit sebelum reservasi berlangsung anda tidak dapat mengubah reservasi', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
         return false
       } else {
         this.form.id = draggedEvent.id
@@ -184,28 +319,23 @@ export default {
       return stillEvent.allDay && movingEvent.allDay
     },
     getReservations (fetchInfo, successCallback, failureCallback) {
-      this.$axios.get('/reservation?perPage=all').then((response) => {
+      this.$axios.get('/reservation/list').then((response) => {
         const reservations = response.data.data
-        this.$axios.get('/asset/list').then((resources) => {
-          const reservationsMap = reservations.map((reservation) => {
-            const resource = resources.data?.data?.find((resource) => {
-              return resource.name === reservation.asset_name
-            })
-            const newObj = {}
-            newObj.id = reservation.id
-            newObj.title = reservation.title
-            newObj.start = reservation.start_time.slice(0, -8)
-            newObj.end = reservation.end_time.slice(0, -8)
-            newObj.resourceId = resource?.id
-            newObj.extendedProps = {
-              name: reservation.user_fullname,
-              resourceName: reservation.asset_name,
-              catatan: reservation.description
-            }
-            return newObj
-          })
-          successCallback(reservationsMap)
-        }).catch(error => Promise.reject(error))
+        const reservationsMap = reservations.map((reservation) => {
+          const newObj = {}
+          newObj.id = reservation.id
+          newObj.title = reservation.title
+          newObj.start = reservation.start_time.slice(0, -8)
+          newObj.end = reservation.end_time.slice(0, -8)
+          newObj.resourceId = reservation.asset_id
+          newObj.extendedProps = {
+            name: reservation.user_fullname,
+            resourceName: reservation.asset_name,
+            catatan: reservation.description
+          }
+          return newObj
+        })
+        successCallback(reservationsMap)
       }).catch((e) => {
         failureCallback(e)
       })
@@ -239,13 +369,39 @@ export default {
         calendarApi.unselect()
       }
     },
+    deleteData () {
+      const calendarApi = this.$refs.fullCalendar.getApi()
+      this.$swal.fire({
+        title: 'Anda yakin menghapus data ini?',
+        showCancelButton: true,
+        type: 'warning',
+        dangerMode: true
+      }).then((isConfirm) => {
+        if (isConfirm.value) {
+          this.$axios.delete(`/reservation/${this.detailData.id}`).then(() => {
+            this.$toast.success('Berhasil dihapus.', {
+              iconPack: 'fontawesome',
+              duration: 5000
+            })
+            calendarApi.refetchEvents()
+          }).catch((e) => {
+            if (e.response.data?.code === 403) {
+              this.$toast.error('Anda tidak ada akses untuk menghapus data ini.', {
+                iconPack: 'fontawesome',
+                duration: 5000
+              })
+            }
+          })
+          this.$modal.hide('detail')
+        }
+      })
+    },
+    closeModalDetail () {
+      this.$modal.hide('detail')
+    },
     handleEventClick (clickInfo) {
-      const calendarApi = clickInfo.view.calendar
-      if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-        this.$axios.delete(`/reservation/${clickInfo.event.id}`).then(() => {
-          calendarApi.refetchEvents()
-        })
-      }
+      this.detailData = clickInfo.event
+      this.$modal.show('detail')
     }
   }
 }
