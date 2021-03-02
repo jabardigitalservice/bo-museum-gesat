@@ -57,6 +57,14 @@ export const optionsSortResource = [
   {
     value: 'status',
     label: 'Status'
+  },
+  {
+    value: 'capacity',
+    label: 'Kapasitas'
+  },
+  {
+    value: 'resource_type',
+    label: 'Tipe Resource'
   }
 ]
 export const cardsDashboard = [
