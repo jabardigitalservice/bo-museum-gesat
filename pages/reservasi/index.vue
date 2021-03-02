@@ -137,7 +137,11 @@
       <Pagination :active-pagination="activeData" :length-data="meta.last_page" @update="changeActivePagination" />
     </div>
     <!-- modal filter -->
-    <modal name="filter" :adaptive="true" :height="450">
+    <modal
+      name="filter"
+      height="70%"
+      :adaptive="true"
+    >
       <div class="p-8 space-y-4">
         <div class="window-header mb-2">
           FILTER DATA RESERVASI
@@ -159,8 +163,8 @@
             />
           </div>
         </div>
-        <div>
-          <label for="password" class="block text-sm">
+        <div v-if="false">
+          <label class="block text-sm">
             Status
           </label>
           <div class="mt-1">
@@ -202,7 +206,11 @@
         </div>
       </div>
     </modal>
-    <modal name="sort" :adaptive="true" :height="450">
+    <modal
+      name="sort"
+      height="auto"
+      :adaptive="true"
+    >
       <div class="p-8 space-y-4">
         <div class="window-header mb-2">
           SORT DATA RESERVASI
