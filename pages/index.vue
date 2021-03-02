@@ -182,6 +182,7 @@ export default {
         },
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
         initialView: 'resourceTimeGridDay',
+        resourceOrder: '-resource_type',
         resources: this.getResources,
         initialEvents: [],
         events: this.getReservations,
@@ -347,6 +348,7 @@ export default {
           const newObj = {}
           newObj.id = resource.id
           newObj.title = resource.name
+          newObj.resource_type = resource.resource_type
           newObj.eventBackgroundColor = '#219653'
           return newObj
         })
