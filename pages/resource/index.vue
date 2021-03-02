@@ -316,6 +316,10 @@ export default {
       }).then((isConfirm) => {
         if (isConfirm.value) {
           this.$axios.delete(`/asset/${id}`).then(() => {
+            this.$toast.success('Berhasil dihapus.', {
+              iconPack: 'fontawesome',
+              duration: 5000
+            })
             this.initParams()
             this.fetchResource()
             this.activeData = 1
@@ -331,6 +335,10 @@ export default {
     updateResource () {
       this.$modal.hide('add')
       this.$axios.put(`/asset/${this.form?.id}`, this.form).then(() => {
+        this.$toast.success('Berhasil diubah.', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
         this.initParams()
         this.fetchResource()
         this.activeData = 1
@@ -346,7 +354,11 @@ export default {
     },
     storeResource () {
       this.$modal.hide('add')
-      this.$axios.post('/asset', this.form).then((response) => {
+      this.$axios.post('/asset', this.form).then(() => {
+        this.$toast.success('Berhasil ditambahkan.', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
         this.initParams()
         this.fetchResource()
         this.activeData = 1
