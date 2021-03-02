@@ -60,7 +60,7 @@
               </th>
             </tr>
           </thead>
-          <tbody class="tbody">
+          <tbody v-if="dataReservasi.length > 0" class="tbody">
             <tr v-for="(data, i) in dataReservasi" :key="i">
               <td style="min-width:256px" class="px-6 py-4 whitespace-nowrap">
                 <div class="text-md">
@@ -121,6 +121,13 @@
                   title="Tolak reservasi"
                   @click="verifikasiData('reject', data.id)"
                 />
+              </td>
+            </tr>
+          </tbody>
+          <tbody v-else class="tbody">
+            <tr>
+              <td colspan="6" class="w-full p-4 text-center text-gray3">
+                No data available
               </td>
             </tr>
           </tbody>

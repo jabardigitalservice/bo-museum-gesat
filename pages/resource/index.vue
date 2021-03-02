@@ -46,7 +46,7 @@
               </th>
             </tr>
           </thead>
-          <tbody class="tbody">
+          <tbody v-if="dataResource.length > 0" class="tbody">
             <tr v-for="resource in dataResource" :key="resource.id">
               <td class="px-6 py-4 whitespace-nowrap">
                 <span> {{ resource.name }} </span>
@@ -81,6 +81,13 @@
               >
                 <i class="bx bx-edit bx-sm cursor-pointer" @click="editResource(resource)" />
                 <i class="bx bx-trash bx-sm cursor-pointer text-red" @click="deleteResouce(resource.id)" />
+              </td>
+            </tr>
+          </tbody>
+          <tbody v-else class="tbody">
+            <tr>
+              <td colspan="7" class="w-full p-4 text-center text-gray3">
+                No data available
               </td>
             </tr>
           </tbody>
