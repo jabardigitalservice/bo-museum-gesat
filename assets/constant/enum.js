@@ -18,9 +18,6 @@ export const optionsSortBy = [{
 }, {
   key: 'reservation_time',
   value: 'Tanggal dan Waktu Kegiatan'
-}, {
-  key: 'approval_status',
-  value: 'Status'
 }]
 
 export const optionsOrderBy = [{
