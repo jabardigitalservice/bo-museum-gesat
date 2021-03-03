@@ -18,9 +18,6 @@ export const optionsSortBy = [{
 }, {
   key: 'reservation_time',
   value: 'Tanggal dan Waktu Kegiatan'
-}, {
-  key: 'approval_status',
-  value: 'Status'
 }]
 
 export const optionsOrderBy = [{
@@ -57,6 +54,14 @@ export const optionsSortResource = [
   {
     value: 'status',
     label: 'Status'
+  },
+  {
+    value: 'capacity',
+    label: 'Kapasitas'
+  },
+  {
+    value: 'resource_type',
+    label: 'Tipe Resource'
   }
 ]
 export const cardsDashboard = [

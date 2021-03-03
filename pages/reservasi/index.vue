@@ -60,7 +60,7 @@
               </th>
             </tr>
           </thead>
-          <tbody class="tbody">
+          <tbody v-if="dataReservasi.length > 0" class="tbody">
             <tr v-for="(data, i) in dataReservasi" :key="i">
               <td style="min-width:256px" class="px-6 py-4 whitespace-nowrap">
                 <div class="text-md">
@@ -124,13 +124,24 @@
               </td>
             </tr>
           </tbody>
+          <tbody v-else class="tbody">
+            <tr>
+              <td colspan="6" class="w-full p-4 text-center text-gray3">
+                No data available
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
       <!-- pagination -->
       <Pagination :active-pagination="activeData" :length-data="meta.last_page" @update="changeActivePagination" />
     </div>
     <!-- modal filter -->
-    <modal name="filter" :adaptive="true" :height="450">
+    <modal
+      name="filter"
+      height="70%"
+      :adaptive="true"
+    >
       <div class="p-8 space-y-4">
         <div class="window-header mb-2">
           FILTER DATA RESERVASI
@@ -152,8 +163,8 @@
             />
           </div>
         </div>
-        <div>
-          <label for="password" class="block text-sm">
+        <div v-if="false">
+          <label class="block text-sm">
             Status
           </label>
           <div class="mt-1">
@@ -195,7 +206,11 @@
         </div>
       </div>
     </modal>
-    <modal name="sort" :adaptive="true" :height="450">
+    <modal
+      name="sort"
+      height="auto"
+      :adaptive="true"
+    >
       <div class="p-8 space-y-4">
         <div class="window-header mb-2">
           SORT DATA RESERVASI

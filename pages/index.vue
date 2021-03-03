@@ -182,6 +182,8 @@ export default {
         },
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
         initialView: 'resourceTimeGridDay',
+        resourceOrder: '-resource_type',
+        resourceLabelContent: this.renderHeaderResource,
         resources: this.getResources,
         initialEvents: [],
         events: this.getReservations,
@@ -220,6 +222,14 @@ export default {
     }
   },
   methods: {
+    renderHeaderResource (arg) {
+      return {
+        html: `
+          ${arg.resource.title}
+          <span class="block text-sm text-blue">Kapasitas : ${arg.resource.extendedProps.capacity}</span>
+      `
+      }
+    },
     getDisplayDateTimeManually (date, startTime, endTime) {
       if (date && startTime && endTime) {
         const dateString = momentFormatDateId(date)
@@ -347,6 +357,8 @@ export default {
           const newObj = {}
           newObj.id = resource.id
           newObj.title = resource.name
+          newObj.resource_type = resource.resource_type
+          newObj.capacity = resource.capacity
           newObj.eventBackgroundColor = '#219653'
           return newObj
         })
