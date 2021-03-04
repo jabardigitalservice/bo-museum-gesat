@@ -145,6 +145,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
+import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import { toMoment } from '@fullcalendar/moment'
 import listPlugin from '@fullcalendar/list'
 import allLocales from '@fullcalendar/core/locales-all'
@@ -173,16 +174,19 @@ export default {
           timeGridPlugin,
           interactionPlugin,
           resourceTimeGridPlugin,
-          listPlugin
+          listPlugin,
+          scrollGridPlugin
         ],
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
           right: 'resourceTimeGridDay,dayGridMonth,listWeek'
         },
+        dayMinWidth: 180,
+        height: 'auto',
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
         initialView: 'resourceTimeGridDay',
-        resourceOrder: '-resource_type',
+        resourceOrder: '-resource_type,title',
         resourceLabelContent: this.renderHeaderResource,
         resources: this.getResources,
         initialEvents: [],
@@ -419,10 +423,13 @@ export default {
 }
 </script>
 <style>
-.fc-event-main {
-  overflow: auto;
-}
-.fc-event-main::-webkit-scrollbar {
-  display: none;
+@media (max-width: 768px){
+  .fc .fc-header-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+  }
 }
 </style>
