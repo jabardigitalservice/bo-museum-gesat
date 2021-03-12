@@ -5,6 +5,22 @@
       <h1 class="text-4xl font-normal text-gray1">
         Reservasi Command Center
       </h1>
+      <!-- FILTER -->
+      <div class="w-full flex flex-wrap my-3 ">
+        <div class="w-full flex flex-wrap-reverse lg:flex-wrap flex-row-reverse">
+          <div class="grid grid-cols-2 gap-2">
+            <button class="btn bg-blue px-2" @click="showModalFilter">
+              <i class="bx bx-filter bx-sm" />
+              <span>Filter</span>
+            </button>
+            <button class="btn" :class="isHasParams ? 'bg-red border border-red' : 'bg-white border border-grayText'" @click="initParams">
+              <span class="hover:text-black" :class="isHasParams ? 'text-white' : 'text-grayText'">
+                Reset
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
       <!-- TABLE -->
       <div class="align-middle inline-block min-w-full overflow-x-auto">
         <table v-if="render" class="w-full">
@@ -68,6 +84,63 @@
       <!-- PAGINATION -->
       <Pagination :active-pagination="activeData" :length-data="meta.last_page" @update="changeActivePagination" />
     </div>
+    <!-- FILTER MODAL -->
+    <modal
+      name="filter"
+      height="50%"
+      :adaptive="true"
+    >
+      <div class="p-8 space-y-4">
+        <div class="window-header mb-2">
+          FILTER DATA RESERVASI
+        </div>
+        <div>
+          <label for="title" class="block text-sm">
+            Rentang Tanggal
+          </label>
+          <div class="flex gap-2 mt-1">
+            <date-picker
+              v-model="params.start_date"
+              placeholder="Tanggal Awal"
+              class="form-input rounded-md"
+            />
+            <date-picker
+              v-model="params.end_date"
+              placeholder="Tanggal Akhir"
+              class="form-input rounded-md"
+            />
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm">
+            Status
+          </label>
+          <div class="mt-1">
+            <select v-model="params.approval_status" name="approval_status" required class="form-input bg-white rounded-md">
+              <option v-for="item in statusReservation" :key="item.key" :value="item.key">
+                {{ item.value }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="flex space-x-4">
+          <button
+            type="button"
+            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            @click="clearFilter"
+          >
+            Clear
+          </button>
+          <button
+            type="button"
+            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            @click="onFilter"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    </modal>
     <!-- DETAIL RESERVATION -->
     <modal name="detail" :adaptive="true" :height="`auto`">
       <div class="p-8 space-y-4">
@@ -162,7 +235,7 @@
 
 <script>
 import { statusReservation } from '~/assets/constant/enum'
-import { momentFormatTimeToTz, isAdmin as admin } from '~/utils'
+import { generateTimes, momentFormatDate, momentFormatTimeToTz, isAdmin as admin } from '~/utils'
 
 export default {
   layout: 'admin',
@@ -183,10 +256,17 @@ export default {
       ],
       reservations: [],
       reservationDetail: {},
+      statusReservation,
       params: {
         page: null,
-        perPage: null
+        perPage: null,
+        start_date: null,
+        end_date: null,
+        approval_status: null
       },
+      isHasParams: false,
+      generateTimes,
+      rangeTimes: [],
       admin
     }
   },
@@ -199,15 +279,30 @@ export default {
     activeData (val) {
       this.params.page = val
       this.getDataReservation()
+    },
+    'params.start_date' () {
+      if (this.params.start_date) {
+        this.params.start_date = momentFormatDate(this.params.start_date)
+      }
+    },
+    'params.end_date' () {
+      if (this.params.end_date) {
+        this.params.end_date = momentFormatDate(this.params.end_date)
+      }
     }
   },
   created () {
-    this.refreshTable()
+    this.rangeTimes = generateTimes()
+    this.initParams()
   },
   methods: {
     initParams () {
       this.params.page = null
       this.params.perPage = null
+      this.params.start_date = null
+      this.params.end_date = null
+      this.params.approval_status = null
+      this.isHasParams = false
       this.refreshTable()
     },
     async getDataReservation () {
@@ -230,6 +325,29 @@ export default {
       this.params.page = val
       this.refreshTable()
     },
+    showModalFilter () {
+      this.$modal.show('filter')
+    },
+    onFilter () {
+      this.checkParams()
+      if (this.params.start_date <= this.params.end_date) {
+        this.$modal.hide('filter')
+        this.params.page = null
+        this.refreshTable()
+      } else {
+        this.$toast.error('Tanggal awal harus kurang dari atau sama dengan tanggal akhir', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
+      }
+    },
+    clearFilter () {
+      this.params.approval_status = null
+      this.params.start_date = null
+      this.params.end_date = null
+      this.checkParams()
+      this.refreshTable()
+    },
     showModalDetail (data) {
       this.reservationDetail = data
       this.$modal.show('detail')
@@ -247,6 +365,9 @@ export default {
         return `${dateString}`
       }
       return '-'
+    },
+    checkParams () {
+      Object.values(this.params).find(element => element !== null) === undefined ? this.isHasParams = false : this.isHasParams = true
     }
   }
 }
