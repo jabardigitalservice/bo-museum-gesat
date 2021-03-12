@@ -6,9 +6,13 @@
         Reservasi Command Center
       </h1>
       <!-- FILTER -->
-      <div class="w-full flex flex-wrap my-3 ">
+      <div class="w-full flex my-3">
         <div class="w-full flex flex-wrap-reverse lg:flex-wrap flex-row-reverse">
-          <div class="grid grid-cols-2 gap-2">
+          <div class="grid grid-cols-3 gap-2">
+            <button class="btn bg-blue px-2" @click="showSearchModal">
+              <i class="text-white bx bx-search bx-sm cursor-pointer" />
+              <span>Search</span>
+            </button>
             <button class="btn bg-blue px-2" @click="showModalFilter">
               <i class="bx bx-filter bx-sm" />
               <span>Filter</span>
@@ -84,6 +88,62 @@
       <!-- PAGINATION -->
       <Pagination :active-pagination="activeData" :length-data="meta.last_page" @update="changeActivePagination" />
     </div>
+    <!-- SEARCH MODAL -->
+    <modal
+      name="search"
+      height="50%"
+      :adaptive="true"
+    >
+      <div class="p-8 space-y-4">
+        <div class="window-header mb-2">
+          SEARCH DATA RESERVASI
+        </div>
+        <div>
+          <label class="block text-sm">
+            Criteria
+            <div class="mt-1">
+              <select v-model="params.by" class="form-input bg-white rounded-md">
+                <option value="reservation_code">
+                  Kode Reservasi
+                </option>
+                <option value="name">
+                  Nama PIC
+                </option>
+                <option value="organization_name">
+                  Nama Instansi
+                </option>
+              </select>
+            </div>
+          </label>
+        </div>
+        <div>
+          <label class="block text-sm">
+            Keyword
+            <div class="flex mt-1">
+              <input v-model="params.keyword" class="w-full focus:outline-none border border-gray5 p-2 rounded-md" type="text">
+            </div>
+          </label>
+        </div>
+        <div class="flex space-x-4">
+          <button
+            type="button"
+            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            @click="clearSearch"
+          >
+            Clear
+          </button>
+          <button
+            type="button"
+            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            :disabled="!params.by || !params.keyword"
+            :class="!params.by || !params.keyword ? 'cursor-not-allowed bg-gray4' : ''"
+            @click="onSearch"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    </modal>
     <!-- FILTER MODAL -->
     <modal
       name="filter"
@@ -260,6 +320,8 @@ export default {
       params: {
         page: null,
         perPage: null,
+        by: null,
+        keyword: null,
         start_date: null,
         end_date: null,
         approval_status: null
@@ -299,6 +361,8 @@ export default {
     initParams () {
       this.params.page = null
       this.params.perPage = null
+      this.params.by = null
+      this.params.keyword = null
       this.params.start_date = null
       this.params.end_date = null
       this.params.approval_status = null
@@ -328,6 +392,18 @@ export default {
     showModalFilter () {
       this.$modal.show('filter')
     },
+    onSearch () {
+      this.checkParams()
+      this.$modal.hide('search')
+      this.params.page = null
+      this.refreshTable()
+    },
+    clearSearch () {
+      this.params.keyword = null
+      this.params.by = null
+      this.checkParams()
+      this.refreshTable()
+    },
     onFilter () {
       this.checkParams()
       if (this.params.start_date <= this.params.end_date) {
@@ -354,6 +430,12 @@ export default {
     },
     closeModalDetail () {
       this.$modal.hide('detail')
+    },
+    showSearchModal (data) {
+      this.$modal.show('search')
+    },
+    closeSearchModal () {
+      this.$modal.hide('search')
     },
     findStatus (stat) {
       const findStats = statusReservation.find(el => el.key === stat)
