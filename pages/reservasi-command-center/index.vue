@@ -73,6 +73,18 @@
                   title="Klik untuk melihat detail reservasi"
                   @click="showModalDetail(reservation)"
                 />
+                <i
+                  v-show="isAdmin && reservation.approval_status === 'not_yet_approved'"
+                  class="bx bx-calendar-check bx-sm cursor-pointer text-primary"
+                  title="Setujui reservasi"
+                  @click="verifikasiData('approve', reservation.id)"
+                />
+                <i
+                  v-show="isAdmin && reservation.approval_status === 'not_yet_approved'"
+                  class="bx bx-calendar-x bx-sm cursor-pointer text-red"
+                  title="Tolak reservasi"
+                  @click="verifikasiData('reject', reservation.id)"
+                />
               </td>
             </tr>
           </tbody>
@@ -436,6 +448,43 @@ export default {
     },
     closeSearchModal () {
       this.$modal.hide('search')
+    },
+    async verifikasiData (approval, id) {
+      const swal = this.$swal
+      const toast = this.$toast
+      const {
+        value: confirmation
+      } = await swal.fire({
+        title: approval === 'approve' ? 'Setujui Reservasi?' : 'Tolak Reservasi?',
+        showCancelButton: true,
+        confirmButtonText: '<i class="bx bx-sm bx-check" /> OK',
+        cancelButtonText: '<i class="bx bx-sm bx-close" /> Cancel',
+        type: approval === 'approve' ? 'success' : 'error',
+        input: 'text',
+        reverseButtons: true
+      })
+      if (confirmation) {
+        try {
+          await this.$axios.put(`/command-center-reservation/${id}`, {
+            approval_status: approval === 'approve' ? 'already_approved' : 'rejected',
+            note: confirmation
+          })
+          this.refreshTable()
+          swal.fire(
+            'Success',
+            'Verifikasi data reservasi berhasil',
+            'success'
+          )
+        } catch (e) {
+          swal.fire('Terjadi kesalahan', 'Silakan hubungi Admin', 'error')
+        }
+      }
+      if (confirmation === undefined || !confirmation) {
+        toast.error('Harap isi catatan verifikasi', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
+      }
     },
     findStatus (stat) {
       const findStats = statusReservation.find(el => el.key === stat)
