@@ -93,6 +93,14 @@ export const menus = [
     ]
   },
   {
+    path: '/reservasi-command-center',
+    label: 'Reservasi Command Center',
+    iconClass: 'bx-calendar',
+    role: [
+      'admin_reservasi'
+    ]
+  },
+  {
     path: '/resource',
     label: 'Resource/Aset',
     iconClass: 'bx-cabinet',
