@@ -201,7 +201,7 @@
             Shift Kunjungan
           </div>
           <div class="md:col-span-3">
-            <div>{{ reservationDetail.shift }}</div>
+            <div>{{ reservationDetail.command_center_shift }}</div>
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
