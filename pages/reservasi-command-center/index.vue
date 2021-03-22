@@ -55,7 +55,7 @@
               <td class="px-6 py-4 whitespace-nowrap">
                 <span
                   class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-white"
-                  :class="reservation.approval_status === 'not_yet_approved' ? 'bg-yellow' : reservation.approval_status === 'already_approved' ? 'bg-primary' : 'bg-red'"
+                  :class="reservation.approval_status === 'NOT_YET_APPROVED' ? 'bg-yellow' : reservation.approval_status === 'ALREADY_APPROVED' ? 'bg-primary' : 'bg-red'"
                 >
                   {{ findStatus(reservation.approval_status) }}
                 </span>
@@ -74,13 +74,13 @@
                   @click="showModalDetail(reservation)"
                 />
                 <i
-                  v-show="isAdmin && reservation.approval_status === 'not_yet_approved'"
+                  v-show="isAdmin && reservation.approval_status === 'NOT_YET_APPROVED'"
                   class="bx bx-calendar-check bx-sm cursor-pointer text-primary"
                   title="Setujui reservasi"
                   @click="verifikasiData('approve', reservation.id)"
                 />
                 <i
-                  v-show="isAdmin && reservation.approval_status === 'not_yet_approved'"
+                  v-show="isAdmin && reservation.approval_status === 'NOT_YET_APPROVED'"
                   class="bx bx-calendar-x bx-sm cursor-pointer text-red"
                   title="Tolak reservasi"
                   @click="verifikasiData('reject', reservation.id)"
@@ -419,7 +419,7 @@ export default {
       if (confirmation) {
         try {
           await this.$axios.put(`/command-center-reservation/${id}`, {
-            approval_status: approval === 'approve' ? 'already_approved' : 'rejected',
+            approval_status: approval === 'approve' ? 'ALREADY_APPROVED' : 'REJECTED',
             note: confirmation
           })
           this.refreshTable()
