@@ -109,6 +109,14 @@ export const menus = [
     ]
   },
   {
+    path: '/command-center',
+    label: 'Command Center',
+    iconClass: 'bx-cabinet',
+    role: [
+      'admin_reservasi'
+    ]
+  },
+  {
     path: '/logout',
     label: 'Logout',
     iconClass: 'bx-log-out',
