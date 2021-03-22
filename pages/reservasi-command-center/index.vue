@@ -114,6 +114,7 @@
       name="filter"
       height="50%"
       :adaptive="true"
+      styles="overflow: visible"
     >
       <div class="p-8 space-y-4">
         <div class="window-header mb-2">
