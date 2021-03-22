@@ -1,11 +1,11 @@
 export const statusReservation = [{
-  key: 'not_yet_approved',
+  key: 'NOT_YET_APPROVED',
   value: 'Waiting'
 }, {
-  key: 'already_approved',
+  key: 'ALREADY_APPROVED',
   value: 'Approved'
 }, {
-  key: 'rejected',
+  key: 'REJECTED',
   value: 'Rejected'
 }]
 
