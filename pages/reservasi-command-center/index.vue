@@ -62,7 +62,7 @@
               </td>
               <td style="min-width:200px" class="px-6 py-4 whitespace-nowrap">
                 <div class="text-md">
-                  {{ reservation.reservation_date }}
+                  {{ getDisplayDateTime(reservation.reservation_date) }}
                 </div>
               </td>
               <td
