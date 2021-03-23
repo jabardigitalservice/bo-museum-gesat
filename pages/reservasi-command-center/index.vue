@@ -112,7 +112,7 @@
     <!-- FILTER MODAL -->
     <modal
       name="filter"
-      height="50%"
+      height="60%"
       :adaptive="true"
       styles="overflow: visible"
     >
@@ -124,7 +124,7 @@
           <label for="title" class="block text-sm">
             Rentang Tanggal
           </label>
-          <div class="flex gap-2 mt-1">
+          <div class="flex flex-col sm:flex-row gap-2 mt-1">
             <date-picker
               v-model="params.start_date"
               placeholder="Tanggal Awal"
