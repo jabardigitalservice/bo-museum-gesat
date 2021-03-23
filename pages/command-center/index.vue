@@ -92,7 +92,7 @@ export default {
     return {
       render: true,
       errors: null,
-      dataHeader: ['Tanggal', 'Keterangan'],
+      dataHeader: ['Tanggal Tutup', 'Keterangan'],
       dataDisabledDate: [],
       momentFormatDateId,
       activeData: 1,
