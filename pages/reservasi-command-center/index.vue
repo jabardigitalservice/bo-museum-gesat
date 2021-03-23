@@ -62,7 +62,7 @@
               </td>
               <td style="min-width:200px" class="px-6 py-4 whitespace-nowrap">
                 <div class="text-md">
-                  {{ getDisplayDateTime(reservation.reservation_date) }}
+                  {{ getDisplayDateTime(reservation.reservation_date, false) }}
                 </div>
               </td>
               <td
@@ -242,15 +242,7 @@
             Tanggal Kunjungan
           </div>
           <div class="md:col-span-3">
-            <div>{{ getDisplayDateTime(reservationDetail.reservation_date) }}</div>
-          </div>
-        </div>
-        <div v-if="false" class="md:grid md:grid-cols-5 text-sm">
-          <div class="md:col-span-2 text-blue">
-            Status
-          </div>
-          <div class="md:col-span-3">
-            {{ findStatus(reservationDetail.approval_status) }}
+            <div>{{ getDisplayDateTime(reservationDetail.reservation_date, false) }}</div>
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
@@ -293,7 +285,7 @@
 
 <script>
 import { statusReservation } from '~/assets/constant/enum'
-import { generateTimes, momentFormatDate, momentFormatTimeToTz, isAdmin as admin } from '~/utils'
+import { generateTimes, momentFormatDate, momentFormatTimeToTz, momentFormatDateId, isAdmin as admin } from '~/utils'
 
 export default {
   layout: 'admin',
@@ -309,7 +301,7 @@ export default {
         'Nama PIC',
         'Nama Instansi',
         'Status',
-        'Tanggal',
+        'Tanggal Reservasi',
         'Aksi'
       ],
       reservations: [],
@@ -476,11 +468,17 @@ export default {
       const findStats = statusReservation.find(el => el.key === stat)
       return findStats.value
     },
-    getDisplayDateTime (date) {
-      if (date) {
+    getDisplayDateTime (date, withTime = true) {
+      if (date && withTime) {
         const dateString = momentFormatTimeToTz(date)
         return `${dateString}`
       }
+
+      if (date && !withTime) {
+        const dateString = momentFormatDateId(date)
+        return `${dateString}`
+      }
+
       return '-'
     },
     checkParams () {
