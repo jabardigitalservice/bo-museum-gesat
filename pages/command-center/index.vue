@@ -63,7 +63,7 @@
             <tr v-for="data in dataDisabledDate" :key="data.id">
               <td style="min-width: 256px" class="px-6 py-4 whitespace-nowrap">
                 <div class="text-md">
-                  {{ formatDate(data.date) }}
+                  {{ momentFormatDateId(data.date) }}
                 </div>
               </td>
               <td style="min-width: 256px" class="px-6 py-4 whitespace-nowrap">
@@ -93,7 +93,8 @@ export default {
       render: true,
       errors: null,
       dataHeader: ['Tanggal', 'Keterangan'],
-      dataDisabledDate: []
+      dataDisabledDate: [],
+      momentFormatDateId
     }
   },
   computed: {
@@ -112,9 +113,6 @@ export default {
       } catch (error) {
         this.errors = error
       }
-    },
-    formatDate (date) {
-      return momentFormatDateId(date)
     }
   }
 }
