@@ -9,7 +9,7 @@
       <div class="w-full flex flex-wrap my-3">
         <div class="w-full lg:w-1/2 my-1">
           <div class="w-2/3 lg:w-1/2">
-            <button class="btn bg-primary">
+            <button v-show="isAdmin" class="btn bg-primary">
               <i class="bx bx-plus bx-sm" />
               <span>Tambah Tanggal Tutup</span>
             </button>
@@ -44,12 +44,85 @@
           </div>
         </div>
       </div>
+      <!-- table -->
+      <div class="align-middle inline-block min-w-full overflow-x-auto">
+        <table v-if="render" class="w-full">
+          <thead class="bg-primary">
+            <tr>
+              <th
+                v-for="head in dataHeader"
+                :key="head"
+                scope="col"
+                class="thead"
+              >
+                {{ head }}
+              </th>
+            </tr>
+          </thead>
+          <tbody class="tbody">
+            <tr v-for="data in dataDisabledDate" :key="data.id">
+              <td style="min-width: 256px" class="px-6 py-4 whitespace-nowrap">
+                <div class="text-md">
+                  {{ data.date }}
+                </div>
+              </td>
+              <td style="min-width: 256px" class="px-6 py-4 whitespace-nowrap">
+                <div class="text-md">
+                  {{ data.note }}
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <Pagination />
     </div>
   </div>
 </template>
 
 <script>
+import Pagination from '~/components/Pagination.vue'
+import { isAdmin as admin } from '~/utils'
 export default {
-  layout: 'admin'
+  components: {
+    Pagination
+  },
+  layout: 'admin',
+  data () {
+    return {
+      render: {
+        type: Boolean,
+        value: true
+      },
+      errors: {
+        type: Object,
+        value: false
+      },
+      dataHeader: ['Tanggal', 'Keterangan'],
+      dataDisabledDate: {
+        type: Array,
+        value: []
+      }
+    }
+  },
+  computed: {
+    isAdmin () {
+      return admin(this.$auth)
+    }
+  },
+  created () {
+    this.getDisabledDateData()
+  },
+  methods: {
+    async getDisabledDateData () {
+      try {
+        const res = await this.$axios.$get('/close-days')
+        this.dataDisabledDate = res.data
+        console.log(res)
+      } catch (error) {
+        this.errors = error
+      }
+    }
+  }
 }
 </script>
