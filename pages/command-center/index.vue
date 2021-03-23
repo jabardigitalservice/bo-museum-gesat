@@ -63,7 +63,7 @@
             <tr v-for="data in dataDisabledDate" :key="data.id">
               <td style="min-width: 256px" class="px-6 py-4 whitespace-nowrap">
                 <div class="text-md">
-                  {{ data.date }}
+                  {{ formatDate(data.date) }}
                 </div>
               </td>
               <td style="min-width: 256px" class="px-6 py-4 whitespace-nowrap">
@@ -82,7 +82,7 @@
 
 <script>
 import Pagination from '~/components/Pagination.vue'
-import { isAdmin as admin } from '~/utils'
+import { isAdmin as admin, momentFormatDateId } from '~/utils'
 export default {
   components: {
     Pagination
@@ -118,10 +118,12 @@ export default {
       try {
         const res = await this.$axios.$get('/close-days')
         this.dataDisabledDate = res.data
-        console.log(res)
       } catch (error) {
         this.errors = error
       }
+    },
+    formatDate (date) {
+      return momentFormatDateId(date)
     }
   }
 }
