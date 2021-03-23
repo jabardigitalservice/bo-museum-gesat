@@ -414,7 +414,8 @@ export default {
         confirmButtonText: '<i class="bx bx-sm bx-check" /> OK',
         cancelButtonText: '<i class="bx bx-sm bx-close" /> Cancel',
         type: approval === 'approve' ? 'success' : 'error',
-        input: 'text',
+        input: 'textarea',
+        inputPlaceholder: 'Tuliskan catatan disini (optional)',
         reverseButtons: true
       })
       if (confirmation) {
