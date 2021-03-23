@@ -181,9 +181,41 @@
             {{ reservationDetail.name }}
           </div>
         </div>
+        <div v-show="isAdmin" class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            NIK
+          </div>
+          <div class="md:col-span-3">
+            {{ reservationDetail.nik }}
+          </div>
+        </div>
+        <div v-show="isAdmin" class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            Asal Instansi
+          </div>
+          <div class="md:col-span-3">
+            {{ reservationDetail.organization_name || '-' }}
+          </div>
+        </div>
+        <div v-show="isAdmin" class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            Nomor Telepon Penanggung Jawab
+          </div>
+          <div class="md:col-span-3">
+            {{ reservationDetail.phone_number }}
+          </div>
+        </div>
+        <div v-show="isAdmin" class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
+            Alamat Email
+          </div>
+          <div class="md:col-span-3">
+            {{ reservationDetail.email }}
+          </div>
+        </div>
         <div class="md:grid md:grid-cols-5 text-sm">
           <div class="md:col-span-2 text-blue">
-            Tujuan Kunjungan
+            Maksud dan Tujuan Kunjungan
           </div>
           <div class="md:col-span-3">
             {{ reservationDetail.description || '-' }}
@@ -210,7 +242,7 @@
             Tanggal Kunjungan
           </div>
           <div class="md:col-span-3">
-            <div>{{ reservationDetail.reservation_date }}</div>
+            <div>{{ getDisplayDateTime(reservationDetail.reservation_date) }}</div>
           </div>
         </div>
         <div v-if="false" class="md:grid md:grid-cols-5 text-sm">
