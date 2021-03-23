@@ -411,8 +411,8 @@ export default {
       } = await swal.fire({
         title: approval === 'approve' ? 'Setujui Reservasi?' : 'Tolak Reservasi?',
         showCancelButton: true,
-        confirmButtonText: '<i class="bx bx-sm bx-check" /> OK',
-        cancelButtonText: '<i class="bx bx-sm bx-close" /> Cancel',
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
         type: approval === 'approve' ? 'success' : 'error',
         input: 'textarea',
         inputPlaceholder: 'Tuliskan catatan disini (optional)',
