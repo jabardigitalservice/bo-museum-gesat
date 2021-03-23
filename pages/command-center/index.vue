@@ -75,7 +75,7 @@
           </tbody>
         </table>
       </div>
-      <Pagination />
+      <Pagination :active-pagination="activeData" :length-data="meta.last_page" @update="changeActivePagination" />
     </div>
   </div>
 </template>
@@ -94,12 +94,23 @@ export default {
       errors: null,
       dataHeader: ['Tanggal', 'Keterangan'],
       dataDisabledDate: [],
-      momentFormatDateId
+      momentFormatDateId,
+      activeData: 1,
+      meta: {},
+      params: {
+        page: null
+      }
     }
   },
   computed: {
     isAdmin () {
       return admin(this.$auth)
+    }
+  },
+  watch: {
+    activeData (val) {
+      this.params.page = val
+      this.getDisabledDateData()
     }
   },
   created () {
@@ -108,11 +119,23 @@ export default {
   methods: {
     async getDisabledDateData () {
       try {
-        const res = await this.$axios.$get('/close-days')
+        const res = await this.$axios.$get('/close-days', { params: this.params })
         this.dataDisabledDate = res.data
+        this.meta = res ? res.meta : {}
       } catch (error) {
         this.errors = error
       }
+    },
+    changeActivePagination (val) {
+      this.params.page = val
+      this.activeData = val
+      this.refreshTable()
+    },
+    async refreshTable () {
+      this.render = false
+      this.getDisabledDateData()
+      await this.$nextTick()
+      this.render = true
     }
   }
 }
