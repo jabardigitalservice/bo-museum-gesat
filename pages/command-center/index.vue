@@ -139,10 +139,7 @@ export default {
       this.refreshTable()
     },
     async refreshTable () {
-      this.render = false
-      this.getDisabledDateData()
-      await this.$nextTick()
-      this.render = true
+      await this.getDisabledDateData()
     }
   }
 }
