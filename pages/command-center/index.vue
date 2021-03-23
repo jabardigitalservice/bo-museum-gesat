@@ -46,7 +46,7 @@
       </div>
       <!-- table -->
       <div class="align-middle inline-block min-w-full overflow-x-auto">
-        <table v-if="render" class="w-full">
+        <table class="w-full">
           <thead class="bg-primary">
             <tr>
               <th
@@ -97,7 +97,6 @@ export default {
   layout: 'admin',
   data () {
     return {
-      render: true,
       errors: null,
       dataHeader: ['Tanggal Tutup', 'Keterangan'],
       dataDisabledDate: [],
