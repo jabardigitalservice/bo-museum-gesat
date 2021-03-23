@@ -9,7 +9,7 @@
       <div class="w-full flex flex-wrap my-3">
         <div class="w-full lg:w-1/2 my-1">
           <div class="w-2/3 lg:w-1/2">
-            <button v-show="isAdmin" class="btn bg-primary">
+            <button v-if="isAdmin" class="btn bg-primary">
               <i class="bx bx-plus bx-sm" />
               <span>Tambah Tanggal Tutup</span>
             </button>
