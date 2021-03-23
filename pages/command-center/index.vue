@@ -59,7 +59,7 @@
               </th>
             </tr>
           </thead>
-          <tbody class="tbody">
+          <tbody v-if="dataDisabledDate.length > 0" class="tbody">
             <tr v-for="data in dataDisabledDate" :key="data.id">
               <td style="min-width: 256px" class="px-6 py-4 whitespace-nowrap">
                 <div class="text-md">
@@ -70,6 +70,13 @@
                 <div class="text-md">
                   {{ data.note }}
                 </div>
+              </td>
+            </tr>
+          </tbody>
+          <tbody v-else class="tbody">
+            <tr>
+              <td colspan="6" class="w-full p-4 text-center text-gray3">
+                No data available
               </td>
             </tr>
           </tbody>
