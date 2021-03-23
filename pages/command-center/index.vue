@@ -90,19 +90,10 @@ export default {
   layout: 'admin',
   data () {
     return {
-      render: {
-        type: Boolean,
-        value: true
-      },
-      errors: {
-        type: Object,
-        value: false
-      },
+      render: true,
+      errors: null,
       dataHeader: ['Tanggal', 'Keterangan'],
-      dataDisabledDate: {
-        type: Array,
-        value: []
-      }
+      dataDisabledDate: []
     }
   },
   computed: {
