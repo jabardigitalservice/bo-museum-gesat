@@ -8,7 +8,7 @@
       <!-- FILTER -->
       <div class="w-full flex my-3">
         <div class="w-full flex flex-wrap-reverse lg:flex-wrap flex-row-reverse">
-          <div class="grid grid-cols-3 gap-2">
+          <div class="grid w-full sm:w-auto grid-cols-2 sm:grid-cols-4 gap-2">
             <button class="btn bg-blue px-2" @click="showSearchModal">
               <i class="text-white bx bx-search bx-sm cursor-pointer" />
               <span>Search</span>
@@ -17,12 +17,10 @@
               <i class="bx bx-filter bx-sm" />
               <span>Filter</span>
             </button>
-            <div class="md:col-span-1 ml-2">
-              <button class="btn bg-yellow px-2" @click="showModalSort">
-                <i class="bx bx-sort-up bx-sm" />
-                <span>Urutkan</span>
-              </button>
-            </div>
+            <button class="btn bg-yellow px-2" @click="showModalSort">
+              <i class="bx bx-sort-up bx-sm" />
+              <span>Urutkan</span>
+            </button>
             <button class="btn" :class="isHasParams ? 'bg-red border border-red' : 'bg-white border border-grayText'" @click="initParams">
               <span class="hover:text-black" :class="isHasParams ? 'text-white' : 'text-grayText'">
                 Reset
