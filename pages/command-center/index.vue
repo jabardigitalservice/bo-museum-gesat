@@ -46,7 +46,7 @@
       </div>
       <!-- table -->
       <div class="align-middle inline-block min-w-full overflow-x-auto">
-        <table v-if="render" class="w-full">
+        <table class="w-full">
           <thead class="bg-primary">
             <tr>
               <th
@@ -59,7 +59,7 @@
               </th>
             </tr>
           </thead>
-          <tbody class="tbody">
+          <tbody v-if="dataDisabledDate.length > 0" class="tbody">
             <tr v-for="data in dataDisabledDate" :key="data.id">
               <td style="min-width: 256px" class="px-6 py-4 whitespace-nowrap">
                 <div class="text-md">
@@ -73,9 +73,16 @@
               </td>
             </tr>
           </tbody>
+          <tbody v-else class="tbody">
+            <tr>
+              <td colspan="6" class="w-full p-4 text-center text-gray3">
+                No data available
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
-      <Pagination />
+      <Pagination :active-pagination="activeData" :length-data="meta.last_page" @update="changeActivePagination" />
     </div>
   </div>
 </template>
@@ -90,16 +97,26 @@ export default {
   layout: 'admin',
   data () {
     return {
-      render: true,
       errors: null,
-      dataHeader: ['Tanggal', 'Keterangan'],
+      dataHeader: ['Tanggal Tutup', 'Keterangan'],
       dataDisabledDate: [],
-      momentFormatDateId
+      momentFormatDateId,
+      activeData: 1,
+      meta: {},
+      params: {
+        page: null
+      }
     }
   },
   computed: {
     isAdmin () {
       return admin(this.$auth)
+    }
+  },
+  watch: {
+    activeData (val) {
+      this.params.page = val
+      this.getDisabledDateData()
     }
   },
   created () {
@@ -108,11 +125,20 @@ export default {
   methods: {
     async getDisabledDateData () {
       try {
-        const res = await this.$axios.$get('/close-days')
+        const res = await this.$axios.$get('/close-days', { params: this.params })
         this.dataDisabledDate = res.data
+        this.meta = res ? res.meta : {}
       } catch (error) {
         this.errors = error
       }
+    },
+    changeActivePagination (val) {
+      this.params.page = val
+      this.activeData = val
+      this.refreshTable()
+    },
+    async refreshTable () {
+      await this.getDisabledDateData()
     }
   }
 }
