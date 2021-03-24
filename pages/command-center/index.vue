@@ -126,8 +126,8 @@ export default {
     async getDisabledDateData () {
       try {
         const res = await this.$axios.$get('/close-days', { params: this.params })
-        this.dataDisabledDate = res.data
-        this.meta = res ? res.meta : {}
+        this.dataDisabledDate = res.data ?? []
+        this.meta = res.meta ?? {}
       } catch (error) {
         this.errors = error
       }
