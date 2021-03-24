@@ -417,7 +417,7 @@ export default {
       })
       if (!response.dismiss) {
         try {
-          await this.$axios.put(`/command-center-reservation/${id}`, {
+          await this.$axios.put(`/command-center-reservation/${id}/approval`, {
             approval_status: approval === 'approve' ? 'ALREADY_APPROVED' : 'REJECTED',
             note: response.value
           })
