@@ -405,10 +405,7 @@ export default {
     },
     async verifikasiData (approval, id) {
       const swal = this.$swal
-      const toast = this.$toast
-      const {
-        value: confirmation
-      } = await swal.fire({
+      const response = await swal.fire({
         title: approval === 'approve' ? 'Setujui Reservasi?' : 'Tolak Reservasi?',
         showCancelButton: true,
         confirmButtonText: 'OK',
@@ -418,11 +415,11 @@ export default {
         inputPlaceholder: 'Tuliskan catatan disini (optional)',
         reverseButtons: true
       })
-      if (confirmation) {
+      if (!response.dismiss) {
         try {
           await this.$axios.put(`/command-center-reservation/${id}`, {
             approval_status: approval === 'approve' ? 'ALREADY_APPROVED' : 'REJECTED',
-            note: confirmation
+            note: response.value
           })
           this.refreshTable()
           swal.fire(
@@ -433,12 +430,6 @@ export default {
         } catch (e) {
           swal.fire('Terjadi kesalahan', 'Silakan hubungi Admin', 'error')
         }
-      }
-      if (confirmation === undefined || !confirmation) {
-        toast.error('Harap isi catatan verifikasi', {
-          iconPack: 'fontawesome',
-          duration: 5000
-        })
       }
     },
     findStatus (stat) {
