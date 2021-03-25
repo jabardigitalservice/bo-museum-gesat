@@ -250,7 +250,6 @@ export default {
           })
         })
         this.closeModalAdd()
-        this.resetValue()
         this.refreshTable()
         this.activeData = 1
       } catch (err) {
@@ -258,7 +257,6 @@ export default {
           iconPack: 'fontawesome',
           duration: 5000
         })
-        this.resetValue()
       }
     },
     deleteCloseDate ({ id }) {
@@ -275,7 +273,6 @@ export default {
                 iconPack: 'fontawesome',
                 duration: 5000
               })
-              this.resetValue()
               this.refreshTable()
               this.activeData = 1
             })
