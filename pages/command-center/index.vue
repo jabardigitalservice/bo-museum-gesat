@@ -9,7 +9,7 @@
       <div class="w-full flex flex-wrap my-3">
         <div class="w-full lg:w-1/2 my-1">
           <div class="w-2/3 lg:w-1/2">
-            <button v-if="isAdmin" class="btn bg-primary">
+            <button v-if="isAdmin" class="btn bg-primary" @click="showModalAdd">
               <i class="bx bx-plus bx-sm" />
               <span>Tambah Tanggal Tutup</span>
             </button>
@@ -83,13 +83,64 @@
         </table>
       </div>
       <Pagination :active-pagination="activeData" :length-data="meta.last_page" @update="changeActivePagination" />
+      <!-- modal add close date -->
+      <modal
+        name="addCloseDate"
+        :adaptive="true"
+        :height="`auto`"
+        class="p-8 space-y-4 sm:p-4"
+        styles="overflow: visible"
+      >
+        <div class="p-8 space-y-4">
+          <div class="window-header mb-2">
+            TAMBAH TANGGAL TUTUP
+          </div>
+          <div>
+            <div class="mb-2">
+              <label for="closeDate" class="block text-sm">Tanggal Tutup</label>
+              <date-picker
+                v-model="form.selectedDate"
+                placeholder="Pilih Tanggal Tutup"
+                class="form-input rounded-md"
+                name="closeDate"
+              />
+            </div>
+            <div class="mb-2">
+              <label for="notes" class="block text-sm">Keterangan</label>
+              <textarea
+                v-model="form.notes"
+                class="form-input rounded-md"
+                name="notes"
+                cols="15"
+                rows="4"
+                placeholder="Masukkan Alasan Tutup"
+              />
+            </div>
+            <div class="flex space-x-4">
+              <button
+                type="button"
+                class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                @click="closeModalAdd"
+              >
+                Batal
+              </button>
+              <button
+                class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                @click="verifiedData"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </modal>
     </div>
   </div>
 </template>
 
 <script>
 import Pagination from '~/components/Pagination.vue'
-import { isAdmin as admin, momentFormatDateId } from '~/utils'
+import { isAdmin as admin, momentFormatDateId, momentFormatDate } from '~/utils'
 export default {
   components: {
     Pagination
@@ -105,6 +156,10 @@ export default {
       meta: {},
       params: {
         page: null
+      },
+      form: {
+        selectedDate: null,
+        notes: null
       }
     }
   },
@@ -126,10 +181,48 @@ export default {
     async getDisabledDateData () {
       try {
         const res = await this.$axios.$get('/close-days', { params: this.params })
-        this.dataDisabledDate = res.data
-        this.meta = res ? res.meta : {}
+        this.dataDisabledDate = res.data ?? []
+        this.meta = res.meta ?? {}
       } catch (error) {
         this.errors = error
+      }
+    },
+    verifiedData () {
+      const closeDate = this.form.selectedDate ? momentFormatDate(this.form.selectedDate) : null
+      const notes = this.form.notes
+      if (!closeDate) {
+        this.$toast.error('Tanggal Tutup tidak boleh kosong', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
+      } else if (!notes) {
+        this.$toast.error('Keterangan tidak boleh kosong', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
+      } else {
+        this.submitCloseDate(closeDate, notes)
+      }
+    },
+    submitCloseDate (closeDate, notes) {
+      try {
+        this.$modal.hide('addCloseDate')
+        this.$axios.post('/close-days', {
+          date: closeDate,
+          note: notes
+        }).then(() => {
+          this.$toast.success('Tanggal Tutup berhasil ditambahkan', {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+        })
+        this.refreshTable()
+        this.activeData = 1
+      } catch (err) {
+        this.$toast.error('Gagal menambahkan data', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
       }
     },
     changeActivePagination (val) {
@@ -139,6 +232,14 @@ export default {
     },
     async refreshTable () {
       await this.getDisabledDateData()
+    },
+    showModalAdd () {
+      this.$modal.show('addCloseDate')
+    },
+    closeModalAdd () {
+      this.form.selectedDate = null
+      this.form.notes = null
+      this.$modal.hide('addCloseDate')
     }
   }
 }
