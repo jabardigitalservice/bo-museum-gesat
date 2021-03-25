@@ -71,6 +71,12 @@
                   {{ data.note }}
                 </div>
               </td>
+              <td
+                class="px-6 py-4 whitespace-nowrap text-sm font-medium"
+              >
+                <i class="bx bx-edit bx-sm cursor-pointer" />
+                <i class="bx bx-trash bx-sm cursor-pointer text-red" />
+              </td>
             </tr>
           </tbody>
           <tbody v-else class="tbody">
@@ -149,7 +155,7 @@ export default {
   data () {
     return {
       errors: null,
-      dataHeader: ['Tanggal Tutup', 'Keterangan'],
+      dataHeader: ['Tanggal Tutup', 'Keterangan', 'Aksi'],
       dataDisabledDate: [],
       momentFormatDateId,
       activeData: 1,
