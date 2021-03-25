@@ -74,8 +74,8 @@
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium"
               >
-                <i class="bx bx-edit bx-sm cursor-pointer" @click="editDate(data)" />
-                <i class="bx bx-trash bx-sm cursor-pointer text-red" @click="deleteCloseDate(data)" />
+                <i class="bx bx-calendar-edit bx-sm cursor-pointer" @click="editDate(data)" />
+                <i class="bx bx-calendar-x bx-sm cursor-pointer text-red" @click="deleteCloseDate(data)" />
               </td>
             </tr>
           </tbody>
