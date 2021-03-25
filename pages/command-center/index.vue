@@ -259,31 +259,29 @@ export default {
         })
       }
     },
-    deleteCloseDate ({ id }) {
-      this.$swal.fire({
+    async deleteCloseDate ({ id }) {
+      const confirmed = await this.$swal.fire({
         title: 'Hapus Data?',
         showCancelButton: true,
         type: 'warning',
         dangerMode: true
-      }).then((isConfirm) => {
-        if (isConfirm.value) {
-          this.$axios.$delete(`/close-days/${id}`)
-            .then(() => {
-              this.$toast.success('Tanggal Berhasil dihapus.', {
-                iconPack: 'fontawesome',
-                duration: 5000
-              })
-              this.refreshTable()
-              this.activeData = 1
-            })
-            .catch(() => {
-              this.$toast.error('Gagal menghapus tanggal.', {
-                iconPack: 'fontawesome',
-                duration: 5000
-              })
-            })
-        }
       })
+      if (confirmed.value) {
+        try {
+          await this.$axios.$delete(`/close-days/${id}`)
+          this.$toast.success('Tanggal Berhasil dihapus.', {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+          this.refreshTable()
+          this.activeData = 1
+        } catch (error) {
+          this.$toast.success('Gagal menghapus tanggal.', {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+        }
+      }
     },
     changeActivePagination (val) {
       this.params.page = val
