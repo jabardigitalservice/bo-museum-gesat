@@ -75,7 +75,7 @@
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium"
               >
                 <i class="bx bx-edit bx-sm cursor-pointer" @click="editDate(data)" />
-                <i class="bx bx-trash bx-sm cursor-pointer text-red" @click="deleteDate(data)" />
+                <i class="bx bx-trash bx-sm cursor-pointer text-red" @click="deleteCloseDate(data)" />
               </td>
             </tr>
           </tbody>
@@ -260,6 +260,33 @@ export default {
         })
         this.resetValue()
       }
+    },
+    deleteCloseDate ({ id }) {
+      this.$swal.fire({
+        title: 'Hapus Data?',
+        showCancelButton: true,
+        type: 'warning',
+        dangerMode: true
+      }).then((isConfirm) => {
+        if (isConfirm.value) {
+          this.$axios.$delete(`/close-days/${id}`)
+            .then(() => {
+              this.$toast.success('Tanggal Berhasil dihapus.', {
+                iconPack: 'fontawesome',
+                duration: 5000
+              })
+              this.resetValue()
+              this.refreshTable()
+              this.activeData = 1
+            })
+            .catch(() => {
+              this.$toast.success('Tanggal Berhasil dihapus.', {
+                iconPack: 'fontawesome',
+                duration: 5000
+              })
+            })
+        }
+      })
     },
     changeActivePagination (val) {
       this.params.page = val
