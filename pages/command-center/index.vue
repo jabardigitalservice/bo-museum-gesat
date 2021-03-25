@@ -94,10 +94,11 @@
         name="addCloseDate"
         :adaptive="true"
         :height="`auto`"
-        class="p-8 space-y-4 sm:p-4"
+        :max-width="500"
+        :min-width="320"
         styles="overflow: visible"
       >
-        <div class="p-8 space-y-4">
+        <div class="w-full h-full p-4">
           <div class="window-header mb-2">
             TAMBAH TANGGAL TUTUP
           </div>
