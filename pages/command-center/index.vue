@@ -161,6 +161,7 @@ export default {
       activeData: 1,
       meta: {},
       params: {
+        id: null,
         page: null
       },
       form: {
@@ -198,17 +199,22 @@ export default {
       const closeDate = this.form.selectedDate ? momentFormatDate(this.form.selectedDate) : null
       const notes = this.form.notes
       if (!closeDate) {
-        this.$toast.error('Tanggal Tutup tidak boleh kosong', {
+        return this.$toast.error('Tanggal Tutup tidak boleh kosong', {
           iconPack: 'fontawesome',
           duration: 5000
         })
-      } else if (!notes) {
-        this.$toast.error('Keterangan tidak boleh kosong', {
+      }
+      if (!notes) {
+        return this.$toast.error('Keterangan tidak boleh kosong', {
           iconPack: 'fontawesome',
           duration: 5000
         })
-      } else {
-        this.submitCloseDate(closeDate, notes)
+      }
+      if (this.submitForm === 'store') {
+        return this.submitCloseDate(closeDate, notes)
+      }
+      if (this.submitForm === 'edit') {
+        return this.updateCloseDate(closeDate, notes, this.params.id)
       }
     },
     submitCloseDate (closeDate, notes) {
@@ -232,6 +238,29 @@ export default {
         })
       }
     },
+    async updateCloseDate (closeDate, notes, id) {
+      try {
+        await this.$axios.put(`/close-days/${id}`, {
+          date: closeDate,
+          note: notes
+        }).then(() => {
+          this.$toast.success('Tanggal Tutup berhasil diupdate', {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+        })
+        this.closeModalAdd()
+        this.resetValue()
+        this.refreshTable()
+        this.activeData = 1
+      } catch (err) {
+        this.$toast.error('Gagal menambahkan data', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
+        this.resetValue()
+      }
+    },
     changeActivePagination (val) {
       this.params.page = val
       this.activeData = val
@@ -241,18 +270,24 @@ export default {
       await this.getDisabledDateData()
     },
     showModalAdd () {
+      this.resetValue()
       this.$modal.show('addCloseDate')
     },
     closeModalAdd () {
-      this.form.selectedDate = null
-      this.form.notes = null
       this.$modal.hide('addCloseDate')
     },
     editDate (data) {
       this.form.selectedDate = data.date
       this.form.notes = data.note
+      this.params.id = data.id
       this.submitForm = 'edit'
-      this.showModalAdd()
+      this.$modal.show('addCloseDate')
+    },
+    resetValue () {
+      this.params.id = null
+      this.form.selectedDate = null
+      this.form.notes = null
+      this.submitForm = 'store'
     }
   }
 }
