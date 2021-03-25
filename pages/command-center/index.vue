@@ -277,7 +277,7 @@ export default {
               this.activeData = 1
             })
             .catch(() => {
-              this.$toast.success('Tanggal Berhasil dihapus.', {
+              this.$toast.error('Gagal menghapus tanggal.', {
                 iconPack: 'fontawesome',
                 duration: 5000
               })
