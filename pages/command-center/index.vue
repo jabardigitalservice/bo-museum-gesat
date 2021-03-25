@@ -74,8 +74,8 @@
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium"
               >
-                <i class="bx bx-edit bx-sm cursor-pointer" />
-                <i class="bx bx-trash bx-sm cursor-pointer text-red" />
+                <i class="bx bx-edit bx-sm cursor-pointer" @click="editDate(data)" />
+                <i class="bx bx-trash bx-sm cursor-pointer text-red" @click="deleteDate(data)" />
               </td>
             </tr>
           </tbody>
@@ -166,7 +166,8 @@ export default {
       form: {
         selectedDate: null,
         notes: null
-      }
+      },
+      submitForm: 'store'
     }
   },
   computed: {
@@ -246,6 +247,12 @@ export default {
       this.form.selectedDate = null
       this.form.notes = null
       this.$modal.hide('addCloseDate')
+    },
+    editDate (data) {
+      this.form.selectedDate = data.date
+      this.form.notes = data.note
+      this.submitForm = 'edit'
+      this.showModalAdd()
     }
   }
 }
