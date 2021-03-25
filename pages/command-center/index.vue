@@ -217,10 +217,10 @@ export default {
         return this.updateCloseDate(closeDate, notes, this.params.id)
       }
     },
-    submitCloseDate (closeDate, notes) {
+    async submitCloseDate (closeDate, notes) {
       try {
         this.$modal.hide('addCloseDate')
-        this.$axios.post('/close-days', {
+        await this.$axios.post('/close-days', {
           date: closeDate,
           note: notes
         }).then(() => {
