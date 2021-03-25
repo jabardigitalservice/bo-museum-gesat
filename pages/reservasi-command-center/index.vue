@@ -194,7 +194,7 @@
           </div>
         </div>
         <div>
-          <label for="password" class="block text-sm">
+          <label class="block text-sm">
             Order by
           </label>
           <div class="mt-1">
