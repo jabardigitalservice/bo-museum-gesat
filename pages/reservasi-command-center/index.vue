@@ -8,7 +8,7 @@
       <!-- FILTER -->
       <div class="w-full flex my-3">
         <div class="w-full flex flex-wrap-reverse lg:flex-wrap flex-row-reverse">
-          <div class="grid grid-cols-3 gap-2">
+          <div class="grid w-full sm:w-auto grid-cols-2 sm:grid-cols-4 gap-2">
             <button class="btn bg-blue px-2" @click="showSearchModal">
               <i class="text-white bx bx-search bx-sm cursor-pointer" />
               <span>Search</span>
@@ -16,6 +16,10 @@
             <button class="btn bg-blue px-2" @click="showModalFilter">
               <i class="bx bx-filter bx-sm" />
               <span>Filter</span>
+            </button>
+            <button class="btn bg-yellow px-2" @click="showModalSort">
+              <i class="bx bx-sort-up bx-sm" />
+              <span>Urutkan</span>
             </button>
             <button class="btn" :class="isHasParams ? 'bg-red border border-red' : 'bg-white border border-grayText'" @click="initParams">
               <span class="hover:text-black" :class="isHasParams ? 'text-white' : 'text-grayText'">
@@ -167,6 +171,61 @@
         </div>
       </div>
     </modal>
+    <!-- SORT MODAL -->
+    <modal
+      name="sort"
+      height="auto"
+      :adaptive="true"
+    >
+      <div class="p-8 space-y-4">
+        <div class="window-header mb-2">
+          SORT DATA RESERVASI COMMAND CENTER
+        </div>
+        <div>
+          <label for="title" class="block text-sm">
+            Sort by
+          </label>
+          <div class="mt-1">
+            <select v-model="params.sortBy" name="approval_status" required class="form-input">
+              <option value="reservation_date">
+                Reservation Date
+              </option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm">
+            Order by
+          </label>
+          <div class="mt-1">
+            <select v-model="params.orderBy" name="approval_status" required class="form-input">
+              <option value="desc">
+                Terbaru
+              </option>
+              <option value="asc">
+                Terlama
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="flex space-x-4">
+          <button
+            type="button"
+            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            @click="clearSortby"
+          >
+            Clear
+          </button>
+          <button
+            type="button"
+            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            @click="onSorting"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    </modal>
     <!-- DETAIL RESERVATION -->
     <modal name="detail" :adaptive="true" :height="`auto`">
       <div class="p-8 space-y-4">
@@ -290,7 +349,9 @@ export default {
         keyword: null,
         start_date: null,
         end_date: null,
-        approval_status: null
+        approval_status: null,
+        orderBy: null,
+        sortBy: null
       },
       isHasParams: false,
       generateTimes,
@@ -332,6 +393,8 @@ export default {
       this.params.start_date = null
       this.params.end_date = null
       this.params.approval_status = null
+      this.params.sortBy = null
+      this.params.orderBy = null
       this.isHasParams = false
       this.refreshTable()
     },
@@ -390,12 +453,26 @@ export default {
       this.checkParams()
       this.refreshTable()
     },
+    onSorting () {
+      this.checkParams()
+      this.$modal.hide('sort')
+      this.refreshTable()
+    },
+    clearSortby () {
+      this.params.sortBy = null
+      this.params.orderBy = null
+      this.checkParams()
+      this.refreshTable()
+    },
     showModalDetail (data) {
       this.reservationDetail = data
       this.$modal.show('detail')
     },
     closeModalDetail () {
       this.$modal.hide('detail')
+    },
+    showModalSort () {
+      this.$modal.show('sort')
     },
     showSearchModal (data) {
       this.$modal.show('search')
