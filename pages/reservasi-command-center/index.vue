@@ -218,7 +218,7 @@
             Maksud dan Tujuan Kunjungan
           </div>
           <div class="md:col-span-3">
-            {{ reservationDetail.description || '-' }}
+            {{ reservationDetail.purpose || '-' }}
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
