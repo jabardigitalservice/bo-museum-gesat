@@ -162,14 +162,46 @@
           <thead class="bg-primary">
             <tr>
               <th
+                v-for="headShift in dataHeaderShift"
+                :key="headShift"
                 class="thead"
                 scope="col"
               >
-                List
+                {{ headShift }}
               </th>
             </tr>
           </thead>
-          <tbody class="tbody">
+          <tbody v-if="dataShift.length > 0" class="tbody">
+            <tr v-for="shift in dataShift" :key="shift.id">
+              <td style="max-width:250px" class="px-6 py-4 whitespace-nowrap">
+                <div class="text-md">
+                  {{ shift.code }}
+                </div>
+              </td>
+              <td style="max-width:250px" class="px-6 py-4 whitespace-nowrap">
+                <div class="text-md">
+                  {{ shift.name }}
+                </div>
+              </td>
+              <td style="max-width:250px" class="px-6 py-4 whitespace-nowrap">
+                <div class="text-md">
+                  {{ shift.capacity }} Orang
+                </div>
+              </td>
+              <td style="max-width:250px" class="px-6 py-4 whitespace-nowrap">
+                <div class="text-md">
+                  {{ shift.status }}
+                </div>
+              </td>
+              <td
+                class="px-6 py-4 whitespace-nowrap text-sm font-medium"
+              >
+                <i class="bx bx-calendar-edit bx-sm cursor-pointer" @click="editDate(data)" />
+                <i class="bx bx-calendar-x bx-sm cursor-pointer text-red" @click="deleteCloseDate(data)" />
+              </td>
+            </tr>
+          </tbody>
+          <tbody v-else class="tbody">
             <tr>
               <td colspan="6" class="w-full p-4 text-center text-gray3">
                 <div class="text-md">
@@ -195,18 +227,14 @@
           <div>
             <div class="flex flex-col">
               <div class="w-full flex flex-col mt-3">
-                <label for="dayShift" class="block text-sm">Hari</label>
-                <select v-model="formShift.dayShift" name="dayShift" class="capitalize focus:outline-none rounded p-3 appearance-none border border-gray2">
-                  <option v-for="days in getDayIdn" :key="days.id" :value="days.name">
-                    {{ days.name }}
-                  </option>
-                </select>
+                <label for="nameShift" class="block text-sm">Nama</label>
+                <input v-model="formShift.name" class="w-full focus:outline-none p-3 rounded-md border border-gray2" type="text" placeholder="Nama Shift" name="nameShift">
               </div>
               <div class="w-full flex flex-col mt-3">
-                <label for="timeShift" class="block text-sm">Jam</label>
+                <label for="timeShift" class="block text-sm">Waktu Kunjungan</label>
                 <div class="flex space-x-4">
                   <div class="rounded-md p-3 border border-gray2">
-                    <select v-model="formShift.startShift" name="startShift" class="px-2 outline-none border bg-transparent">
+                    <select v-model="formShift.startShift" name="startShift" class="px-2 outline-none bg-transparent">
                       <option v-for="times in generateTimes" :key="times" :value="times">
                         {{ times }}
                       </option>
@@ -214,7 +242,7 @@
                   </div>
                   <span class="p-3"> - </span>
                   <div class="rounded-md p-3 border border-gray2">
-                    <select v-model="formShift.endShift" name="endShift" class="px-2 outline-none border bg-transparent">
+                    <select v-model="formShift.endShift" name="endShift" class="px-2 outline-none bg-transparent">
                       <option v-for="times in generateTimes" :key="times" :value="times">
                         {{ times }}
                       </option>
@@ -223,14 +251,22 @@
                 </div>
               </div>
               <div class="w-full flex flex-col mt-3">
-                <label for="quotaShift" class="block text-sm">Kuota</label>
+                <label for="quotaShift" class="block text-sm">Kapasitas</label>
                 <input
-                  v-model="formShift.quotaShift"
+                  v-model="formShift.capacityShift"
                   name="quotaShift"
                   type="number"
                   class="focus:outline-none p-3 rounded border border-gray2"
                   placeholder="Kapasitas Peserta Per Shift"
                 >
+              </div>
+              <div class="w-full flex flex-col mt-3">
+                <label for="statusShift" class="block text-sm">Status</label>
+                <select name="statusShift" class="p-3 rounded-md px-2 outline-none border border-gray2 bg-transparent">
+                  <option v-for="status in formShift.statusShift" :key="status" :value="status">
+                    {{ status }}
+                  </option>
+                </select>
               </div>
             </div>
             <div class="flex space-x-4">
@@ -270,15 +306,10 @@ export default {
     return {
       errors: null,
       dataHeader: ['Tanggal Tutup', 'Keterangan', 'Aksi'],
+      dataHeaderShift: ['Nama Shift', 'Waktu Kunjungan', 'Kapasitas', 'Status', 'Aksi'],
       dataDisabledDate: [],
+      dataShift: [],
       momentFormatDateId,
-      getDayIdn: [
-        { id: 1, name: 'Senin' },
-        { id: 2, name: 'Selasa' },
-        { id: 3, name: 'Rabu' },
-        { id: 4, name: 'Kamis' },
-        { id: 5, name: 'Jumat' }
-      ],
       generateTimes: [],
       activeData: 1,
       meta: {},
@@ -291,10 +322,11 @@ export default {
         notes: null
       },
       formShift: {
-        dayShift: null,
+        name: null,
         startShift: null,
         endShift: null,
-        quotaShift: null
+        capacityShift: null,
+        statusShift: ['ACTIVE', 'NOT_ACTIVE']
       },
       submitForm: 'store'
     }
@@ -305,10 +337,11 @@ export default {
     },
     formIsEmpty () {
       const isFormEmpty = [
-        this.formShift.dayShift,
+        this.formShift.name,
         this.formShift.startShift,
         this.formShift.endShift,
-        this.formShift.quotaShift
+        this.formShift.capacityShift,
+        this.formShift.statusShift
       ].some((value) => {
         if (typeof value === 'string') {
           return value.length === 0
@@ -327,8 +360,17 @@ export default {
   created () {
     this.getDisabledDateData()
     this.generateTimes = generateTimes()
+    this.getDataShift()
   },
   methods: {
+    async getDataShift () {
+      try {
+        const res = await this.$axios.$get('/command-center-shift')
+        this.dataShift = res ?? []
+      } catch (error) {
+        this.errors = error
+      }
+    },
     async getDisabledDateData () {
       try {
         const res = await this.$axios.$get('/close-days', { params: this.params })
@@ -462,10 +504,11 @@ export default {
     resetValue () {
       this.params.id = null
       this.form.selectedDate = null
-      this.formShift.dayShift = null
+      this.formShift.name = null
       this.formShift.startShift = null
       this.formShift.endShift = null
-      this.formShift.quotaShift = null
+      this.formShift.capacityShift = null
+      this.formShift.status = null
       this.form.notes = null
       this.submitForm = 'store'
     }
