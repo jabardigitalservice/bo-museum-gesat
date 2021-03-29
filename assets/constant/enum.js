@@ -9,6 +9,17 @@ export const statusReservation = [{
   value: 'Rejected'
 }]
 
+export const statusReservationCommandCenter = [{
+  key: 'NOT_YET_APPROVED',
+  value: 'Sedang diproses'
+}, {
+  key: 'ALREADY_APPROVED',
+  value: 'Diterima'
+}, {
+  key: 'REJECTED',
+  value: 'Ditolak'
+}]
+
 export const optionsSortBy = [{
   key: 'title',
   value: 'Judul Kegiatan'
