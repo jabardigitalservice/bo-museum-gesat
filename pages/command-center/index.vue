@@ -228,7 +228,7 @@
             <div class="flex flex-col">
               <div class="w-full flex flex-col mt-3">
                 <label for="nameShift" class="block text-sm">Nama</label>
-                <input v-model="formShift.name" class="w-full focus:outline-none p-3 rounded-md border border-gray2" type="text" placeholder="Nama Shift" name="nameShift">
+                <input v-model="formShift.nameShift" class="w-full focus:outline-none p-3 rounded-md border border-gray2" type="text" placeholder="Nama Shift" name="nameShift">
               </div>
               <div class="w-full flex flex-col mt-3">
                 <label for="timeShift" class="block text-sm">Waktu Kunjungan</label>
@@ -251,7 +251,7 @@
                 </div>
               </div>
               <div class="w-full flex flex-col mt-3">
-                <label for="quotaShift" class="block text-sm">Kapasitas</label>
+                <label for="quotaShift" class="block text-sm" min="1">Kapasitas</label>
                 <input
                   v-model="formShift.capacityShift"
                   name="quotaShift"
@@ -262,8 +262,8 @@
               </div>
               <div class="w-full flex flex-col mt-3">
                 <label for="statusShift" class="block text-sm">Status</label>
-                <select name="statusShift" class="p-3 rounded-md px-2 outline-none border border-gray2 bg-transparent">
-                  <option v-for="status in formShift.statusShift" :key="status" :value="status">
+                <select v-model="formShift.statusShift" name="statusShift" class="p-3 rounded-md px-2 outline-none border border-gray2 bg-transparent">
+                  <option v-for="status in dataStatus" :key="status" :value="status">
                     {{ status }}
                   </option>
                 </select>
@@ -309,6 +309,7 @@ export default {
       dataHeaderShift: ['Nama Shift', 'Waktu Kunjungan', 'Kapasitas', 'Status', 'Aksi'],
       dataDisabledDate: [],
       dataShift: [],
+      dataStatus: ['ACTIVE', 'NOT_ACTIVE'],
       momentFormatDateId,
       generateTimes: [],
       activeData: 1,
@@ -322,11 +323,11 @@ export default {
         notes: null
       },
       formShift: {
-        name: null,
+        nameShift: null,
         startShift: null,
         endShift: null,
         capacityShift: null,
-        statusShift: ['ACTIVE', 'NOT_ACTIVE']
+        statusShift: null
       },
       submitForm: 'store'
     }
@@ -336,11 +337,11 @@ export default {
       return admin(this.$auth)
     },
     formIsEmpty () {
+      const valShift = this.formShift.capacityShift
       const isFormEmpty = [
-        this.formShift.name,
+        this.formShift.nameShift,
         this.formShift.startShift,
         this.formShift.endShift,
-        this.formShift.capacityShift,
         this.formShift.statusShift
       ].some((value) => {
         if (typeof value === 'string') {
@@ -348,7 +349,10 @@ export default {
         }
         return typeof value === 'undefined' || value === null
       })
-      return isFormEmpty
+
+      return (
+        (!valShift || valShift <= 0 || /[^0-9]\d*$/.test(valShift)) || isFormEmpty
+      )
     }
   },
   watch: {
@@ -478,10 +482,30 @@ export default {
     },
     async refreshTable () {
       await this.getDisabledDateData()
+      await this.getDataShift()
     },
-    storeShift () {
-      this.$modal.hide('addShift')
-      this.resetValue()
+    async storeShift () {
+      try {
+        this.$modal.hide('addShift')
+        await this.$axios.post('/command-center-shift', {
+          name: this.formShift.nameShift,
+          time: `${this.formShift.startShift} - ${this.formShift.endShift}`,
+          status: this.formShift.statusShift,
+          capacity: this.formShift.capacityShift
+        }).then(() => {
+          this.$toast.success('Waktu Kunjungan berhasil ditambahkan', {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+        })
+        this.refreshTable()
+        this.resetValue()
+      } catch (err) {
+        this.$toast.error('Gagal menambahkan data', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
+      }
     },
     showModalAdd () {
       this.resetValue()
@@ -508,7 +532,7 @@ export default {
       const timeShift = data.name.split(' - ')
       this.formShift.startShift = timeShift[0]
       this.formShift.endShift = timeShift[1]
-      this.formShift.name = data.code
+      this.formShift.nameShift = data.code
       this.formShift.capacityShift = data.capacity
       this.formShift.status = data.status
       this.$modal.show('addShift')
@@ -516,7 +540,7 @@ export default {
     resetValue () {
       this.params.id = null
       this.form.selectedDate = null
-      this.formShift.name = null
+      this.formShift.nameShift = null
       this.formShift.startShift = null
       this.formShift.endShift = null
       this.formShift.capacityShift = null
