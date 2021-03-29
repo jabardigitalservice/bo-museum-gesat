@@ -258,6 +258,14 @@
         </div>
         <div v-show="isAdmin" class="md:grid md:grid-cols-5 text-sm">
           <div class="md:col-span-2 text-blue">
+            Alamat
+          </div>
+          <div class="md:col-span-3">
+            {{ reservationDetail.address || '-' }}
+          </div>
+        </div>
+        <div v-show="isAdmin" class="md:grid md:grid-cols-5 text-sm">
+          <div class="md:col-span-2 text-blue">
             Nomor Telepon Penanggung Jawab
           </div>
           <div class="md:col-span-3">
