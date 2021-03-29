@@ -482,6 +482,8 @@ export default {
     },
     async refreshTable () {
       await this.getDisabledDateData()
+    },
+    async refreshTableShift () {
       await this.getDataShift()
     },
     async storeShift () {
@@ -498,7 +500,7 @@ export default {
             duration: 5000
           })
         })
-        this.refreshTable()
+        this.refreshTableShift()
         this.resetValue()
       } catch (err) {
         this.$toast.error('Gagal menambahkan data', {
