@@ -368,7 +368,7 @@ export default {
         'Nama PIC',
         'Nama Instansi',
         'Status',
-        'Tanggal Reservasi',
+        'Tanggal Kunjungan',
         'Aksi'
       ],
       reservations: [],
