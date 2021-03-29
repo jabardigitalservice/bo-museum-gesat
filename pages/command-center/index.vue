@@ -536,7 +536,7 @@ export default {
       this.formShift.endShift = timeShift[1]
       this.formShift.nameShift = data.code
       this.formShift.capacityShift = data.capacity
-      this.formShift.status = data.status
+      this.formShift.statusShift = data.status
       this.$modal.show('addShift')
     },
     resetValue () {
@@ -546,7 +546,7 @@ export default {
       this.formShift.startShift = null
       this.formShift.endShift = null
       this.formShift.capacityShift = null
-      this.formShift.status = null
+      this.formShift.statusShift = null
       this.form.notes = null
       this.submitForm = 'store'
     }
