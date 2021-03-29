@@ -16,6 +16,7 @@
           </div>
         </div>
         <div
+          v-if="false"
           class="w-full lg:w-1/2 flex flex-wrap-reverse lg:flex-wrap flex-row-reverse"
         >
           <div class="w-1/2 lg:w-1/4 my-1 pl-1">
@@ -74,8 +75,8 @@
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium"
               >
-                <i class="bx bx-calendar-edit bx-sm cursor-pointer" @click="editDate(data)" />
-                <i class="bx bx-calendar-x bx-sm cursor-pointer text-red" @click="deleteCloseDate(data)" />
+                <i title="Edit Tanggal" class="bx bx-calendar-edit bx-sm cursor-pointer" @click="editDate(data)" />
+                <i title="Hapus Tanggal" class="bx bx-trash bx-sm cursor-pointer text-red" @click="deleteCloseDate(data)" />
               </td>
             </tr>
           </tbody>
