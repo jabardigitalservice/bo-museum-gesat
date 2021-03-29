@@ -141,13 +141,126 @@
           </div>
         </div>
       </modal>
+      <!-- title -->
+      <h1 class="text-4xl font-normal text-gray1">
+        Atur Waktu Kunjungan
+      </h1>
+      <!-- Filter, Add, List Shift -->
+      <div class="w-full flex flex-wrap my-3">
+        <div class="w-full lg:w-1/2 my-1">
+          <div class="w-2/3 lg:w-1/2">
+            <button v-if="isAdmin" class="btn bg-primary" @click="showModalAddShift">
+              <i class="bx bx-plus bx-sm" />
+              <span>Tambah Shift</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- table -->
+      <div class="align-middle inline-block min-w-full overflow-x-auto">
+        <table class="w-full">
+          <thead class="bg-primary">
+            <tr>
+              <th
+                class="thead"
+                scope="col"
+              >
+                List
+              </th>
+            </tr>
+          </thead>
+          <tbody class="tbody">
+            <tr>
+              <td colspan="6" class="w-full p-4 text-center text-gray3">
+                <div class="text-md">
+                  No data available
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- modal add shift -->
+      <modal
+        name="addShift"
+        :adaptive="true"
+        :height="`auto`"
+        :max-width="500"
+        :min-width="320"
+      >
+        <div class="w-full h-full p-3 overflow-auto">
+          <div class="window-header mb-2">
+            TAMBAH SHIFT
+          </div>
+          <div>
+            <div class="flex flex-col">
+              <div class="w-full flex flex-col mt-3">
+                <label for="dayShift" class="block text-sm">Hari</label>
+                <select v-model="formShift.dayShift" name="dayShift" class="capitalize focus:outline-none rounded p-3 appearance-none border border-gray2">
+                  <option v-for="days in getDayIdn" :key="days.id" :value="days.name">
+                    {{ days.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="w-full flex flex-col mt-3">
+                <label for="timeShift" class="block text-sm">Jam</label>
+                <div class="flex space-x-4">
+                  <div class="rounded-md p-3 border border-gray2">
+                    <select v-model="formShift.startShift" name="startShift" class="px-2 outline-none border bg-transparent">
+                      <option v-for="times in generateTimes" :key="times" :value="times">
+                        {{ times }}
+                      </option>
+                    </select>
+                  </div>
+                  <span class="p-3"> - </span>
+                  <div class="rounded-md p-3 border border-gray2">
+                    <select v-model="formShift.endShift" name="endShift" class="px-2 outline-none border bg-transparent">
+                      <option v-for="times in generateTimes" :key="times" :value="times">
+                        {{ times }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="w-full flex flex-col mt-3">
+                <label for="quotaShift" class="block text-sm">Kuota</label>
+                <input
+                  v-model="formShift.quotaShift"
+                  name="quotaShift"
+                  type="number"
+                  class="focus:outline-none p-3 rounded border border-gray2"
+                  placeholder="Kapasitas Peserta Per Shift"
+                >
+              </div>
+            </div>
+            <div class="flex space-x-4">
+              <button
+                type="button"
+                class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                @click="closeModalAddShift"
+              >
+                Close
+              </button>
+              <button
+                v-if="submitForm == 'store'"
+                :class="{'bg-gray4': formIsEmpty}"
+                :disabled="formIsEmpty"
+                class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                @click.stop="storeShift"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </modal>
     </div>
   </div>
 </template>
 
 <script>
 import Pagination from '~/components/Pagination.vue'
-import { isAdmin as admin, momentFormatDateId, momentFormatDate } from '~/utils'
+import { isAdmin as admin, momentFormatDateId, momentFormatDate, generateTimes } from '~/utils'
 export default {
   components: {
     Pagination
@@ -159,6 +272,14 @@ export default {
       dataHeader: ['Tanggal Tutup', 'Keterangan', 'Aksi'],
       dataDisabledDate: [],
       momentFormatDateId,
+      getDayIdn: [
+        { id: 1, name: 'Senin' },
+        { id: 2, name: 'Selasa' },
+        { id: 3, name: 'Rabu' },
+        { id: 4, name: 'Kamis' },
+        { id: 5, name: 'Jumat' }
+      ],
+      generateTimes: [],
       activeData: 1,
       meta: {},
       params: {
@@ -169,12 +290,32 @@ export default {
         selectedDate: null,
         notes: null
       },
+      formShift: {
+        dayShift: null,
+        startShift: null,
+        endShift: null,
+        quotaShift: null
+      },
       submitForm: 'store'
     }
   },
   computed: {
     isAdmin () {
       return admin(this.$auth)
+    },
+    formIsEmpty () {
+      const isFormEmpty = [
+        this.formShift.dayShift,
+        this.formShift.startShift,
+        this.formShift.endShift,
+        this.formShift.quotaShift
+      ].some((value) => {
+        if (typeof value === 'string') {
+          return value.length === 0
+        }
+        return typeof value === 'undefined' || value === null
+      })
+      return isFormEmpty
     }
   },
   watch: {
@@ -185,6 +326,7 @@ export default {
   },
   created () {
     this.getDisabledDateData()
+    this.generateTimes = generateTimes()
   },
   methods: {
     async getDisabledDateData () {
@@ -292,12 +434,23 @@ export default {
     async refreshTable () {
       await this.getDisabledDateData()
     },
+    storeShift () {
+      this.$modal.hide('addShift')
+      this.resetValue()
+    },
     showModalAdd () {
       this.resetValue()
       this.$modal.show('addCloseDate')
     },
+    showModalAddShift () {
+      this.resetValue()
+      this.$modal.show('addShift')
+    },
     closeModalAdd () {
       this.$modal.hide('addCloseDate')
+    },
+    closeModalAddShift () {
+      this.$modal.hide('addShift')
     },
     editDate (data) {
       this.form.selectedDate = data.date
@@ -309,6 +462,10 @@ export default {
     resetValue () {
       this.params.id = null
       this.form.selectedDate = null
+      this.formShift.dayShift = null
+      this.formShift.startShift = null
+      this.formShift.endShift = null
+      this.formShift.quotaShift = null
       this.form.notes = null
       this.submitForm = 'store'
     }
