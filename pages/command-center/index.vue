@@ -196,8 +196,8 @@
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium"
               >
-                <i class="bx bx-calendar-edit bx-sm cursor-pointer" @click="editDate(data)" />
-                <i class="bx bx-calendar-x bx-sm cursor-pointer text-red" @click="deleteCloseDate(data)" />
+                <i class="bx bx-calendar-edit bx-sm cursor-pointer" @click="editShift(shift)" />
+                <i class="bx bx-calendar-x bx-sm cursor-pointer text-red" @click="deleteShift(shift)" />
               </td>
             </tr>
           </tbody>
@@ -468,6 +468,9 @@ export default {
         }
       }
     },
+    deleteShift ({ id }) {
+      return id
+    },
     changeActivePagination (val) {
       this.params.page = val
       this.activeData = val
@@ -500,6 +503,15 @@ export default {
       this.params.id = data.id
       this.submitForm = 'edit'
       this.$modal.show('addCloseDate')
+    },
+    editShift (data) {
+      const timeShift = data.name.split(' - ')
+      this.formShift.startShift = timeShift[0]
+      this.formShift.endShift = timeShift[1]
+      this.formShift.name = data.code
+      this.formShift.capacityShift = data.capacity
+      this.formShift.status = data.status
+      this.$modal.show('addShift')
     },
     resetValue () {
       this.params.id = null
