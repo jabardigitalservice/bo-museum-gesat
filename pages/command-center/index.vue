@@ -277,7 +277,7 @@ export default {
           this.refreshTable()
           this.activeData = 1
         } catch (error) {
-          this.$toast.success('Gagal menghapus tanggal.', {
+          this.$toast.error('Gagal menghapus tanggal.', {
             iconPack: 'fontawesome',
             duration: 5000
           })
