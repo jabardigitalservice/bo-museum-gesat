@@ -1,16 +1,5 @@
 export const statusReservation = [{
   key: 'NOT_YET_APPROVED',
-  value: 'Waiting'
-}, {
-  key: 'ALREADY_APPROVED',
-  value: 'Approved'
-}, {
-  key: 'REJECTED',
-  value: 'Rejected'
-}]
-
-export const statusReservationCommandCenter = [{
-  key: 'NOT_YET_APPROVED',
   value: 'Sedang diproses'
 }, {
   key: 'ALREADY_APPROVED',

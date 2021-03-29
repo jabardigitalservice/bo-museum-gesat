@@ -147,7 +147,7 @@
           </label>
           <div class="mt-1">
             <select v-model="params.approval_status" name="approval_status" required class="form-input bg-white rounded-md">
-              <option v-for="item in statusReservationCommandCenter" :key="item.key" :value="item.key">
+              <option v-for="item in statusReservation" :key="item.key" :value="item.key">
                 {{ item.value }}
               </option>
             </select>
@@ -343,7 +343,7 @@
 </template>
 
 <script>
-import { statusReservationCommandCenter } from '~/assets/constant/enum'
+import { statusReservation } from '~/assets/constant/enum'
 import { generateTimes, momentFormatDate, momentFormatTimeToTz, momentFormatDateId, isAdmin as admin } from '~/utils'
 
 export default {
@@ -365,7 +365,7 @@ export default {
       ],
       reservations: [],
       reservationDetail: {},
-      statusReservationCommandCenter,
+      statusReservation,
       params: {
         page: null,
         perPage: null,
@@ -534,7 +534,7 @@ export default {
       }
     },
     findStatus (stat) {
-      const findStats = statusReservationCommandCenter.find(el => el.key === stat)
+      const findStats = statusReservation.find(el => el.key === stat)
       return findStats.value
     },
     getDisplayDateTime (date, withTime = true) {
