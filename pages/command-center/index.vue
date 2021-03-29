@@ -76,7 +76,7 @@
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium"
               >
                 <i title="Edit Tanggal" class="bx bx-calendar-edit bx-sm cursor-pointer" @click="editDate(data)" />
-                <i title="Hapus Tanggal" class="bx bx-calendar-x bx-sm cursor-pointer text-red" @click="deleteCloseDate(data)" />
+                <i title="Hapus Tanggal" class="bx bx-trash bx-sm cursor-pointer text-red" @click="deleteCloseDate(data)" />
               </td>
             </tr>
           </tbody>
