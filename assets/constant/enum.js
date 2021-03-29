@@ -1,12 +1,12 @@
 export const statusReservation = [{
   key: 'NOT_YET_APPROVED',
-  value: 'Waiting'
+  value: 'Sedang diproses'
 }, {
   key: 'ALREADY_APPROVED',
-  value: 'Approved'
+  value: 'Diterima'
 }, {
   key: 'REJECTED',
-  value: 'Rejected'
+  value: 'Ditolak'
 }]
 
 export const optionsSortBy = [{

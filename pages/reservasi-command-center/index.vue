@@ -58,7 +58,7 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span
-                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-white"
+                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-white whitespace-no-wrap"
                   :class="reservation.approval_status === 'NOT_YET_APPROVED' ? 'bg-yellow' : reservation.approval_status === 'ALREADY_APPROVED' ? 'bg-primary' : 'bg-red'"
                 >
                   {{ findStatus(reservation.approval_status) }}
