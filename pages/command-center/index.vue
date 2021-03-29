@@ -16,6 +16,7 @@
           </div>
         </div>
         <div
+          v-if="false"
           class="w-full lg:w-1/2 flex flex-wrap-reverse lg:flex-wrap flex-row-reverse"
         >
           <div class="w-1/2 lg:w-1/4 my-1 pl-1">
