@@ -196,8 +196,8 @@
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium"
               >
-                <i class="bx bx-calendar-edit bx-sm cursor-pointer" @click="editShift(shift)" />
-                <i class="bx bx-calendar-x bx-sm cursor-pointer text-red" @click="deleteShift(shift)" />
+                <i class="bx bx-edit bx-sm cursor-pointer" title="Ubah waktu kunjungan" @click="editShift(shift)" />
+                <i class="bx bx-trash bx-sm cursor-pointer text-red" title="Hapus waktu kunjungan" @click="deleteShift(shift)" />
               </td>
             </tr>
           </tbody>
