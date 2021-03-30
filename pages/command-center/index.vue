@@ -418,7 +418,7 @@ export default {
         return this.storeShift()
       }
       if (this.submitForm === 'edit') {
-        return this.editStoreShift()
+        return this.editStoreShift(this.params.id)
       }
     },
     async submitCloseDate (closeDate, notes) {
@@ -506,10 +506,10 @@ export default {
     async refreshTableShift () {
       await this.getDataShift()
     },
-    async editStoreShift () {
+    async editStoreShift (id) {
       try {
         this.$modal.hide('addShift')
-        await this.$axios.put('/command-center-shift', {
+        await this.$axios.put(`/command-center-shift/${id}`, {
           name: this.formShift.nameShift,
           time: `${this.formShift.startShift} - ${this.formShift.endShift}`,
           status: this.formShift.statusShift,
@@ -574,11 +574,12 @@ export default {
       this.$modal.show('addCloseDate')
     },
     editShift (data) {
-      const timeShift = data.name.split(' - ')
+      const timeShift = data.time.split(' - ')
       this.submitForm = 'edit'
+      this.params.id = data.id
       this.formShift.startShift = timeShift[0]
       this.formShift.endShift = timeShift[1]
-      this.formShift.nameShift = data.code
+      this.formShift.nameShift = data.name
       this.formShift.capacityShift = data.capacity
       this.formShift.statusShift = data.status
       this.$modal.show('addShift')
