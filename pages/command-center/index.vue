@@ -175,12 +175,12 @@
             <tr v-for="shift in dataShift" :key="shift.id">
               <td style="max-width:250px" class="px-6 py-4 whitespace-nowrap">
                 <div class="text-md">
-                  {{ shift.code }}
+                  {{ shift.name }}
                 </div>
               </td>
               <td style="max-width:250px" class="px-6 py-4 whitespace-nowrap">
                 <div class="text-md">
-                  {{ shift.name }}
+                  {{ shift.time }}
                 </div>
               </td>
               <td style="max-width:250px" class="px-6 py-4 whitespace-nowrap">
@@ -212,6 +212,7 @@
           </tbody>
         </table>
       </div>
+      <Pagination :active-pagination="activeDataShift" :length-data="metaShift.last_page" @update="changeActivePaginationShift" />
       <!-- modal add shift -->
       <modal
         name="addShift"
@@ -312,7 +313,9 @@ export default {
       momentFormatDateId,
       generatedTimes: [],
       activeData: 1,
+      activeDataShift: 1,
       meta: {},
+      metaShift: {},
       params: {
         id: null,
         page: null
@@ -358,6 +361,10 @@ export default {
     activeData (val) {
       this.params.page = val
       this.getDisabledDateData()
+    },
+    activeDataShift (val) {
+      this.params.page = val
+      this.getDataShift()
     }
   },
   created () {
@@ -369,7 +376,8 @@ export default {
     async getDataShift () {
       try {
         const res = await this.$axios.$get('/command-center-shift')
-        this.dataShift = res ?? []
+        this.dataShift = res.data ?? []
+        this.metaShift = res.metaShift ?? {}
       } catch (error) {
         this.errors = error
       }
@@ -486,6 +494,11 @@ export default {
       this.params.page = val
       this.activeData = val
       this.refreshTable()
+    },
+    changeActivePaginationShift (val) {
+      this.params.page = val
+      this.activeDataShift = val
+      this.refreshTableShift()
     },
     async refreshTable () {
       await this.getDisabledDateData()
