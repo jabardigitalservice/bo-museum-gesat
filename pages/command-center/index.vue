@@ -235,7 +235,7 @@
                 <div class="flex space-x-4">
                   <div class="rounded-md p-3 border border-gray2">
                     <select v-model="formShift.startShift" name="startShift" class="px-2 outline-none bg-transparent">
-                      <option v-for="times in generateTimes" :key="times" :value="times">
+                      <option v-for="times in generatedTimes" :key="times" :value="times">
                         {{ times }}
                       </option>
                     </select>
@@ -243,7 +243,7 @@
                   <span class="p-3"> - </span>
                   <div class="rounded-md p-3 border border-gray2">
                     <select v-model="formShift.endShift" name="endShift" class="px-2 outline-none bg-transparent">
-                      <option v-for="times in generateTimes" :key="times" :value="times">
+                      <option v-for="times in generatedTimes" :key="times" :value="times">
                         {{ times }}
                       </option>
                     </select>
@@ -311,7 +311,7 @@ export default {
       dataShift: [],
       dataStatus: ['ACTIVE', 'NOT_ACTIVE'],
       momentFormatDateId,
-      generateTimes: [],
+      generatedTimes: [],
       activeData: 1,
       meta: {},
       params: {
@@ -363,7 +363,7 @@ export default {
   },
   created () {
     this.getDisabledDateData()
-    this.generateTimes = generateTimes()
+    this.generatedTimes = generateTimes()
     this.getDataShift()
   },
   methods: {
