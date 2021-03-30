@@ -278,11 +278,10 @@
                 Close
               </button>
               <button
-                v-if="submitForm == 'store'"
                 :class="{'bg-gray4': formIsEmpty}"
                 :disabled="formIsEmpty"
                 class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-                @click.stop="storeShift"
+                @click.stop="verifiedDataShift"
               >
                 Submit
               </button>
@@ -406,6 +405,14 @@ export default {
         return this.updateCloseDate(closeDate, notes, this.params.id)
       }
     },
+    verifiedDataShift () {
+      if (this.submitForm === 'store') {
+        return this.storeShift()
+      }
+      if (this.submitForm === 'edit') {
+        return this.editStoreShift()
+      }
+    },
     async submitCloseDate (closeDate, notes) {
       try {
         this.$modal.hide('addCloseDate')
@@ -486,6 +493,29 @@ export default {
     async refreshTableShift () {
       await this.getDataShift()
     },
+    async editStoreShift () {
+      try {
+        this.$modal.hide('addShift')
+        await this.$axios.put('/command-center-shift', {
+          name: this.formShift.nameShift,
+          time: `${this.formShift.startShift} - ${this.formShift.endShift}`,
+          status: this.formShift.statusShift,
+          capacity: this.formShift.capacityShift
+        }).then(() => {
+          this.$toast.success('Waktu Kunjungan berhasil diupdate', {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+        })
+        this.refreshTableShift()
+        this.resetValue()
+      } catch (err) {
+        this.$toast.error('Gagal merubah data', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
+      }
+    },
     async storeShift () {
       try {
         this.$modal.hide('addShift')
@@ -532,6 +562,7 @@ export default {
     },
     editShift (data) {
       const timeShift = data.name.split(' - ')
+      this.submitForm = 'edit'
       this.formShift.startShift = timeShift[0]
       this.formShift.endShift = timeShift[1]
       this.formShift.nameShift = data.code
