@@ -487,8 +487,29 @@ export default {
         }
       }
     },
-    deleteShift ({ id }) {
-      return id
+    async deleteShift ({ id }) {
+      const confirmed = await this.$swal.fire({
+        title: 'Hapus Data?',
+        showCancelButton: true,
+        type: 'warning',
+        dangerMode: true
+      })
+      if (confirmed.value) {
+        try {
+          await this.$axios.$delete(`/command-center-shift/${id}`)
+          this.$toast.success('Waktu Kunjungan Berhasil dihapus.', {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+          this.refreshTableShift()
+          this.activeDataShift = 1
+        } catch (error) {
+          this.$toast.success('Gagal menghapus waktu kunjungan.', {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+        }
+      }
     },
     changeActivePagination (val) {
       this.params.page = val
