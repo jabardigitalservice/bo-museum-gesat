@@ -198,7 +198,7 @@
             Order by
           </label>
           <div class="mt-1">
-            <select v-model="params.orderBy" name="approval_status" required class="form-input">
+            <select v-model="params.orderDirection" name="approval_status" required class="form-input">
               <option value="desc">
                 Terbaru
               </option>
@@ -382,7 +382,7 @@ export default {
         start_date: null,
         end_date: null,
         approval_status: null,
-        orderBy: null,
+        orderDirection: null,
         sortBy: null
       },
       isHasParams: false,
@@ -426,7 +426,7 @@ export default {
       this.params.end_date = null
       this.params.approval_status = null
       this.params.sortBy = null
-      this.params.orderBy = null
+      this.params.orderDirection = null
       this.isHasParams = false
       this.refreshTable()
     },
@@ -492,7 +492,7 @@ export default {
     },
     clearSortby () {
       this.params.sortBy = null
-      this.params.orderBy = null
+      this.params.orderDirection = null
       this.checkParams()
       this.refreshTable()
     },
