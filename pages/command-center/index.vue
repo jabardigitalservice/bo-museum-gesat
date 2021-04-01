@@ -437,6 +437,12 @@ export default {
         this.refreshTable()
         this.activeData = 1
       } catch (err) {
+        if (err.response.status === 422) {
+          return this.$toast.error('Maaf, tanggal yang dipilih telah diinput atau telah lewat!', {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+        }
         this.$toast.error('Gagal menambahkan data', {
           iconPack: 'fontawesome',
           duration: 5000
@@ -458,6 +464,12 @@ export default {
         this.refreshTable()
         this.activeData = 1
       } catch (err) {
+        if (err.response.status === 422) {
+          return this.$toast.error('Maaf, tanggal yang dipilih telah diinput atau telah lewat!', {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+        }
         this.$toast.error('Gagal menambahkan data', {
           iconPack: 'fontawesome',
           duration: 5000
