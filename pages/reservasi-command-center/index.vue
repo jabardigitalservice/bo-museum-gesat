@@ -305,7 +305,7 @@
                 Shift Kunjungan
               </div>
               <div class="font-medium text-blue">
-                {{ reservationDetail.command_center_shift }}
+                {{ reservationDetail.command_center_shift || '-' }}
               </div>
             </div>
           </div>
