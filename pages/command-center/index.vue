@@ -504,7 +504,7 @@ export default {
           this.refreshTableShift()
           this.activeDataShift = 1
         } catch (error) {
-          this.$toast.success('Gagal menghapus waktu kunjungan.', {
+          this.$toast.error('Gagal menghapus waktu kunjungan.', {
             iconPack: 'fontawesome',
             duration: 5000
           })
