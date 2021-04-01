@@ -176,12 +176,12 @@
             <tr v-for="shift in dataShift" :key="shift.id">
               <td style="max-width:250px" class="px-6 py-4 whitespace-nowrap">
                 <div class="text-md">
-                  {{ shift.code }}
+                  {{ shift.name }}
                 </div>
               </td>
               <td style="max-width:250px" class="px-6 py-4 whitespace-nowrap">
                 <div class="text-md">
-                  {{ shift.name }}
+                  {{ shift.time }}
                 </div>
               </td>
               <td style="max-width:250px" class="px-6 py-4 whitespace-nowrap">
@@ -197,8 +197,8 @@
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium"
               >
-                <i class="bx bx-calendar-edit bx-sm cursor-pointer" @click="editShift(shift)" />
-                <i class="bx bx-calendar-x bx-sm cursor-pointer text-red" @click="deleteShift(shift)" />
+                <i class="bx bx-edit bx-sm cursor-pointer" title="Ubah waktu kunjungan" @click="editShift(shift)" />
+                <i class="bx bx-trash bx-sm cursor-pointer text-red" title="Hapus waktu kunjungan" @click="deleteShift(shift)" />
               </td>
             </tr>
           </tbody>
@@ -213,6 +213,7 @@
           </tbody>
         </table>
       </div>
+      <Pagination :active-pagination="activeDataShift" :length-data="metaShift.last_page" @update="changeActivePaginationShift" />
       <!-- modal add shift -->
       <modal
         name="addShift"
@@ -279,11 +280,10 @@
                 Close
               </button>
               <button
-                v-if="submitForm == 'store'"
                 :class="{'bg-gray4': formIsEmpty}"
                 :disabled="formIsEmpty"
                 class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-                @click.stop="storeShift"
+                @click.stop="verifiedDataShift"
               >
                 Submit
               </button>
@@ -314,7 +314,9 @@ export default {
       momentFormatDateId,
       generatedTimes: [],
       activeData: 1,
+      activeDataShift: 1,
       meta: {},
+      metaShift: {},
       params: {
         id: null,
         page: null
@@ -360,6 +362,10 @@ export default {
     activeData (val) {
       this.params.page = val
       this.getDisabledDateData()
+    },
+    activeDataShift (val) {
+      this.params.page = val
+      this.getDataShift()
     }
   },
   created () {
@@ -371,7 +377,8 @@ export default {
     async getDataShift () {
       try {
         const res = await this.$axios.$get('/command-center-shift')
-        this.dataShift = res ?? []
+        this.dataShift = res.data ?? []
+        this.metaShift = res.metaShift ?? {}
       } catch (error) {
         this.errors = error
       }
@@ -405,6 +412,14 @@ export default {
       }
       if (this.submitForm === 'edit') {
         return this.updateCloseDate(closeDate, notes, this.params.id)
+      }
+    },
+    verifiedDataShift () {
+      if (this.submitForm === 'store') {
+        return this.storeShift()
+      }
+      if (this.submitForm === 'edit') {
+        return this.editStoreShift(this.params.id)
       }
     },
     async submitCloseDate (closeDate, notes) {
@@ -473,19 +488,68 @@ export default {
         }
       }
     },
-    deleteShift ({ id }) {
-      return id
+    async deleteShift ({ id }) {
+      const confirmed = await this.$swal.fire({
+        title: 'Hapus Data?',
+        showCancelButton: true,
+        type: 'warning',
+        dangerMode: true
+      })
+      if (confirmed.value) {
+        try {
+          await this.$axios.$delete(`/command-center-shift/${id}`)
+          this.$toast.success('Waktu Kunjungan Berhasil dihapus.', {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+          this.refreshTableShift()
+          this.activeDataShift = 1
+        } catch (error) {
+          this.$toast.error('Gagal menghapus waktu kunjungan.', {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+        }
+      }
     },
     changeActivePagination (val) {
       this.params.page = val
       this.activeData = val
       this.refreshTable()
     },
+    changeActivePaginationShift (val) {
+      this.params.page = val
+      this.activeDataShift = val
+      this.refreshTableShift()
+    },
     async refreshTable () {
       await this.getDisabledDateData()
     },
     async refreshTableShift () {
       await this.getDataShift()
+    },
+    async editStoreShift (id) {
+      try {
+        this.$modal.hide('addShift')
+        await this.$axios.put(`/command-center-shift/${id}`, {
+          name: this.formShift.nameShift,
+          time: `${this.formShift.startShift} - ${this.formShift.endShift}`,
+          status: this.formShift.statusShift,
+          capacity: this.formShift.capacityShift
+        }).then(() => {
+          this.$toast.success('Waktu Kunjungan berhasil diupdate', {
+            iconPack: 'fontawesome',
+            duration: 5000
+          })
+        })
+        this.refreshTableShift()
+        this.resetValue()
+      } catch (err) {
+        this.$toast.error('Gagal merubah data', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
+      }
     },
     async storeShift () {
       try {
@@ -532,10 +596,12 @@ export default {
       this.$modal.show('addCloseDate')
     },
     editShift (data) {
-      const timeShift = data.name.split(' - ')
+      const timeShift = data.time.split(' - ')
+      this.submitForm = 'edit'
+      this.params.id = data.id
       this.formShift.startShift = timeShift[0]
       this.formShift.endShift = timeShift[1]
-      this.formShift.nameShift = data.code
+      this.formShift.nameShift = data.name
       this.formShift.capacityShift = data.capacity
       this.formShift.statusShift = data.status
       this.$modal.show('addShift')
