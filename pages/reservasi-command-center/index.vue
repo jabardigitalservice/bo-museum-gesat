@@ -94,7 +94,7 @@
           </tbody>
           <tbody v-else class="tbody">
             <tr>
-              <td colspan="6" class="w-full p-4 text-center text-gray3">
+              <td colspan="6" class="w-full p-4 text-center text-gray2">
                 No data available
               </td>
             </tr>
@@ -227,113 +227,121 @@
       </div>
     </modal>
     <!-- DETAIL RESERVATION -->
-    <modal name="detail" :adaptive="true" :height="`auto`">
-      <div class="p-8 space-y-4">
-        <div class="window-header mb-2">
+    <modal name="detail" :adaptive="true" :height="'auto'" :width="'80%'">
+      <div class="p-8">
+        <div class="mb-4 text-center font-medium">
           DETAIL RESERVASI
         </div>
-        <div v-show="isAdmin" class="md:grid md:grid-cols-5 text-sm">
-          <div class="md:col-span-2 text-blue">
-            Nama Penanggung Jawab
+        <div class="grid grid-cols-3 gap-4">
+          <div class="space-y-2">
+            <div class="flex flex-col">
+              <div class="text-sm text-gray2">
+                Nama Penanggung Jawab
+              </div>
+              <div class="font-medium text-blue">
+                {{ reservationDetail.name }}
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <div class="text-sm text-gray2">
+                NIK
+              </div>
+              <div class="font-medium text-blue">
+                {{ reservationDetail.nik }}
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <div class="text-sm text-gray2">
+                Asal Instansi
+              </div>
+              <div class="font-medium text-blue">
+                {{ reservationDetail.organization_name || '-' }}
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <div class="text-sm text-gray2">
+                Alamat
+              </div>
+              <div class="font-medium text-blue">
+                {{ reservationDetail.address || '-' }}
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <div class="text-sm text-gray2">
+                Nomor Telepon Penanggung Jawab
+              </div>
+              <div class="font-medium text-blue">
+                {{ reservationDetail.phone_number }}
+              </div>
+            </div>
           </div>
-          <div class="md:col-span-3">
-            {{ reservationDetail.name }}
+          <div class="space-y-2">
+            <div class="flex flex-col">
+              <div class="text-sm text-gray2">
+                Alamat Email
+              </div>
+              <div class="font-medium text-blue">
+                {{ reservationDetail.email }}
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <div class="text-sm text-gray2">
+                Maksud dan Tujuan Kunjungan
+              </div>
+              <div class="font-medium text-blue">
+                {{ reservationDetail.purpose || '-' }}
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <div class="text-sm text-gray2">
+                Jumlah Peserta
+              </div>
+              <div class="font-medium text-blue">
+                {{ reservationDetail.visitors }}
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <div class="text-sm text-gray2">
+                Shift Kunjungan
+              </div>
+              <div class="font-medium text-blue">
+                {{ reservationDetail.command_center_shift }}
+              </div>
+            </div>
           </div>
-        </div>
-        <div v-show="isAdmin" class="md:grid md:grid-cols-5 text-sm">
-          <div class="md:col-span-2 text-blue">
-            NIK
-          </div>
-          <div class="md:col-span-3">
-            {{ reservationDetail.nik }}
-          </div>
-        </div>
-        <div v-show="isAdmin" class="md:grid md:grid-cols-5 text-sm">
-          <div class="md:col-span-2 text-blue">
-            Asal Instansi
-          </div>
-          <div class="md:col-span-3">
-            {{ reservationDetail.organization_name || '-' }}
-          </div>
-        </div>
-        <div v-show="isAdmin" class="md:grid md:grid-cols-5 text-sm">
-          <div class="md:col-span-2 text-blue">
-            Alamat
-          </div>
-          <div class="md:col-span-3">
-            {{ reservationDetail.address || '-' }}
-          </div>
-        </div>
-        <div v-show="isAdmin" class="md:grid md:grid-cols-5 text-sm">
-          <div class="md:col-span-2 text-blue">
-            Nomor Telepon Penanggung Jawab
-          </div>
-          <div class="md:col-span-3">
-            {{ reservationDetail.phone_number }}
-          </div>
-        </div>
-        <div v-show="isAdmin" class="md:grid md:grid-cols-5 text-sm">
-          <div class="md:col-span-2 text-blue">
-            Alamat Email
-          </div>
-          <div class="md:col-span-3">
-            {{ reservationDetail.email }}
-          </div>
-        </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
-          <div class="md:col-span-2 text-blue">
-            Maksud dan Tujuan Kunjungan
-          </div>
-          <div class="md:col-span-3">
-            {{ reservationDetail.purpose || '-' }}
-          </div>
-        </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
-          <div class="md:col-span-2 text-blue">
-            Jumlah Peserta
-          </div>
-          <div class="md:col-span-3">
-            {{ reservationDetail.visitors }}
-          </div>
-        </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
-          <div class="md:col-span-2 text-blue">
-            Shift Kunjungan
-          </div>
-          <div class="md:col-span-3">
-            <div>{{ reservationDetail.command_center_shift }}</div>
-          </div>
-        </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
-          <div class="md:col-span-2 text-blue">
-            Tanggal Kunjungan
-          </div>
-          <div class="md:col-span-3">
-            <div>{{ getDisplayDateTime(reservationDetail.reservation_date, false) }}</div>
-          </div>
-        </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
-          <div class="md:col-span-2 text-blue">
-            Tanggal Reservasi Dibuat
-          </div>
-          <div class="md:col-span-3">
-            {{ getDisplayDateTime(reservationDetail.created_at) }}
-          </div>
-        </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
-          <div class="md:col-span-2 text-blue">
-            Tanggal Pembaruan
-          </div>
-          <div class="md:col-span-3">
-            {{ getDisplayDateTime(reservationDetail.updated_at) }}
-          </div>
-        </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
-          <div class="md:col-span-2 text-blue">
-            Tanggal Verifikasi Admin
-          </div>
-          <div class="md:col-span-3">
-            {{ reservationDetail.approval_date ? getDisplayDateTime(reservationDetail.approval_date) : '-' }}
+          <div class="space-y-2">
+            <div class="flex flex-col">
+              <div class="text-sm text-gray2">
+                Tanggal Kunjungan
+              </div>
+              <div class="font-medium text-blue">
+                {{ getDisplayDateTime(reservationDetail.reservation_date, false) }}
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <div class="text-sm text-gray2">
+                Tanggal Reservasi Dibuat
+              </div>
+              <div class="font-medium text-blue">
+                {{ getDisplayDateTime(reservationDetail.created_at) }}
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <div class="text-sm text-gray2">
+                Tanggal Pembaruan
+              </div>
+              <div class="font-medium text-blue">
+                {{ getDisplayDateTime(reservationDetail.updated_at) }}
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <div class="text-sm text-gray2">
+                Tanggal Verifikasi Admin
+              </div>
+              <div class="font-medium text-blue">
+                {{ reservationDetail.approval_date ? getDisplayDateTime(reservationDetail.approval_date) : '-' }}
+              </div>
+            </div>
           </div>
         </div>
         <div>
