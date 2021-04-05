@@ -10,7 +10,7 @@
       <div class="w-full flex flex-wrap my-3 ">
         <div v-if="false" class="w-full lg:w-1/3 my-1">
           <div class="w-1/2 lg:w-1/3">
-            <button v-show="!isAdmin" class="btn bg-primary" @click="showModalAdd">
+            <button v-if="!isAdmin" class="btn bg-primary" @click="showModalAdd">
               <i class="bx bx-plus bx-sm" />
               <span>Tambah</span>
             </button>
@@ -104,19 +104,19 @@
                   @click="showModalDetail(data)"
                 />
                 <i
-                  v-show="!isAdmin && data.approval_status === 'NOT_YET_APPROVED'"
+                  v-if="!isAdmin && data.approval_status === 'NOT_YET_APPROVED'"
                   class="bx bx-trash bx-sm cursor-pointer text-red"
                   title="Klik untuk menghapus reservasi"
                   @click="deleteData(data.id)"
                 />
                 <i
-                  v-show="isAdmin && data.approval_status === 'NOT_YET_APPROVED'"
+                  v-if="isAdmin && data.approval_status === 'NOT_YET_APPROVED'"
                   class="bx bx-calendar-check bx-sm cursor-pointer text-primary"
                   title="Setujui reservasi"
                   @click="verifikasiData('approve', data.id)"
                 />
                 <i
-                  v-show="isAdmin && data.approval_status === 'NOT_YET_APPROVED'"
+                  v-if="isAdmin && data.approval_status === 'NOT_YET_APPROVED'"
                   class="bx bx-calendar-x bx-sm cursor-pointer text-red"
                   title="Tolak reservasi"
                   @click="verifikasiData('reject', data.id)"
@@ -175,7 +175,7 @@
             </select>
           </div>
         </div>
-        <div v-show="isAdmin">
+        <div v-if="isAdmin">
           <label for="asset_id" class="block text-sm">
             Resource / Aset
           </label>
@@ -263,7 +263,7 @@
         <div class="window-header mb-2">
           DETAIL RESERVASI
         </div>
-        <div v-show="isAdmin" class="md:grid md:grid-cols-5 text-sm">
+        <div v-if="isAdmin" class="md:grid md:grid-cols-5 text-sm">
           <div class="md:col-span-2 text-blue">
             Nama Pegawai
           </div>

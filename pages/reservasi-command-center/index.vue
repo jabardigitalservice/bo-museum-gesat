@@ -78,13 +78,13 @@
                   @click="showModalDetail(reservation)"
                 />
                 <i
-                  v-show="isAdmin && reservation.approval_status === 'NOT_YET_APPROVED'"
+                  v-if="isAdmin && reservation.approval_status === 'NOT_YET_APPROVED'"
                   class="bx bx-calendar-check bx-sm cursor-pointer text-primary"
                   title="Setujui reservasi"
                   @click="verifikasiData('approve', reservation.id)"
                 />
                 <i
-                  v-show="isAdmin && reservation.approval_status === 'NOT_YET_APPROVED'"
+                  v-if="isAdmin && reservation.approval_status === 'NOT_YET_APPROVED'"
                   class="bx bx-calendar-x bx-sm cursor-pointer text-red"
                   title="Tolak reservasi"
                   @click="verifikasiData('reject', reservation.id)"
