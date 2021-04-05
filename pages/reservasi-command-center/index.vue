@@ -187,6 +187,9 @@
           </label>
           <div class="mt-1">
             <select v-model="params.sortBy" name="approval_status" required class="form-input">
+              <option value="created_at">
+                Created Date
+              </option>
               <option value="reservation_date">
                 Reservation Date
               </option>
