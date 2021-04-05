@@ -31,7 +31,7 @@
       </div>
       <!-- TABLE -->
       <div class="align-middle inline-block min-w-full overflow-x-auto">
-        <table v-if="render" class="w-full">
+        <table class="w-full">
           <thead class="bg-primary">
             <tr>
               <th v-for="header in headers" :key="header" scope="col" class="thead">
@@ -367,7 +367,6 @@ export default {
   data () {
     return {
       errors: null,
-      render: true,
       activeData: 1,
       meta: {},
       dataUser: {},
@@ -448,10 +447,7 @@ export default {
       }
     },
     async refreshTable () {
-      this.render = false
-      this.getDataReservation()
-      await this.$nextTick()
-      this.render = true
+      await this.getDataReservation()
     },
     changeActivePagination (val) {
       this.activeData = val
