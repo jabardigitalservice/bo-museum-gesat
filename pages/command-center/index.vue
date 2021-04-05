@@ -375,9 +375,9 @@ export default {
   methods: {
     async getDataShift () {
       try {
-        const res = await this.$axios.$get('/command-center-shift')
+        const res = await this.$axios.$get('/command-center-shift', { params: this.params })
         this.dataShift = res.data ?? []
-        this.metaShift = res.metaShift ?? {}
+        this.metaShift = res.meta ?? {}
       } catch (error) {
         this.errors = error
       }
