@@ -190,7 +190,12 @@
               </td>
               <td style="max-width:250px" class="px-6 py-4 whitespace-nowrap">
                 <div class="text-md">
-                  {{ shift.status }}
+                  <span
+                    :class="{'bg-red': shift.status === 'NOT_ACTIVE'}"
+                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary text-white capitalize"
+                  >
+                    {{ shift.status === 'ACTIVE' ? 'aktif' : 'tidak aktif' }}
+                  </span>
                 </div>
               </td>
               <td
