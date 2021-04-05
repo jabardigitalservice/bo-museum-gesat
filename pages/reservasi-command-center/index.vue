@@ -70,25 +70,27 @@
                 </div>
               </td>
               <td
-                class="px-6 py-4 whitespace-nowrap text-sm font-medium flex gap-2"
+                class="px-6 py-4 whitespace-nowrap"
               >
-                <i
-                  class="bx bx-info-circle bx-sm cursor-pointer text-blue"
-                  title="Klik untuk melihat detail reservasi"
-                  @click="showModalDetail(reservation)"
-                />
-                <i
-                  v-show="isAdmin && reservation.approval_status === 'NOT_YET_APPROVED'"
-                  class="bx bx-calendar-check bx-sm cursor-pointer text-primary"
-                  title="Setujui reservasi"
-                  @click="verifikasiData('approve', reservation.id)"
-                />
-                <i
-                  v-show="isAdmin && reservation.approval_status === 'NOT_YET_APPROVED'"
-                  class="bx bx-calendar-x bx-sm cursor-pointer text-red"
-                  title="Tolak reservasi"
-                  @click="verifikasiData('reject', reservation.id)"
-                />
+                <div class="flex gap-2">
+                  <i
+                    class="bx bx-info-circle bx-sm cursor-pointer text-blue"
+                    title="Klik untuk melihat detail reservasi"
+                    @click="showModalDetail(reservation)"
+                  />
+                  <i
+                    v-show="isAdmin && reservation.approval_status === 'NOT_YET_APPROVED'"
+                    class="bx bx-calendar-check bx-sm cursor-pointer text-primary"
+                    title="Setujui reservasi"
+                    @click="verifikasiData('approve', reservation.id)"
+                  />
+                  <i
+                    v-show="isAdmin && reservation.approval_status === 'NOT_YET_APPROVED'"
+                    class="bx bx-calendar-x bx-sm cursor-pointer text-red"
+                    title="Tolak reservasi"
+                    @click="verifikasiData('reject', reservation.id)"
+                  />
+                </div>
               </td>
             </tr>
           </tbody>
