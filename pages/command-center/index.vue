@@ -191,7 +191,12 @@
               </td>
               <td style="max-width:250px" class="px-6 py-4 whitespace-nowrap">
                 <div class="text-md">
-                  {{ shift.status }}
+                  <span
+                    :class="{'bg-red': shift.status === 'NOT_ACTIVE'}"
+                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary text-white capitalize"
+                  >
+                    {{ shift.status === 'ACTIVE' ? 'aktif' : 'tidak aktif' }}
+                  </span>
                 </div>
               </td>
               <td
@@ -376,9 +381,9 @@ export default {
   methods: {
     async getDataShift () {
       try {
-        const res = await this.$axios.$get('/command-center-shift')
+        const res = await this.$axios.$get('/command-center-shift', { params: this.params })
         this.dataShift = res.data ?? []
-        this.metaShift = res.metaShift ?? {}
+        this.metaShift = res.meta ?? {}
       } catch (error) {
         this.errors = error
       }
