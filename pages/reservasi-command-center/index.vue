@@ -189,6 +189,9 @@
           </label>
           <div class="mt-1">
             <select v-model="params.sortBy" name="approval_status" required class="form-input">
+              <option value="created_at">
+                Created Date
+              </option>
               <option value="reservation_date">
                 Reservation Date
               </option>
@@ -221,6 +224,8 @@
           <button
             type="button"
             class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            :disabled="!params.sortBy || !params.orderDirection"
+            :class="!params.sortBy || !params.orderDirection ? 'cursor-not-allowed bg-gray4' : ''"
             @click="onSorting"
           >
             Submit
