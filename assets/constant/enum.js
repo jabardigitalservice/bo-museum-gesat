@@ -1,12 +1,12 @@
 export const statusReservation = [{
-  key: 'not_yet_approved',
-  value: 'Waiting'
+  key: 'NOT_YET_APPROVED',
+  value: 'Sedang diproses'
 }, {
-  key: 'already_approved',
-  value: 'Approved'
+  key: 'ALREADY_APPROVED',
+  value: 'Diterima'
 }, {
-  key: 'rejected',
-  value: 'Rejected'
+  key: 'REJECTED',
+  value: 'Ditolak'
 }]
 
 export const optionsSortBy = [{
@@ -93,8 +93,24 @@ export const menus = [
     ]
   },
   {
+    path: '/reservasi-command-center',
+    label: 'Reservasi Command Center',
+    iconClass: 'bx-calendar',
+    role: [
+      'admin_reservasi'
+    ]
+  },
+  {
     path: '/resource',
     label: 'Resource/Aset',
+    iconClass: 'bx-cabinet',
+    role: [
+      'admin_reservasi'
+    ]
+  },
+  {
+    path: '/command-center',
+    label: 'Command Center',
     iconClass: 'bx-cabinet',
     role: [
       'admin_reservasi'

@@ -10,7 +10,7 @@
       <div class="w-full flex flex-wrap my-3 ">
         <div v-if="false" class="w-full lg:w-1/3 my-1">
           <div class="w-1/2 lg:w-1/3">
-            <button v-show="!isAdmin" class="btn bg-primary" @click="showModalAdd">
+            <button v-if="!isAdmin" class="btn bg-primary" @click="showModalAdd">
               <i class="bx bx-plus bx-sm" />
               <span>Tambah</span>
             </button>
@@ -52,7 +52,7 @@
       </div>
       <!-- table -->
       <div class="align-middle inline-block min-w-full  overflow-x-auto">
-        <table v-if="render" class="w-full">
+        <table class="w-full">
           <thead class="bg-primary">
             <tr>
               <th v-for="x in dataHeader" :key="x" scope="col" class="thead">
@@ -80,7 +80,7 @@
               <td v-if="false" class="px-6 py-4 whitespace-nowrap">
                 <span
                   class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-white"
-                  :class="data.approval_status === 'not_yet_approved' ? 'bg-yellow' : data.approval_status === 'already_approved' ? 'bg-primary' : 'bg-red'"
+                  :class="data.approval_status === 'NOT_YET_APPROVED' ? 'bg-yellow' : data.approval_status === 'ALREADY_APPROVED' ? 'bg-primary' : 'bg-red'"
                 >
                   {{ data.approval_status ? findStatus(data.approval_status) : '' }}
                 </span>
@@ -104,19 +104,19 @@
                   @click="showModalDetail(data)"
                 />
                 <i
-                  v-show="!isAdmin && data.approval_status === 'not_yet_approved'"
+                  v-if="!isAdmin && data.approval_status === 'NOT_YET_APPROVED'"
                   class="bx bx-trash bx-sm cursor-pointer text-red"
                   title="Klik untuk menghapus reservasi"
                   @click="deleteData(data.id)"
                 />
                 <i
-                  v-show="isAdmin && data.approval_status === 'not_yet_approved'"
+                  v-if="isAdmin && data.approval_status === 'NOT_YET_APPROVED'"
                   class="bx bx-calendar-check bx-sm cursor-pointer text-primary"
                   title="Setujui reservasi"
                   @click="verifikasiData('approve', data.id)"
                 />
                 <i
-                  v-show="isAdmin && data.approval_status === 'not_yet_approved'"
+                  v-if="isAdmin && data.approval_status === 'NOT_YET_APPROVED'"
                   class="bx bx-calendar-x bx-sm cursor-pointer text-red"
                   title="Tolak reservasi"
                   @click="verifikasiData('reject', data.id)"
@@ -175,7 +175,7 @@
             </select>
           </div>
         </div>
-        <div v-show="isAdmin">
+        <div v-if="isAdmin">
           <label for="asset_id" class="block text-sm">
             Resource / Aset
           </label>
@@ -263,7 +263,7 @@
         <div class="window-header mb-2">
           DETAIL RESERVASI
         </div>
-        <div v-show="isAdmin" class="md:grid md:grid-cols-5 text-sm">
+        <div v-if="isAdmin" class="md:grid md:grid-cols-5 text-sm">
           <div class="md:col-span-2 text-blue">
             Nama Pegawai
           </div>
@@ -377,7 +377,6 @@ export default {
   data () {
     return {
       errors: null,
-      render: true,
       activeData: 1,
       meta: {},
       dataUser: {},
@@ -492,10 +491,7 @@ export default {
       this.refreshTable()
     },
     async refreshTable () {
-      this.render = false
-      this.getDataReservation()
-      await this.$nextTick()
-      this.render = true
+      await this.getDataReservation()
     },
     customFormatter (date) {
       this.form.date = momentFormatDate(date)
@@ -573,7 +569,7 @@ export default {
       if (confirmation) {
         try {
           await this.$axios.put(`/reserved/${id}`, {
-            approval_status: approval === 'approve' ? 'already_approved' : 'rejected',
+            approval_status: approval === 'approve' ? 'ALREADY_APPROVED' : 'REJECTED',
             note: confirmation
           })
           this.refreshTable()
