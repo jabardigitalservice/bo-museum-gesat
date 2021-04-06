@@ -31,7 +31,7 @@
       </div>
       <!-- TABLE -->
       <div class="align-middle inline-block min-w-full overflow-x-auto">
-        <table v-if="render" class="w-full">
+        <table class="w-full">
           <thead class="bg-primary">
             <tr>
               <th v-for="header in headers" :key="header" scope="col" class="thead">
@@ -70,25 +70,27 @@
                 </div>
               </td>
               <td
-                class="px-6 py-4 whitespace-nowrap text-sm font-medium flex gap-2"
+                class="px-6 py-4 whitespace-nowrap"
               >
-                <i
-                  class="bx bx-info-circle bx-sm cursor-pointer text-blue"
-                  title="Klik untuk melihat detail reservasi"
-                  @click="showModalDetail(reservation)"
-                />
-                <i
-                  v-if="isAdmin && reservation.approval_status === 'NOT_YET_APPROVED'"
-                  class="bx bx-calendar-check bx-sm cursor-pointer text-primary"
-                  title="Setujui reservasi"
-                  @click="verifikasiData('approve', reservation.id)"
-                />
-                <i
-                  v-if="isAdmin && reservation.approval_status === 'NOT_YET_APPROVED'"
-                  class="bx bx-calendar-x bx-sm cursor-pointer text-red"
-                  title="Tolak reservasi"
-                  @click="verifikasiData('reject', reservation.id)"
-                />
+                <div class="flex gap-2">
+                  <i
+                    class="bx bx-info-circle bx-sm cursor-pointer text-blue"
+                    title="Klik untuk melihat detail reservasi"
+                    @click="showModalDetail(reservation)"
+                  />
+                  <i
+                    v-show="isAdmin && reservation.approval_status === 'NOT_YET_APPROVED'"
+                    class="bx bx-calendar-check bx-sm cursor-pointer text-primary"
+                    title="Setujui reservasi"
+                    @click="verifikasiData('approve', reservation.id)"
+                  />
+                  <i
+                    v-show="isAdmin && reservation.approval_status === 'NOT_YET_APPROVED'"
+                    class="bx bx-calendar-x bx-sm cursor-pointer text-red"
+                    title="Tolak reservasi"
+                    @click="verifikasiData('reject', reservation.id)"
+                  />
+                </div>
               </td>
             </tr>
           </tbody>
@@ -187,6 +189,9 @@
           </label>
           <div class="mt-1">
             <select v-model="params.sortBy" name="approval_status" required class="form-input">
+              <option value="created_at">
+                Created Date
+              </option>
               <option value="reservation_date">
                 Reservation Date
               </option>
@@ -219,6 +224,8 @@
           <button
             type="button"
             class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            :disabled="!params.sortBy || !params.orderDirection"
+            :class="!params.sortBy || !params.orderDirection ? 'cursor-not-allowed bg-gray4' : ''"
             @click="onSorting"
           >
             Submit
@@ -367,7 +374,6 @@ export default {
   data () {
     return {
       errors: null,
-      render: true,
       activeData: 1,
       meta: {},
       dataUser: {},
@@ -448,10 +454,7 @@ export default {
       }
     },
     async refreshTable () {
-      this.render = false
-      this.getDataReservation()
-      await this.$nextTick()
-      this.render = true
+      await this.getDataReservation()
     },
     changeActivePagination (val) {
       this.activeData = val
