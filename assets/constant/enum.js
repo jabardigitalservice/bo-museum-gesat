@@ -85,7 +85,7 @@ export const menus = [
   },
   {
     path: '/reservasi',
-    label: 'Reservasi',
+    label: 'List / Histori Reservasi',
     iconClass: 'bx-calendar',
     role: [
       'employee_reservasi',
