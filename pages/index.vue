@@ -122,17 +122,17 @@
         <div class="flex gap-2">
           <button
             type="button"
-            class="w-1/2 flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="closeModalDetail"
-          >
-            Close
-          </button>
-          <button
-            type="button"
             class="w-1/2 flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-red text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
             @click="deleteData"
           >
             Delete
+          </button>
+          <button
+            type="button"
+            class="w-1/2 flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            @click="closeModalDetail"
+          >
+            Close
           </button>
         </div>
       </div>
