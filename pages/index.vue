@@ -381,6 +381,10 @@ export default {
         this.form.date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
         calendarApi.unselect()
       } else {
+        this.$toast.error('Tidak dapat menambahkan reservasi sebelum waktu saat ini!', {
+          iconPack: 'fontawesome',
+          duration: 5000
+        })
         calendarApi.unselect()
       }
     },
