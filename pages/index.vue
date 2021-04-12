@@ -183,6 +183,7 @@ export default {
           right: 'resourceTimeGridDay,dayGridMonth,listWeek'
         },
         dayMinWidth: 180,
+        height: 'auto',
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
         initialView: 'resourceTimeGridDay',
         resourceOrder: '-resource_type,title',
