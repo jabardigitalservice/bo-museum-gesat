@@ -432,4 +432,7 @@ export default {
     gap: 16px;
   }
 }
+.fc-daygrid-day-frame.fc-scrollgrid-sync-inner {
+  overflow-x: auto;
+}
 </style>
