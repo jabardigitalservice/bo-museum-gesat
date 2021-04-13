@@ -45,7 +45,3 @@
 tr:nth-child(2n+2){
   @apply bg-gray6;
 }
-
-.fc-daygrid-day-frame.fc-scrollgrid-sync-inner {
-  overflow-x: auto;
-}
