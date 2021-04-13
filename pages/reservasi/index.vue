@@ -198,7 +198,7 @@
           </button>
           <button
             type="button"
-            :class="checkformIsEmpty ? 'w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 bg-gray4' : 'w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2'"
+            :class="checkformIsEmpty ? 'btn-disable' : 'btn-primary'"
             :disabled="checkformIsEmpty"
             @click="onFilter"
           >
@@ -691,3 +691,20 @@ export default {
   }
 }
 </script>
+<style scoped>
+.btn-disable {
+  @apply w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium text-white bg-gray4;
+}
+
+.btn-disable:focus {
+  @apply outline-none;
+}
+
+.btn-primary {
+  @apply w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white;
+}
+
+.btn-primary:focus {
+  @apply outline-none;
+}
+</style>
