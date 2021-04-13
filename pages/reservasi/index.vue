@@ -427,11 +427,7 @@ export default {
       return admin(this.$auth)
     },
     checkformIsEmpty () {
-      if (admin(this.$auth) === true) {
-        return this.formIsEmptyAdmin()
-      } else {
-        return this.formIsEmptyEmployee()
-      }
+      return this.isAdmin ? this.formIsEmptyAdmin() : this.formIsEmptyEmployee()
     }
   },
   watch: {
