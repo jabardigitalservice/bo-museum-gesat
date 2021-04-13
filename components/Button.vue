@@ -5,7 +5,9 @@
     :class="disabled ? 'bg-gray4' : buttonStyle"
     @click="$emit('btn-click')"
   >
-    {{ buttonLabel }}
+    <slot name="label">
+      {{ buttonLabel }}
+    </slot>
   </button>
 </template>
 
