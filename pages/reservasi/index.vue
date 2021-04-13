@@ -198,7 +198,8 @@
           </button>
           <button
             type="button"
-            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            :class="checkformIsEmpty ? 'btn-disable' : 'btn-primary'"
+            :disabled="checkformIsEmpty"
             @click="onFilter"
           >
             Submit
@@ -358,7 +359,6 @@
 </template>
 
 <script>
-// import moment from 'moment'
 import Pagination from '~/components/Pagination.vue'
 import { statusReservation, optionsSortBy, optionsOrderBy } from '~/assets/constant/enum'
 import {
@@ -424,6 +424,9 @@ export default {
   computed: {
     isAdmin () {
       return admin(this.$auth)
+    },
+    checkformIsEmpty () {
+      return this.isAdmin ? this.formIsEmptyAdmin() : this.formIsEmptyEmployee()
     }
   },
   watch: {
@@ -460,6 +463,31 @@ export default {
     this.getAssetList()
   },
   methods: {
+    formIsEmptyAdmin () {
+      const isFormEmpty = [
+        this.params.start_date,
+        this.params.end_date,
+        this.params.asset_id
+      ].some((value) => {
+        if (typeof value === 'string') {
+          return value.length === 0
+        }
+        return typeof value === 'undefined' || value === null
+      })
+      return isFormEmpty
+    },
+    formIsEmptyEmployee () {
+      const isFormEmpty = [
+        this.params.start_date,
+        this.params.end_date
+      ].some((value) => {
+        if (typeof value === 'string') {
+          return value.length === 0
+        }
+        return typeof value === 'undefined' || value === null
+      })
+      return isFormEmpty
+    },
     initParams () {
       this.params.search = null
       this.params.asset_id = null
@@ -655,3 +683,20 @@ export default {
   }
 }
 </script>
+<style scoped>
+.btn-disable {
+  @apply w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium text-white bg-gray4;
+}
+
+.btn-disable:focus {
+  @apply outline-none;
+}
+
+.btn-primary {
+  @apply w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white;
+}
+
+.btn-primary:focus {
+  @apply outline-none;
+}
+</style>
