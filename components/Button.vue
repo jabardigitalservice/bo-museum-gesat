@@ -31,7 +31,7 @@ export default {
     switch (this.btnType) {
       case 'submit':
         this.buttonStyle = 'bg-primary'
-        this.buttonLabel = 'Kirim'
+        this.buttonLabel = 'Simpan'
         break
 
       case 'set':
