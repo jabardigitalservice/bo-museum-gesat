@@ -178,22 +178,8 @@
 
       <!-- Form Buttons -->
       <template #buttons>
-        <button
-          type="button"
-          class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-          @click="closeFormReservation"
-        >
-          Close
-        </button>
-        <button
-          :class="{'bg-gray4': formIsEmpty}"
-          :disabled="formIsEmpty"
-          type="button"
-          class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-          @click="addReservation"
-        >
-          Submit
-        </button>
+        <Button btn-type="close" @btn-click="closeFormReservation" />
+        <Button btn-type="submit" :disabled="formIsEmpty" @btn-click="closeFormReservation" />
       </template>
     </BaseModal>
     <modal name="detail" :adaptive="true" :height="`auto`">
