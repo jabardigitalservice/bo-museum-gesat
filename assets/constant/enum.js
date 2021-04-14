@@ -90,7 +90,6 @@ export const parentMenus = [
     label: 'Reservasi Command Center',
     iconClass: 'bx-home',
     role: [
-      'employee_reservasi',
       'admin_reservasi'
     ]
   }
