@@ -156,6 +156,10 @@ export default {
         locales: allLocales,
         locale: 'id',
         timeZone: 'local',
+        eventTimeFormat: {
+          hour: '2-digit',
+          minute: '2-digit'
+        },
         plugins: [
           dayGridPlugin,
           timeGridPlugin,
