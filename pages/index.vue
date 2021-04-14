@@ -179,7 +179,7 @@
       <!-- Form Buttons -->
       <template #buttons>
         <Button btn-type="close" @btn-click="closeFormReservation" />
-        <Button btn-type="submit" :disabled="formIsEmpty" @btn-click="closeFormReservation" />
+        <Button btn-type="submit" :disabled="formIsEmpty" @btn-click="addReservation" />
       </template>
     </BaseModal>
     <modal name="detail" :adaptive="true" :height="`auto`">
