@@ -439,4 +439,10 @@ export default {
 .fc-daygrid-day-frame.fc-scrollgrid-sync-inner {
   overflow-x: auto;
 }
+.fc .fc-day-past {
+  background-color: #f0f0f0 !important;
+}
+.fc .fc-timegrid-slot-minor {
+  border-style: solid !important;
+}
 </style>
