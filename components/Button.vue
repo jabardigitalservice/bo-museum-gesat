@@ -57,7 +57,7 @@ export default {
         break
 
       default:
-        this.buttonLabel = 'bg-yellow'
+        this.buttonStyle = 'bg-yellow'
         this.buttonLabel = 'Tutup'
         break
     }
