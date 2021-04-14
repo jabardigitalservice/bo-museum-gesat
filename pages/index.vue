@@ -25,57 +25,58 @@
     <BaseModal modal-name="add" modal-title="Tambah Reservasi Baru">
       <template #body>
         <!-- Date and Time -->
-        <div>
-          <label for="dateTime" class="block text-sm">
-            Waktu dan Tanggal
-            <span class="text-red">*</span>
-          </label>
-          <date-picker
-            v-model="form.date"
-            placeholder="Tanggal Akhir"
-            class="form-input rounded-md"
-            required
-          />
-        </div>
+        <section class="grid grid-cols-3 gap-4 mb-6">
+          <div>
+            <label for="dateTime" class="block text-sm">
+              Waktu dan Tanggal
+              <span class="text-red">*</span>
+            </label>
+            <date-picker
+              v-model="form.date"
+              placeholder="Tanggal Akhir"
+              class="form-input rounded-md"
+              required
+            />
+          </div>
 
-        <!-- Start Time -->
-        <div>
-          <label for="start-time" class="block text-sm">
-            Dari
-            <span class="text-red">*</span>
-          </label>
-          <select
-            v-model="reservation.startTime"
-            name="start-time"
-            type="text"
-            required
-            class="w-full form-input bg-white rounded-md"
-            @change="updateReservationEndTime"
-          >
-            <option v-for="time of reservation.timeInterval" :key="time" :value="time">
-              {{ time }}
-            </option>
-          </select>
-        </div>
+          <!-- Start Time -->
+          <div>
+            <label for="start-time" class="block text-sm">
+              Dari
+              <span class="text-red">*</span>
+            </label>
+            <select
+              v-model="reservation.startTime"
+              name="start-time"
+              type="text"
+              required
+              class="w-full form-input bg-white rounded-md"
+              @change="updateReservationEndTime"
+            >
+              <option v-for="time of reservation.timeInterval" :key="time" :value="time">
+                {{ time }}
+              </option>
+            </select>
+          </div>
 
-        <!-- End Time -->
-        <div>
-          <label for="end-time" class="block text-sm">
-            Sampai
-            <span class="text-red">*</span>
-          </label>
-          <select
-            v-model="reservation.endTime"
-            name="end-time"
-            type="text"
-            required
-            class="w-full form-input bg-white rounded-md"
-          >
-            <option v-for="time of allowedReservationInterval" :key="time" :value="time">
-              {{ time }}
-            </option>
-          </select>
-        </div>
+          <!-- End Time -->
+          <div>
+            <label for="end-time" class="block text-sm">
+              Sampai
+              <span class="text-red">*</span>
+            </label>
+            <select
+              v-model="reservation.endTime"
+              name="end-time"
+              type="text"
+              required
+              class="w-full form-input bg-white rounded-md"
+            >
+              <option v-for="time of allowedReservationInterval" :key="time" :value="time">
+                {{ time }}
+              </option>
+            </select>
+          </div>
         </section>
       </template>
 
