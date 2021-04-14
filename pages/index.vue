@@ -220,7 +220,7 @@ export default {
         start_time: null,
         end_time: null,
         repeat_type: 'NONE',
-        repeat: false
+        repeat: this.checkRepeatStatus
       },
       reservation: {
         startTime: null,
@@ -275,6 +275,12 @@ export default {
     }
   },
   computed: {
+    checkRepeatStatus () {
+      if (this.repeat_type !== 'NONE') {
+        return true
+      }
+      return false
+    },
     allowedReservationInterval () {
       const { timeInterval, startTime } = this.reservation
       const startTimeIndex = timeInterval.indexOf(startTime)
