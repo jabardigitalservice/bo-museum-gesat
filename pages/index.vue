@@ -21,59 +21,84 @@
         </FullCalendar>
       </div>
     </div>
-    <modal name="add" :adaptive="true" height="auto">
-      <div class="p-8 space-y-4">
-        <div class="window-header mb-2">
-          TAMBAH RESERVASI BARU
-        </div>
+    <!-- Modal Add Reservation  -->
+    <BaseModal modal-name="add" modal-title="Tambah Reservasi Baru">
+      <template #body>
+        <!-- Date and Time -->
         <div>
-          <label for="title" class="block text-sm">
-            Judul Kegiatan
+          <label for="dateTime" class="block text-sm">
+            Waktu dan Tanggal
             <span class="text-red">*</span>
           </label>
-          <div class="mt-1">
-            <input
-              v-model="form.title"
-              name="title"
-              type="text"
-              autocomplete="title"
-              required
-              class="form-input"
-            >
-          </div>
+          <date-picker
+            v-model="form.date"
+            placeholder="Tanggal Akhir"
+            class="form-input rounded-md"
+            required
+          />
         </div>
+
+        <!-- Start Time -->
         <div>
-          <label for="description" class="block text-sm">
-            Catatan / Deskripsi Kegiatan
+          <label for="start-time" class="block text-sm">
+            Dari
+            <span class="text-red">*</span>
           </label>
-          <div class="mt-1">
-            <textarea
-              v-model="form.description"
-              name="description"
-              class="form-input"
-            />
-          </div>
-        </div>
-        <div class="flex space-x-4">
-          <button
-            type="button"
-            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="closeFormReservation"
+          <select
+            v-model="reservation.startTime"
+            name="start-time"
+            type="text"
+            required
+            class="w-full form-input bg-white rounded-md"
+            @change="updateReservationEndTime"
           >
-            Close
-          </button>
-          <button
-            :class="{'bg-gray4': formIsEmpty}"
-            :disabled="formIsEmpty"
-            type="button"
-            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="addReservation"
-          >
-            Submit
-          </button>
+            <option v-for="time of reservation.timeInterval" :key="time" :value="time">
+              {{ time }}
+            </option>
+          </select>
         </div>
-      </div>
-    </modal>
+
+        <!-- End Time -->
+        <div>
+          <label for="end-time" class="block text-sm">
+            Sampai
+            <span class="text-red">*</span>
+          </label>
+          <select
+            v-model="reservation.endTime"
+            name="end-time"
+            type="text"
+            required
+            class="w-full form-input bg-white rounded-md"
+          >
+            <option v-for="time of allowedReservationInterval" :key="time" :value="time">
+              {{ time }}
+            </option>
+          </select>
+        </div>
+        </section>
+      </template>
+
+      <!-- Form Buttons -->
+      <template #buttons>
+        <button
+          type="button"
+          class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+          @click="closeFormReservation"
+        >
+          Close
+        </button>
+        <button
+          :class="{'bg-gray4': formIsEmpty}"
+          :disabled="formIsEmpty"
+          type="button"
+          class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+          @click="addReservation"
+        >
+          Submit
+        </button>
+      </template>
+    </BaseModal>
     <modal name="detail" :adaptive="true" :height="`auto`">
       <div class="p-8 space-y-4">
         <div class="window-header mb-2">
@@ -150,6 +175,8 @@ import { toMoment } from '@fullcalendar/moment'
 import listPlugin from '@fullcalendar/list'
 import allLocales from '@fullcalendar/core/locales-all'
 import { momentFormatDateId, momentFormatTimeISO } from '~/utils'
+import { timeInterval } from '~/assets/constant/enum'
+
 export default {
   layout: 'admin',
   components: {
@@ -164,6 +191,11 @@ export default {
         date: null,
         start_time: null,
         end_time: null
+      },
+      reservation: {
+        startTime: null,
+        endTime: null,
+        timeInterval
       },
       calendarOptions: {
         locales: allLocales,
