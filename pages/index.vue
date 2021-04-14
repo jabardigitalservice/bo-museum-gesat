@@ -105,6 +105,53 @@
             <!-- Insert Dynamic Component Here -->
           </div>
         </section>
+        <!-- Spaces -->
+        <section class="mb-4">
+          <label for="spaces" class="block text-sm">
+            Ruangan/Aset
+            <span class="text-red">*</span>
+          </label>
+
+          <!-- Multiple Select Dropdown -->
+          <section>
+            <div v-show="reservation.expand" class="absolute inset-0 w-full h-full" @click="closeOptions" />
+            <!-- Select Dropdown -->
+            <div class="relative">
+              <button class="w-full form-input bg-white rounded-md cursor-pointer" @click="showOptions">
+                <div class="flex justify-between ">
+                  <p v-if="form.asset_ids.length">
+                    <span class="text-sm text-gray3">{{ `(${form.asset_ids.length}) ` }}</span>
+                    {{ form.asset_ids }}
+                  </p>
+                  <p v-else>
+                    -- Pilih Ruangan --
+                  </p>
+                  <em class="bx bxs-chevron-down" />
+                </div>
+              </button>
+
+              <!-- Select Options -->
+              <div
+                v-show="reservation.expand"
+                class="flex flex-col shadow-lg border-2 border-gray3 p-2 overflow-auto bg-white h-56"
+              >
+                <label
+                  v-for="resource of reservation.resourcesLists"
+                  :key="resource.id"
+                  class="cursor-pointer p-1 hover:bg-blue"
+                >
+                  <input
+                    v-model="form.asset_ids"
+                    type="checkbox"
+                    :value="resource.id"
+                    :checked="checkedResources(resource.id)"
+                  >
+                  {{ resource.name }}
+                </label>
+              </div>
+            </div>
+          </section>
+        </section>
       </template>
 
       <!-- Form Buttons -->
@@ -215,6 +262,7 @@ export default {
       form: {
         title: null,
         asset_id: null,
+        asset_ids: [],
         description: null,
         date: null,
         start_time: null,
@@ -225,7 +273,9 @@ export default {
       reservation: {
         startTime: null,
         endTime: null,
-        timeInterval
+        timeInterval,
+        expand: false,
+        resourcesLists: null
       },
       calendarOptions: {
         locales: allLocales,
@@ -300,6 +350,15 @@ export default {
     }
   },
   methods: {
+    checkedResources (id) {
+      return this.form.asset_ids.indexOf(id)
+    },
+    showOptions (event) {
+      this.reservation.expand = !this.reservation.expand
+    },
+    closeOptions (event) {
+      this.reservation.expand = false
+    },
     updateReservationEndTime () {
       const { timeInterval, startTime, endTime } = this.reservation
       const startTimeIndex = timeInterval.indexOf(startTime)
@@ -448,6 +507,7 @@ export default {
           newObj.eventBackgroundColor = '#219653'
           return newObj
         })
+        this.reservation.resourcesLists = resources ?? []
         successCallback(resourcesMap)
       }).catch((e) => {
         failureCallback(e)
@@ -459,6 +519,7 @@ export default {
         this.$modal.show('add')
         this.clearFormReservation()
         this.form.asset_id = selectInfo.resource.id
+        this.form.asset_ids = [selectInfo.resource.id]
         this.form.start_time = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD HH:mm')
         this.form.end_time = toMoment(selectInfo.end, selectInfo.view.calendar).format('YYYY-MM-DD HH:mm')
         this.form.date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
