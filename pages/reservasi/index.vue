@@ -520,6 +520,7 @@ export default {
     },
     clearFilter () {
       this.params.approval_status = null
+      this.params.asset_id = null
       this.params.start_date = null
       this.params.end_date = null
       this.checkParams()
