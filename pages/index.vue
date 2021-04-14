@@ -168,6 +168,12 @@
           <label for="holder-email" class="block text-sm">Tambahkan Email Penanggung Jawab</label>
           <input v-model="form.holder" name="holder-email" type="email" class="w-full form-input bg-white rounded-md">
         </section>
+
+        <!-- Notes/Description -->
+        <section>
+          <label for="description" class="block text-sm">Catatan/Deskripsi Kegiatan</label>
+          <textarea v-model="form.description" name="description" class="w-full form-input bg-white rounded-md" />
+        </section>
       </template>
 
       <!-- Form Buttons -->
