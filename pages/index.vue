@@ -152,6 +152,14 @@
             </div>
           </section>
         </section>
+        <!-- Booking Name -->
+        <section class="mb-4">
+          <label for="name" class="block text-sm">
+            Nama Kegiatan
+            <span class="text-red">*</span>
+          </label>
+          <input v-model="form.title" name="name" type="text" class="w-full form-input bg-white rounded-md" required>
+        </section>
       </template>
 
       <!-- Form Buttons -->
