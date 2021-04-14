@@ -105,6 +105,7 @@
             <!-- Insert Dynamic Component Here -->
           </div>
         </section>
+
         <!-- Spaces -->
         <section class="mb-4">
           <label for="spaces" class="block text-sm">
@@ -152,6 +153,7 @@
             </div>
           </section>
         </section>
+
         <!-- Booking Name -->
         <section class="mb-4">
           <label for="name" class="block text-sm">
@@ -159,6 +161,12 @@
             <span class="text-red">*</span>
           </label>
           <input v-model="form.title" name="name" type="text" class="w-full form-input bg-white rounded-md" required>
+        </section>
+
+        <!-- Holder Mail -->
+        <section class="mb-4">
+          <label for="holder-email" class="block text-sm">Tambahkan Email Penanggung Jawab</label>
+          <input v-model="form.holder" name="holder-email" type="email" class="w-full form-input bg-white rounded-md">
         </section>
       </template>
 
