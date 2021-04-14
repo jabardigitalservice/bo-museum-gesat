@@ -251,7 +251,8 @@
           </button>
           <button
             type="button"
-            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            :class="checkSortIsEmpty ? 'btn-disable' : 'btn-primary'"
+            :disabled="checkSortIsEmpty"
             @click="onSorting"
           >
             Submit
@@ -427,6 +428,18 @@ export default {
     },
     checkformIsEmpty () {
       return this.isAdmin ? this.formIsEmptyAdmin() : this.formIsEmptyEmployee()
+    },
+    checkSortIsEmpty () {
+      const isFormEmpty = [
+        this.params.sortBy,
+        this.params.orderBy
+      ].some((value) => {
+        if (typeof value === 'string') {
+          return value.length === 0
+        }
+        return typeof value === 'undefined' || value === null
+      })
+      return isFormEmpty
     }
   },
   watch: {
