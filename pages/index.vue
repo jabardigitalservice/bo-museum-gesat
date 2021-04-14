@@ -78,6 +78,33 @@
             </select>
           </div>
         </section>
+
+        <!-- Repeat Booking -->
+        <section class="grid grid-cols-3 gap-4 mb-6">
+          <div class="col-span-1">
+            <label for="repeat" class="block text-sm">
+              Reservasi Berulang
+              <span class="text-red">*</span>
+            </label>
+            <select v-model="form.repeat_type" name="repeat" class="w-full form-input bg-white rounded-md">
+              <option value="NONE">
+                Tidak
+              </option>
+              <option value="DAILY">
+                Perhari
+              </option>
+              <option value="WEEKLY">
+                Perminggu
+              </option>
+              <option value="MONTHLY">
+                Perbulan
+              </option>
+            </select>
+          </div>
+          <div class="col-span-2">
+            <!-- Insert Dynamic Component Here -->
+          </div>
+        </section>
       </template>
 
       <!-- Form Buttons -->
@@ -191,7 +218,9 @@ export default {
         description: null,
         date: null,
         start_time: null,
-        end_time: null
+        end_time: null,
+        repeat_type: 'NONE',
+        repeat: false
       },
       reservation: {
         startTime: null,
