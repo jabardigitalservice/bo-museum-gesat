@@ -186,7 +186,7 @@ export default {
         editable: true,
         selectable: true,
         selectMirror: true,
-        dayMaxEvents: true,
+        dayMaxEvents: 3,
         weekends: true,
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,
