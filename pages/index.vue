@@ -540,6 +540,8 @@ export default {
       if (toMoment(new Date(), selectInfo.view.calendar).format() < selectInfo.startStr) {
         this.$modal.show('add')
         this.clearFormReservation()
+        this.reservation.startTime = toMoment(selectInfo.start, selectInfo.view.calendar).format('HH:mm')
+        this.reservation.endTime = toMoment(selectInfo.end, selectInfo.view.calendar).format('HH:mm')
         this.form.asset_id = selectInfo.resource.id
         this.form.asset_ids = [selectInfo.resource.id]
         this.form.start_time = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD HH:mm')
