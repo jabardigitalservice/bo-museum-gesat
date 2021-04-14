@@ -245,6 +245,12 @@ export default {
     }
   },
   computed: {
+    allowedReservationInterval () {
+      const { timeInterval, startTime } = this.reservation
+      const startTimeIndex = timeInterval.indexOf(startTime)
+      const maxLength = timeInterval.length
+      return timeInterval.slice(startTimeIndex + 1, maxLength)
+    },
     formIsEmpty () {
       const isFormEmpty = [
         this.form.title
@@ -258,6 +264,14 @@ export default {
     }
   },
   methods: {
+    updateReservationEndTime () {
+      const { timeInterval, startTime, endTime } = this.reservation
+      const startTimeIndex = timeInterval.indexOf(startTime)
+      const endTimeIndex = timeInterval.indexOf(endTime)
+      if (startTimeIndex >= endTimeIndex) {
+        this.reservation.endTime = timeInterval[startTimeIndex + 1]
+      }
+    },
     renderHeaderResource (arg) {
       return {
         html: `
