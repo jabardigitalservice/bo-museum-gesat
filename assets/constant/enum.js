@@ -138,7 +138,7 @@ export const menus = [
   {
     parent: 2,
     path: '/command-center',
-    label: 'Command Center',
+    label: 'Pengaturan Command Center',
     iconClass: 'bx-cabinet',
     role: [
       'admin_reservasi'
