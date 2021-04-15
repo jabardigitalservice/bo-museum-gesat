@@ -73,10 +73,11 @@ export const cardsDashboard = [
   }
 ]
 
-export const menus = [
+export const parentMenus = [
   {
-    path: '/',
-    label: 'Dashboard',
+    id: 1,
+    path: '#',
+    label: 'Reservasi Aset',
     iconClass: 'bx-home',
     role: [
       'employee_reservasi',
@@ -84,8 +85,21 @@ export const menus = [
     ]
   },
   {
-    path: '/reservasi',
-    label: 'List / Histori Reservasi',
+    id: 2,
+    path: '#',
+    label: 'Reservasi Command Center',
+    iconClass: 'bx-home',
+    role: [
+      'admin_reservasi'
+    ]
+  }
+]
+
+export const menus = [
+  {
+    parent: 1,
+    path: '/',
+    label: 'Kalender Reservasi',
     iconClass: 'bx-calendar',
     role: [
       'employee_reservasi',
@@ -93,30 +107,44 @@ export const menus = [
     ]
   },
   {
+    parent: 1,
+    path: '/reservasi',
+    label: 'List Reservasi',
+    iconClass: 'bx-calendar',
+    role: [
+      'employee_reservasi',
+      'admin_reservasi'
+    ]
+  },
+  {
+    parent: 2,
     path: '/reservasi-command-center',
-    label: 'Reservasi Command Center',
+    label: 'List Reservasi',
     iconClass: 'bx-calendar',
     role: [
       'admin_reservasi'
     ]
   },
   {
+    parent: 1,
     path: '/resource',
-    label: 'Resource/Aset',
+    label: 'Ruangan / Aset',
     iconClass: 'bx-cabinet',
     role: [
       'admin_reservasi'
     ]
   },
   {
+    parent: 2,
     path: '/command-center',
-    label: 'Command Center',
+    label: 'Pengaturan Command Center',
     iconClass: 'bx-cabinet',
     role: [
       'admin_reservasi'
     ]
   },
   {
+    parent: 0,
     path: '/logout',
     label: 'Logout',
     iconClass: 'bx-log-out',

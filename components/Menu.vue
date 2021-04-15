@@ -13,18 +13,44 @@
     </div>
     <div class="mt-8">
       <ul>
-        <li v-for="menu in menus" :key="menu.path" class="pl-4">
-          <NuxtLink :to="menu.path" class="flex items-center p-4 pr-6">
-            <i :class="['bx bx-sm text-white', menu.iconClass]" />
-            <span class="text-md font-medium text-white">{{ menu.label }}</span>
-          </NuxtLink>
+        <li v-for="parent in parentMenus" :key="parent.id" class="pl-4">
+          <div class="flex flex-col flex-grow border-r border-gray-200 pt-5 overflow-y-auto">
+            <div class="flex-grow flex flex-col">
+              <nav class="flex-1 px-2 space-y-1" aria-label="Sidebar">
+                <div class="space-y-1">
+                  <button type="button" class="text-white group w-full flex items-center pl-7 pr-2 py-2 text-sm font-medium" :aria-controls="parent.id" aria-expanded="false">
+                    <i :class="['bx bx-sm text-white', parent.iconClass]" aria-hidden="true" />
+                    <span>{{ parent.label }}</span>
+                  </button>
+                  <div v-for="menu in menus" :id="parent.id" :key="menu.path" class="space-y-1">
+                    <div v-if="parent.id == menu.parent">
+                      <NuxtLink :to="menu.path" class="group submenu hover:text-gray hover:bg-gray-500">
+                        <i :class="['bx bx-sm text-white', menu.iconClass]" aria-hidden="true" />
+                        <span>{{ menu.label }}</span>
+                      </NuxtLink>
+                    </div>
+                  </div>
+                </div>
+              </nav>
+            </div>
+          </div>
+        </li>
+        <li v-for="menu in menus" :key="menu.path" class="pl-6">
+          <div v-if="menu.parent == 0">
+            <div class="space-y-1 pt-4">
+              <NuxtLink :to="menu.path" class="text-white group w-full flex items-center pl-7 pr-2 py-2 text-sm font-medium">
+                <i :class="['bx bx-sm text-white', menu.iconClass]" aria-hidden="true" />
+                <span>{{ menu.label }}</span>
+              </NuxtLink>
+            </div>
+          </div>
         </li>
       </ul>
     </div>
   </div>
 </template>
 <script>
-import { menus } from '~/assets/constant/enum'
+import { menus, parentMenus } from '~/assets/constant/enum'
 import { isAdmin } from '~/utils'
 export default {
   data () {
@@ -35,6 +61,18 @@ export default {
   computed: {
     menus () {
       const list = menus.filter((menu) => {
+        if (this.isAdmin(this.$auth)) {
+          if (menu.role.includes('admin_reservasi')) {
+            return menu
+          }
+        } else if (menu.role.includes('employee_reservasi')) {
+          return menu
+        }
+      })
+      return list
+    },
+    parentMenus () {
+      const list = parentMenus.filter((menu) => {
         if (this.isAdmin(this.$auth)) {
           if (menu.role.includes('admin_reservasi')) {
             return menu
@@ -59,5 +97,8 @@ a.nuxt-link-exact-active {
   background: #008444;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
+}
+.submenu {
+  @apply w-full flex items-center pl-10 pr-2 py-2 text-sm font-medium text-white rounded-md;
 }
 </style>
