@@ -137,7 +137,7 @@
                 class="flex flex-col shadow-lg border-2 border-gray3 p-2 overflow-auto bg-white h-56"
               >
                 <label
-                  v-for="resource of reservation.resourcesLists"
+                  v-for="resource in reservation.resourcesLists"
                   :key="resource.id"
                   class="cursor-pointer p-1 hover:bg-blue"
                 >
