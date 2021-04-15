@@ -100,7 +100,7 @@ export const menus = [
     parent: 1,
     path: '/',
     label: 'Kalender Reservasi',
-    iconClass: 'bx-home',
+    iconClass: 'bx-calendar',
     role: [
       'employee_reservasi',
       'admin_reservasi'

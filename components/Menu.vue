@@ -24,7 +24,7 @@
                   </button>
                   <div v-for="menu in menus" :id="parent.id" :key="menu.path" class="space-y-1">
                     <div v-if="parent.id == menu.parent">
-                      <NuxtLink :to="menu.path" class="group w-full flex items-center pl-10 pr-2 py-2 text-sm font-medium text-white rounded-md hover:text-gray hover:bg-gray-500">
+                      <NuxtLink :to="menu.path" class="group submenu hover:text-gray hover:bg-gray-500">
                         <i :class="['bx bx-sm text-white', menu.iconClass]" aria-hidden="true" />
                         <span>{{ menu.label }}</span>
                       </NuxtLink>
@@ -97,5 +97,8 @@ a.nuxt-link-exact-active {
   background: #008444;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
+}
+.submenu {
+  @apply w-full flex items-center pl-10 pr-2 py-2 text-sm font-medium text-white rounded-md;
 }
 </style>
