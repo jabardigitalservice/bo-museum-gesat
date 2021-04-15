@@ -53,7 +53,7 @@
               class="w-full form-input bg-white rounded-md"
               @change="updateReservationEndTime"
             >
-              <option v-for="time of reservation.timeInterval" :key="time" :value="time">
+              <option v-for="time in reservation.timeInterval" :key="time" :value="time">
                 {{ time }}
               </option>
             </select>
@@ -72,7 +72,7 @@
               required
               class="w-full form-input bg-white rounded-md"
             >
-              <option v-for="time of allowedReservationInterval" :key="time" :value="time">
+              <option v-for="time in allowedReservationInterval" :key="time" :value="time">
                 {{ time }}
               </option>
             </select>
