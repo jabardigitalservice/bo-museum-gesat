@@ -1,5 +1,5 @@
 <template>
-  <modal :name="modalName" height="auto" width="50%" scrollable="true">
+  <modal :name="modalName" height="auto" width="50%" :scrollable="true">
     <div class="p-8 h-full flex flex-col justify-between">
       <!-- Modal Header -->
       <section class="flex flex-row justify-between align-middle mb-4">
