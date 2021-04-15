@@ -86,7 +86,7 @@
               Reservasi Berulang
               <span class="text-red">*</span>
             </label>
-            <select v-model="form.repeat_type" name="repeat" class="w-full form-input bg-white rounded-md">
+            <select v-model="form.repeat_type" name="repeat" class="w-full form-input bg-white rounded-md" @change="updateRepeatStatus">
               <option value="NONE">
                 Tidak
               </option>
@@ -276,7 +276,7 @@ export default {
         start_time: null,
         end_time: null,
         repeat_type: 'NONE',
-        repeat: this.checkRepeatStatus
+        repeat: false
       },
       reservation: {
         startTime: null,
@@ -333,12 +333,6 @@ export default {
     }
   },
   computed: {
-    checkRepeatStatus () {
-      if (this.repeat_type !== 'NONE') {
-        return true
-      }
-      return false
-    },
     allowedReservationInterval () {
       const { timeInterval, startTime } = this.reservation
       const startTimeIndex = timeInterval.indexOf(startTime)
@@ -358,6 +352,13 @@ export default {
     }
   },
   methods: {
+    updateRepeatStatus () {
+      if (this.repeat_type !== 'NONE') {
+        this.form.repeat = true
+        return
+      }
+      this.form.repeat = true
+    },
     checkedResources (id) {
       return this.form.asset_ids.indexOf(id)
     },
