@@ -257,8 +257,7 @@ import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import { toMoment } from '@fullcalendar/moment'
 import listPlugin from '@fullcalendar/list'
 import allLocales from '@fullcalendar/core/locales-all'
-import { momentFormatDateId, momentFormatTimeISO } from '~/utils'
-import { timeInterval } from '~/assets/constant/enum'
+import { momentFormatDateId, momentFormatTimeISO, generateTimes } from '~/utils'
 
 export default {
   layout: 'admin',
@@ -281,7 +280,7 @@ export default {
       reservation: {
         startTime: null,
         endTime: null,
-        timeInterval,
+        timeInterval: generateTimes(),
         expand: false,
         resourcesLists: null
       },
