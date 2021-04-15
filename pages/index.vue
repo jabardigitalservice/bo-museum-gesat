@@ -5,20 +5,7 @@
         Dashboard
       </h1>
       <div>
-        <FullCalendar
-          ref="fullCalendar"
-          :options="calendarOptions"
-        >
-          <template v-slot:eventContent="arg" class="overflow-hidden">
-            <b>{{ arg.timeText }}</b>
-            <span class="block text-md font-medium">
-              {{ `Kegiatan : ${arg.event.title}` }}
-            </span>
-            <span class="block">{{ `Nama : ${arg.event.extendedProps.name || ''}` }}</span>
-            <span class="block">{{ `Resource : ${arg.event.extendedProps.resourceName || ''}` }}</span>
-            <span class="block">{{ `Catatan : ${arg.event.extendedProps.catatan || ''}` }}</span>
-          </template>
-        </FullCalendar>
+        <FullCalendar ref="fullCalendar" :options="calendarOptions" />
       </div>
     </div>
     <modal name="add" :adaptive="true" height="auto">
@@ -169,6 +156,10 @@ export default {
         locales: allLocales,
         locale: 'id',
         timeZone: 'local',
+        eventTimeFormat: {
+          hour: '2-digit',
+          minute: '2-digit'
+        },
         plugins: [
           dayGridPlugin,
           timeGridPlugin,
@@ -195,7 +186,7 @@ export default {
         editable: true,
         selectable: true,
         selectMirror: true,
-        dayMaxEvents: true,
+        dayMaxEvents: 3,
         weekends: true,
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,
