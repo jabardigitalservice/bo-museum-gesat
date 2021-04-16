@@ -14,7 +14,7 @@
           <button class="w-full form-input bg-white rounded-md cursor-pointer" @click="toggleDropdown">
             <div class="flex justify-between ">
               <p>
-                <span v-for="(selectedDay, index) in showSelectedDays" :key="index">{{ selectedDay }}</span>
+                <span v-for="(selectedDay, index) in selectedDays" :key="index">{{ selectedDay }}</span>
               </p>
               <i class="bx bxs-chevron-down" />
             </div>
@@ -62,10 +62,10 @@ export default {
     }
   },
   computed: {
-    showSelectedDays () {
+    selectedDays () {
       const selectedDays = []
       this.form.days.forEach((day) => {
-        return selectedDays.push(...this.days.filter(d => d.index === day))
+        selectedDays.push(...this.days.filter(d => d.index === day))
       })
       selectedDays.sort((a, b) => a.index - b.index)
       return [...selectedDays.map(selectedDay => selectedDay.name)].join(', ')
