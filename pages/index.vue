@@ -271,6 +271,7 @@ export default {
         asset_id: null,
         asset_ids: [],
         description: null,
+        date: null,
         start_time: null,
         end_time: null,
         repeat_type: 'NONE',
