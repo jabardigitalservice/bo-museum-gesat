@@ -105,11 +105,11 @@
             <div v-show="reservation.expand" class="absolute inset-0 w-full h-full" @click="closeOptions" />
             <!-- Select Dropdown -->
             <div class="relative">
-              <button class="w-full form-input bg-white rounded-md cursor-pointer" @click="showOptions">
+              <button class="w-full text-left form-input bg-white rounded-md cursor-pointer" @click="showOptions">
                 <div class="flex justify-between ">
                   <p v-if="form.asset_ids.length">
                     <span class="text-sm text-gray3">{{ `(${form.asset_ids.length}) ` }}</span>
-                    {{ form.asset_ids }}
+                    {{ selectedResources }}
                   </p>
                   <p v-else>
                     -- Pilih Ruangan --
@@ -323,6 +323,13 @@ export default {
     }
   },
   computed: {
+    selectedResources () {
+      const { resourcesLists } = this.reservation
+      const selectedNames = resourcesLists
+        .filter(resource => this.form.asset_ids.includes(resource.id))
+        .map(resource => resource.name)
+      return selectedNames.join(', ')
+    },
     allowedReservationInterval () {
       const { timeInterval, startTime } = this.reservation
       const startTimeIndex = timeInterval.indexOf(startTime)
@@ -520,7 +527,7 @@ export default {
         this.reservation.startTime = toMoment(selectInfo.start, selectInfo.view.calendar).format('HH:mm')
         this.reservation.endTime = toMoment(selectInfo.end, selectInfo.view.calendar).format('HH:mm')
         this.form.asset_id = selectInfo.resource.id
-        this.form.asset_ids = [selectInfo.resource.id]
+        this.form.asset_ids = [Number(selectInfo.resource.id)]
         this.form.start_time = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD HH:mm')
         this.form.end_time = toMoment(selectInfo.end, selectInfo.view.calendar).format('YYYY-MM-DD HH:mm')
         this.form.date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
