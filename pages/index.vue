@@ -8,59 +8,167 @@
         <FullCalendar ref="fullCalendar" :options="calendarOptions" />
       </div>
     </div>
-    <modal name="add" :adaptive="true" height="auto">
-      <div class="p-8 space-y-4">
-        <div class="window-header mb-2">
-          TAMBAH RESERVASI BARU
-        </div>
-        <div>
-          <label for="title" class="block text-sm">
-            Judul Kegiatan
-            <span class="text-red">*</span>
-          </label>
-          <div class="mt-1">
-            <input
-              v-model="form.title"
-              name="title"
-              type="text"
-              autocomplete="title"
+    <!-- Modal Add Reservation  -->
+    <BaseModal modal-name="add" modal-title="Tambah Reservasi Baru">
+      <template #body>
+        <!-- Date and Time -->
+        <section class="grid grid-cols-3 gap-4 mb-6">
+          <div>
+            <label for="dateTime" class="block text-sm">
+              Waktu dan Tanggal
+              <span class="text-red">*</span>
+            </label>
+            <date-picker
+              v-model="form.date"
+              placeholder="Tanggal Akhir"
+              class="form-input rounded-md"
               required
-              class="form-input"
-            >
-          </div>
-        </div>
-        <div>
-          <label for="description" class="block text-sm">
-            Catatan / Deskripsi Kegiatan
-          </label>
-          <div class="mt-1">
-            <textarea
-              v-model="form.description"
-              name="description"
-              class="form-input"
             />
           </div>
-        </div>
-        <div class="flex space-x-4">
-          <button
-            type="button"
-            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="closeFormReservation"
-          >
-            Close
-          </button>
-          <button
-            :class="{'bg-gray4': formIsEmpty}"
-            :disabled="formIsEmpty"
-            type="button"
-            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="addReservation"
-          >
-            Submit
-          </button>
-        </div>
-      </div>
-    </modal>
+
+          <!-- Start Time -->
+          <div>
+            <label for="start-time" class="block text-sm">
+              Dari
+              <span class="text-red">*</span>
+            </label>
+            <select
+              v-model="reservation.startTime"
+              name="start-time"
+              type="text"
+              required
+              class="w-full form-input bg-white rounded-md"
+              @change="updateReservationEndTime"
+            >
+              <option v-for="time in reservation.timeInterval" :key="time" :value="time">
+                {{ time }}
+              </option>
+            </select>
+          </div>
+
+          <!-- End Time -->
+          <div>
+            <label for="end-time" class="block text-sm">
+              Sampai
+              <span class="text-red">*</span>
+            </label>
+            <select
+              v-model="reservation.endTime"
+              name="end-time"
+              type="text"
+              required
+              class="w-full form-input bg-white rounded-md"
+            >
+              <option v-for="time in allowedReservationInterval" :key="time" :value="time">
+                {{ time }}
+              </option>
+            </select>
+          </div>
+        </section>
+
+        <!-- Repeat Booking -->
+        <section class="grid grid-cols-3 gap-4 mb-6">
+          <div class="col-span-1">
+            <label for="repeat" class="block text-sm">
+              Reservasi Berulang
+              <span class="text-red">*</span>
+            </label>
+            <select v-model="form.repeat_type" name="repeat" class="w-full form-input bg-white rounded-md" @change="updateRepeatStatus">
+              <option value="NONE">
+                Tidak
+              </option>
+              <option value="DAILY">
+                Perhari
+              </option>
+              <option value="WEEKLY">
+                Perminggu
+              </option>
+              <option value="MONTHLY">
+                Perbulan
+              </option>
+            </select>
+          </div>
+          <div class="col-span-2">
+            <!-- Insert Dynamic Component Here -->
+          </div>
+        </section>
+
+        <!-- Spaces -->
+        <section class="mb-4">
+          <label for="spaces" class="block text-sm">
+            Ruangan/Aset
+            <span class="text-red">*</span>
+          </label>
+
+          <!-- Multiple Select Dropdown -->
+          <section>
+            <div v-show="reservation.expand" class="absolute inset-0 w-full h-full" @click="closeOptions" />
+            <!-- Select Dropdown -->
+            <div class="relative">
+              <button class="w-full form-input bg-white rounded-md cursor-pointer" @click="showOptions">
+                <div class="flex justify-between ">
+                  <p v-if="form.asset_ids.length">
+                    <span class="text-sm text-gray3">{{ `(${form.asset_ids.length}) ` }}</span>
+                    {{ form.asset_ids }}
+                  </p>
+                  <p v-else>
+                    -- Pilih Ruangan --
+                  </p>
+                  <em class="bx bxs-chevron-down" />
+                </div>
+              </button>
+
+              <!-- Select Options -->
+              <div
+                v-show="reservation.expand"
+                class="flex flex-col shadow-lg border-2 border-gray3 p-2 overflow-auto bg-white h-56"
+              >
+                <label
+                  v-for="resource in reservation.resourcesLists"
+                  :key="resource.id"
+                  class="cursor-pointer p-1 hover:bg-blue"
+                >
+                  <input
+                    v-model="form.asset_ids"
+                    type="checkbox"
+                    :value="resource.id"
+                    :checked="checkedResources(resource.id)"
+                  >
+                  {{ resource.name }}
+                </label>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <!-- Booking Name -->
+        <section class="mb-4">
+          <label for="name" class="block text-sm">
+            Nama Kegiatan
+            <span class="text-red">*</span>
+          </label>
+          <input v-model="form.title" name="name" type="text" class="w-full form-input bg-white rounded-md" required>
+        </section>
+
+        <!-- Holder Mail -->
+        <section class="mb-4">
+          <label for="holder-email" class="block text-sm">Tambahkan Email Penanggung Jawab</label>
+          <input v-model="form.holder" name="holder-email" type="email" class="w-full form-input bg-white rounded-md">
+        </section>
+
+        <!-- Notes/Description -->
+        <section>
+          <label for="description" class="block text-sm">Catatan/Deskripsi Kegiatan</label>
+          <textarea v-model="form.description" name="description" class="w-full form-input bg-white rounded-md" />
+        </section>
+      </template>
+
+      <!-- Form Buttons -->
+      <template #buttons>
+        <Button btn-type="close" @btn-click="closeFormReservation" />
+        <Button btn-type="submit" :disabled="formIsEmpty" @btn-click="addReservation" />
+      </template>
+    </BaseModal>
     <modal name="detail" :adaptive="true" :height="`auto`">
       <div class="p-8 space-y-4">
         <div class="window-header mb-2">
@@ -136,7 +244,8 @@ import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import { toMoment } from '@fullcalendar/moment'
 import listPlugin from '@fullcalendar/list'
 import allLocales from '@fullcalendar/core/locales-all'
-import { momentFormatDateId, momentFormatTimeISO } from '~/utils'
+import { momentFormatDateId, momentFormatTimeISO, generateTimes } from '~/utils'
+
 export default {
   layout: 'admin',
   components: {
@@ -147,10 +256,20 @@ export default {
       form: {
         title: null,
         asset_id: null,
+        asset_ids: [],
         description: null,
         date: null,
         start_time: null,
-        end_time: null
+        end_time: null,
+        repeat_type: 'NONE',
+        repeat: false
+      },
+      reservation: {
+        startTime: null,
+        endTime: null,
+        timeInterval: generateTimes(),
+        expand: false,
+        resourcesLists: null
       },
       calendarOptions: {
         locales: allLocales,
@@ -204,6 +323,12 @@ export default {
     }
   },
   computed: {
+    allowedReservationInterval () {
+      const { timeInterval, startTime } = this.reservation
+      const startTimeIndex = timeInterval.indexOf(startTime)
+      const maxLength = timeInterval.length
+      return timeInterval.slice(startTimeIndex + 1, maxLength)
+    },
     formIsEmpty () {
       const isFormEmpty = [
         this.form.title
@@ -217,6 +342,30 @@ export default {
     }
   },
   methods: {
+    updateRepeatStatus () {
+      if (this.repeat_type !== 'NONE') {
+        this.form.repeat = true
+        return
+      }
+      this.form.repeat = true
+    },
+    checkedResources (id) {
+      return this.form.asset_ids.indexOf(id)
+    },
+    showOptions (event) {
+      this.reservation.expand = !this.reservation.expand
+    },
+    closeOptions (event) {
+      this.reservation.expand = false
+    },
+    updateReservationEndTime () {
+      const { timeInterval, startTime, endTime } = this.reservation
+      const startTimeIndex = timeInterval.indexOf(startTime)
+      const endTimeIndex = timeInterval.indexOf(endTime)
+      if (startTimeIndex >= endTimeIndex) {
+        this.reservation.endTime = timeInterval[startTimeIndex + 1]
+      }
+    },
     renderHeaderResource (arg) {
       return {
         html: `
@@ -357,6 +506,7 @@ export default {
           newObj.eventBackgroundColor = '#219653'
           return newObj
         })
+        this.reservation.resourcesLists = resources ?? []
         successCallback(resourcesMap)
       }).catch((e) => {
         failureCallback(e)
@@ -367,7 +517,10 @@ export default {
       if (toMoment(new Date(), selectInfo.view.calendar).format() < selectInfo.startStr) {
         this.$modal.show('add')
         this.clearFormReservation()
+        this.reservation.startTime = toMoment(selectInfo.start, selectInfo.view.calendar).format('HH:mm')
+        this.reservation.endTime = toMoment(selectInfo.end, selectInfo.view.calendar).format('HH:mm')
         this.form.asset_id = selectInfo.resource.id
+        this.form.asset_ids = [selectInfo.resource.id]
         this.form.start_time = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD HH:mm')
         this.form.end_time = toMoment(selectInfo.end, selectInfo.view.calendar).format('YYYY-MM-DD HH:mm')
         this.form.date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
