@@ -18,15 +18,15 @@
             <div class="flex-grow flex flex-col">
               <nav class="flex-1 px-2 space-y-1" aria-label="Sidebar">
                 <div class="space-y-1">
-                  <div class="text-white group w-full flex items-center pl-7 pr-2 py-2 text-xs font-medium" :aria-controls="parent.id" aria-expanded="false">
+                  <div class="text-white group w-full flex items-center pl-7 pr-2 py-2 text-sm font-medium" :aria-controls="parent.id" aria-expanded="false">
                     <i :class="['bx bx-sm text-white', parent.iconClass]" aria-hidden="true" />
-                    <span>{{ parent.label }}</span>
+                    <strong class="ml-1">{{ parent.label }}</strong>
                   </div>
                   <div v-for="menu in menus" :id="parent.id" :key="menu.path" class="space-y-1">
                     <div v-if="parent.id == menu.parent">
                       <NuxtLink :to="menu.path" class="group submenu hover:text-gray hover:bg-gray-500">
                         <i :class="['bx bx-sm text-white', menu.iconClass]" aria-hidden="true" />
-                        <span>{{ menu.label }}</span>
+                        <strong class="ml-1">{{ menu.label }}</strong>
                       </NuxtLink>
                     </div>
                   </div>
@@ -40,7 +40,7 @@
             <div class="space-y-1 pt-4">
               <NuxtLink :to="menu.path" class="text-white group w-full flex items-center pl-7 pr-2 py-2 text-sm font-medium">
                 <i :class="['bx bx-sm text-white', menu.iconClass]" aria-hidden="true" />
-                <span>{{ menu.label }}</span>
+                <strong class="ml-1">{{ menu.label }}</strong>
               </NuxtLink>
             </div>
           </div>
