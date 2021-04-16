@@ -3,7 +3,7 @@
     <div class="flex flex-col">
       <!-- TITLE -->
       <h1 class="text-4xl font-normal text-gray1">
-        Reservasi Command Center
+        List Reservasi
       </h1>
       <!-- FILTER -->
       <div class="w-full flex my-3">

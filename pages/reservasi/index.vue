@@ -3,7 +3,7 @@
     <div class="flex flex-col">
       <!-- title -->
       <h1 class="text-4xl font-normal text-gray1">
-        Reservasi
+        List Reservasi
       </h1>
       <Statistik />
       <!-- filter and add button -->
@@ -177,7 +177,7 @@
         </div>
         <div v-if="isAdmin">
           <label for="asset_id" class="block text-sm">
-            Resource / Aset
+            Ruangan / Aset
           </label>
           <div class="mt-1">
             <select v-model="params.asset_id" name="asset_id" required class="form-input">

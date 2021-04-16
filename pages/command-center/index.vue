@@ -3,7 +3,7 @@
     <div class="flex flex-col">
       <!-- title -->
       <h1 class="text-4xl font-normal text-gray1">
-        Command Center
+        Pengaturan Waktu Tutup
       </h1>
       <!-- filter and add button -->
       <div class="w-full flex flex-wrap my-3">
@@ -144,7 +144,7 @@
       </modal>
       <!-- title -->
       <h1 class="text-4xl font-normal text-gray1">
-        Atur Waktu Kunjungan
+        Pengaturan Waktu Kunjungan
       </h1>
       <!-- Filter, Add, List Shift -->
       <div class="w-full flex flex-wrap my-3">

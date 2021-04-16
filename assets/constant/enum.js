@@ -45,7 +45,7 @@ export const optionsResourceType = ['offline', 'online']
 export const optionsSortResource = [
   {
     value: 'name',
-    label: 'Resource / Aset'
+    label: 'Ruangan / Aset'
   },
   {
     value: 'created_at',
@@ -61,7 +61,7 @@ export const optionsSortResource = [
   },
   {
     value: 'resource_type',
-    label: 'Tipe Resource'
+    label: 'Tipe Ruangan'
   }
 ]
 export const cardsDashboard = [

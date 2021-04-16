@@ -3,7 +3,7 @@
     <div class="flex flex-col">
       <!-- title -->
       <h1 class="text-4xl font-normal text-gray1">
-        Resource / Aset
+        Ruangan / Aset
       </h1>
       <!-- filter and add button -->
       <div class="w-full flex flex-wrap my-3 ">
@@ -178,11 +178,11 @@
     >
       <div class="bg-gray5 w-full h-full p-3 overflow-auto">
         <h2 class="font-medium text-xl">
-          Tambahkan Resource / Aset Baru
+          Tambahkan Ruangan / Aset Baru
         </h2>
         <div class="flex flex-col">
           <div class="w-full flex flex-col mt-3">
-            <label class="font-medium" for="status">Nama Resource / Aset</label>
+            <label class="font-medium" for="status">Nama Ruangan / Aset</label>
             <input v-model="form.name" type="text" class="focus:outline-none p-3 rounded border-2 border-gray2">
           </div>
           <div class="w-full flex flex-col mt-3">
@@ -202,7 +202,7 @@
             <input v-model="form.capacity" type="number" class="focus:outline-none p-3 rounded border-2 border-gray2">
           </div>
           <div class="w-full flex flex-col mt-3">
-            <label class="font-medium" for="status">Tipe Resource</label>
+            <label class="font-medium" for="status">Tipe Ruangan</label>
             <select v-model="form.resource_type" name="status" class="capitalize focus:outline-none rounded p-3 appearance-none border-2 border-gray2">
               <option v-for="(type, index) in optionsResourceType" :key="index" class="capitalize" :value="type">
                 {{ type }}
