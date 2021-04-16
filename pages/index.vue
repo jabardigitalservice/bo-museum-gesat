@@ -2,7 +2,7 @@
   <div class="px-4 pb-20">
     <div class="flex flex-col">
       <h1 class="text-4xl font-normal text-gray1">
-        Dashboard
+        Kalender Reservasi
       </h1>
       <div>
         <FullCalendar
