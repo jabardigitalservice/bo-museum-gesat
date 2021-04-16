@@ -12,8 +12,8 @@
     <BaseModal modal-name="add" modal-title="Tambah Reservasi Baru">
       <template #body>
         <!-- Date and Time -->
-        <section class="grid grid-cols-3 gap-4 mb-6">
-          <div>
+        <section class="grid md:grid-cols-4 sm:grid-cols-1 gap-4 mb-6">
+          <div class="md:col-span-2 sm:col-span-1">
             <label for="dateTime" class="block text-sm">
               Waktu dan Tanggal
               <span class="text-red">*</span>
@@ -165,16 +165,15 @@
 
       <!-- Form Buttons -->
       <template #buttons>
-        <Button btn-type="close" @btn-click="closeFormReservation" />
-        <Button btn-type="submit" :disabled="formIsEmpty" @btn-click="addReservation" />
+        <ModalButton btn-type="close" @btn-click="closeFormReservation" />
+        <ModalButton btn-type="submit" :disabled="formIsEmpty" @btn-click="addReservation" />
       </template>
     </BaseModal>
-    <modal name="detail" :adaptive="true" :height="`auto`">
-      <div class="p-8 space-y-4">
-        <div class="window-header mb-2">
-          DETAIL RESERVASI
-        </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
+
+    <!-- Reservation Details Modal -->
+    <BaseModal modal-name="detail" modal-title="Detail Reservasi">
+      <template #body>
+        <div class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
             Nama Pegawai
           </div>
@@ -182,7 +181,7 @@
             {{ detailData.extendedProps.name || '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
+        <div class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
             Judul Kegiatan
           </div>
@@ -190,7 +189,7 @@
             {{ detailData.title || '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
+        <div class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
             Resource / Aset
           </div>
@@ -198,7 +197,7 @@
             {{ detailData.extendedProps.resourceName || '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
+        <div class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
             Waktu Reservasi
           </div>
@@ -214,24 +213,12 @@
             {{ detailData.extendedProps.catatan || '-' }}
           </div>
         </div>
-        <div class="flex gap-2">
-          <button
-            type="button"
-            class="w-1/2 flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-red text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="deleteData"
-          >
-            Delete
-          </button>
-          <button
-            type="button"
-            class="w-1/2 flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="closeModalDetail"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </modal>
+      </template>
+      <template #buttons>
+        <ModalButton btn-type="delete" @btn-click="deleteData" />
+        <ModalButton btn-type="close" @btn-click="closeModalDetail" />
+      </template>
+    </BaseModal>
   </div>
 </template>
 <script>

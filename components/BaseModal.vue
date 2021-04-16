@@ -1,6 +1,11 @@
 <template>
-  <modal :name="modalName" height="auto" width="50%" :scrollable="true">
-    <div class="p-8 h-full flex flex-col justify-between">
+  <modal
+    :name="modalName"
+    :adaptive="true"
+    height="auto"
+    :max-height="800"
+  >
+    <div class="p-8 h-auto max-h-full flex flex-col overflow-y-auto">
       <!-- Modal Header -->
       <section class="flex flex-row justify-between align-middle mb-4">
         <h2 class="window-header uppercase">
