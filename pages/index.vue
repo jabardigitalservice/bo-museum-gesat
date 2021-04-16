@@ -173,7 +173,7 @@
     <!-- Reservation Details Modal -->
     <BaseModal modal-name="detail" modal-title="Detail Reservasi">
       <template #body>
-        <div class="md:grid md:grid-cols-5 text-sm mb-2">
+        <div class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
             Nama Pegawai
           </div>
@@ -181,7 +181,7 @@
             {{ detailData.extendedProps.name || '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm mb-2">
+        <div class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
             Judul Kegiatan
           </div>
@@ -189,7 +189,7 @@
             {{ detailData.title || '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm mb-2">
+        <div class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
             Resource / Aset
           </div>
@@ -197,7 +197,7 @@
             {{ detailData.extendedProps.resourceName || '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm mb-2">
+        <div class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
             Waktu Reservasi
           </div>
