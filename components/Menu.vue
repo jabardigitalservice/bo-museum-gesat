@@ -14,14 +14,14 @@
     <div class="mt-8">
       <ul>
         <li v-for="parent in parentMenus" :key="parent.id" class="pl-4">
-          <div class="flex flex-col flex-grow border-r border-gray-200 pt-5 overflow-y-auto">
+          <div class="flex flex-col flex-grow pt-5 overflow-y-auto">
             <div class="flex-grow flex flex-col">
               <nav class="flex-1 px-2 space-y-1" aria-label="Sidebar">
                 <div class="space-y-1">
-                  <button type="button" class="text-white group w-full flex items-center pl-7 pr-2 py-2 text-sm font-medium" :aria-controls="parent.id" aria-expanded="false">
+                  <div class="text-white group w-full flex items-center pl-7 pr-2 py-2 text-xs font-medium" :aria-controls="parent.id" aria-expanded="false">
                     <i :class="['bx bx-sm text-white', parent.iconClass]" aria-hidden="true" />
                     <span>{{ parent.label }}</span>
-                  </button>
+                  </div>
                   <div v-for="menu in menus" :id="parent.id" :key="menu.path" class="space-y-1">
                     <div v-if="parent.id == menu.parent">
                       <NuxtLink :to="menu.path" class="group submenu hover:text-gray hover:bg-gray-500">
