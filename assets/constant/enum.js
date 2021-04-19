@@ -164,3 +164,34 @@ export const thResourceAsset = [
   'Tanggal dibuat',
   'Aksi'
 ]
+
+export const days = [
+  {
+    index: 1,
+    name: 'Senin'
+  },
+  {
+    index: 2,
+    name: 'Selasa'
+  },
+  {
+    index: 3,
+    name: 'Rabu'
+  },
+  {
+    index: 4,
+    name: 'Kamis'
+  },
+  {
+    index: 5,
+    name: 'Jumat'
+  },
+  {
+    index: 6,
+    name: 'Sabtu'
+  },
+  {
+    index: 0,
+    name: 'Minggu'
+  }
+]
