@@ -83,7 +83,7 @@
           <tbody v-else class="tbody">
             <tr>
               <td colspan="6" class="w-full p-4 text-center text-gray3">
-                No data available
+                Data tidak tersedia
               </td>
             </tr>
           </tbody>
@@ -136,7 +136,7 @@
                 class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
                 @click="verifiedData"
               >
-                Submit
+                Simpan
               </button>
             </div>
           </div>
@@ -211,7 +211,7 @@
             <tr>
               <td colspan="6" class="w-full p-4 text-center text-gray3">
                 <div class="text-md">
-                  No data available
+                  Data tidak tersedia
                 </div>
               </td>
             </tr>
@@ -282,7 +282,7 @@
                 class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
                 @click="closeModalAddShift"
               >
-                Close
+                Tutup
               </button>
               <button
                 :class="{'bg-gray4': formIsEmpty}"
@@ -290,7 +290,7 @@
                 class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
                 @click.stop="verifiedDataShift"
               >
-                Submit
+                Simpan
               </button>
             </div>
           </div>
@@ -485,6 +485,8 @@ export default {
       const confirmed = await this.$swal.fire({
         title: 'Hapus Data?',
         showCancelButton: true,
+        confirmButtonText: 'Ok',
+        cancelButtonText: 'Batal',
         type: 'warning',
         dangerMode: true
       })
@@ -508,6 +510,8 @@ export default {
     async deleteShift ({ id }) {
       const confirmed = await this.$swal.fire({
         title: 'Hapus Data?',
+        confirmButtonText: 'Ok',
+        cancelButtonText: 'Batal',
         showCancelButton: true,
         type: 'warning',
         dangerMode: true
