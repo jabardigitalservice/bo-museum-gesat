@@ -121,7 +121,7 @@
               <!-- Select Options -->
               <div
                 v-show="reservation.expand"
-                class="flex flex-col shadow-lg border-2 border-gray3 p-2 overflow-auto bg-white h-56"
+                class="absolute flex flex-col shadow-lg border-2 border-gray3 p-2 overflow-auto bg-white h-56 w-full"
               >
                 <label
                   v-for="resource in reservation.resourcesLists"
