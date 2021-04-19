@@ -20,7 +20,7 @@
           <div class="md:grid md:grid-cols-5 flex item-center">
             <div class="md:col-span-2 w-full">
               <div class="w-full px-4 py-2 bg-white border-solid border border-gray4 rounded flex justify-between items-center">
-                <input v-model="params.search" class="w-full focus:outline-none" type="text" placeholder="Search">
+                <input v-model="params.search" class="w-full focus:outline-none" type="text" placeholder="Cari">
                 <i class="text-gray4 bx bx-search bx-sm cursor-pointer" @click="onSearch" />
               </div>
             </div>
@@ -127,7 +127,7 @@
           <tbody v-else class="tbody">
             <tr>
               <td colspan="6" class="w-full p-4 text-center text-gray3">
-                No data available
+                Data tidak tersedia
               </td>
             </tr>
           </tbody>
@@ -148,7 +148,7 @@
         </div>
         <div>
           <label for="title" class="block text-sm">
-            Rentang Tanggal
+            Rentang Tanggal Waktu Reservasi
           </label>
           <div class="flex mt-1">
             <date-picker
@@ -194,7 +194,7 @@
             class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
             @click="clearFilter"
           >
-            Clear
+            Bersihkan
           </button>
           <button
             type="button"
@@ -202,7 +202,7 @@
             :disabled="checkformIsEmpty"
             @click="onFilter"
           >
-            Submit
+            Terapkan
           </button>
         </div>
       </div>
@@ -214,11 +214,11 @@
     >
       <div class="p-8 space-y-4">
         <div class="window-header mb-2">
-          SORT DATA RESERVASI
+          URUTKAN DATA RESERVASI
         </div>
         <div>
           <label for="title" class="block text-sm">
-            Judul Kegiatan
+            Urutkan Berdasarkan
           </label>
           <div class="mt-1">
             <select v-model="params.sortBy" name="approval_status" required class="form-input">
@@ -230,11 +230,11 @@
         </div>
         <div>
           <label for="password" class="block text-sm">
-            Urutkan berdasarkan
+            Urutkan Dari
           </label>
           <div class="mt-1">
             <select v-model="params.orderBy" name="approval_status" required class="form-input">
-              <option v-for="item in optionsOrderBy" :key="item.key" :value="item.key">
+              <option v-for="item in optionsOrderByIdn" :key="item.key" :value="item.key">
                 {{ item.value }}
               </option>
             </select>
@@ -247,7 +247,7 @@
             class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
             @click="clearSortby"
           >
-            Clear
+            Bersihkan
           </button>
           <button
             type="button"
@@ -255,7 +255,7 @@
             :disabled="checkSortIsEmpty"
             @click="onSorting"
           >
-            Submit
+            Terapkan
           </button>
         </div>
       </div>
@@ -283,7 +283,7 @@
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
           <div class="md:col-span-2 text-blue">
-            Resource / Aset
+            Ruangan / Aset
           </div>
           <div class="md:col-span-3">
             {{ detailData.asset_name || '-' }}
@@ -348,10 +348,10 @@
         <div>
           <button
             type="button"
-            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-blue text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
             @click="closeModalDetail"
           >
-            Close
+            Tutup
           </button>
         </div>
       </div>
@@ -361,7 +361,7 @@
 
 <script>
 import Pagination from '~/components/Pagination.vue'
-import { statusReservation, optionsSortBy, optionsOrderBy } from '~/assets/constant/enum'
+import { statusReservation, optionsSortBy, optionsOrderByIdn } from '~/assets/constant/enum'
 import {
   generateTimes,
   momentFormatDate,
@@ -397,7 +397,7 @@ export default {
       rangeTimes: [],
       statusReservation,
       optionsSortBy,
-      optionsOrderBy,
+      optionsOrderByIdn,
       dataReservasi: [],
       dataVerifiedReservasi: [],
       dataAsset: [],
