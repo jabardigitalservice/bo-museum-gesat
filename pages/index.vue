@@ -102,7 +102,7 @@
 
           <!-- Multiple Select Dropdown -->
           <section>
-            <div v-show="reservation.expand" class="absolute inset-0 w-full h-full" @click="closeOptions" />
+            <div v-show="reservation.expand" class="absolute inset-0 w-full" @click="closeOptions" />
             <!-- Select Dropdown -->
             <div class="relative">
               <button class="w-full text-left form-input bg-white rounded-md cursor-pointer" @click="showOptions">
@@ -336,6 +336,12 @@ export default {
     }
   },
   methods: {
+    sortResources (resources) {
+      const sortedResource = resources.sort((a, b) =>
+        b.resource_type.localeCompare(a.resource_type) || a.name.localeCompare(b.name)
+      )
+      return sortedResource
+    },
     updateRepeatStatus () {
       if (this.repeat_type !== 'NONE') {
         this.form.repeat = true
@@ -500,7 +506,7 @@ export default {
           newObj.eventBackgroundColor = '#219653'
           return newObj
         })
-        this.reservation.resourcesLists = resources ?? []
+        this.reservation.resourcesLists = resources ? this.sortResources(resources) : []
         successCallback(resourcesMap)
       }).catch((e) => {
         failureCallback(e)
