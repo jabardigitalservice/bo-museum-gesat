@@ -191,7 +191,7 @@
         </div>
         <div class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
-            Resource / Aset
+            Ruangan / Aset
           </div>
           <div class="md:col-span-3">
             {{ detailData.extendedProps.resourceName || '-' }}
