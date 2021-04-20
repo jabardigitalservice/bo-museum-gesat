@@ -26,7 +26,7 @@
             class="absolute w-full z-10 flex flex-col shadow-lg border-2 border-gray3 p-2 overflow-auto bg-white h-56"
           >
             <label v-for="day in days" :key="day.index" class="cursor-pointer p-1 hover:bg-blue">
-              <input v-model="form.days" :value="day.index" type="checkbox">
+              <input :value="day.index" type="checkbox" @change="$emit('change:form-days', Number($event.target.value))">
               {{ day.name }}
             </label>
           </div>
@@ -53,6 +53,10 @@ import { days } from '../../assets/constant/enum'
 
 export default {
   props: {
+    formDays: {
+      type: Array,
+      default: () => ([])
+    },
     formEndDate: {
       type: String,
       default: null
@@ -61,16 +65,13 @@ export default {
   data () {
     return {
       dropdownOpened: false,
-      form: {
-        days: []
-      },
       days
     }
   },
   computed: {
     selectedDays () {
       const selectedDays = []
-      this.form.days.forEach((day) => {
+      this.formDays.forEach((day) => {
         selectedDays.push(...this.days.filter(d => d.index === day))
       })
       selectedDays.sort((a, b) => a.index - b.index)

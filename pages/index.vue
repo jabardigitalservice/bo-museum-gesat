@@ -92,7 +92,9 @@
             <Daily
               v-if="form.repeat_type === 'DAILY'"
               :form-end-date="form.end_date"
+              :form-days="form.days"
               @selected:form-end-date="form.end_date = $event"
+              @change:form-days="onFormDaysChange"
             />
           </div>
         </section>
@@ -254,7 +256,8 @@ export default {
         start_time: null,
         end_time: null,
         repeat_type: 'NONE',
-        repeat: false
+        repeat: false,
+        days: []
       },
       reservation: {
         startTime: null,
@@ -531,6 +534,7 @@ export default {
         this.form.date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
         this.form.end_date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
         this.form.repeat_type = 'NONE'
+        this.form.days = []
         calendarApi.unselect()
       } else {
         this.$toast.error('Tidak dapat menambahkan reservasi sebelum waktu saat ini!', {
@@ -573,6 +577,13 @@ export default {
     handleEventClick (clickInfo) {
       this.detailData = clickInfo.event
       this.$modal.show('detail')
+    },
+    onFormDaysChange (val) {
+      if (this.form.days.includes(val)) {
+        this.form.days = this.form.days.filter(day => day !== val)
+      } else {
+        this.form.days.push(val)
+      }
     }
   }
 }
