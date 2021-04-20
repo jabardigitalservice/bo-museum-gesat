@@ -16,22 +16,35 @@
           </div>
         </div>
         <div class="w-full lg:w-1/2 flex flex-wrap-reverse lg:flex-wrap flex-row-reverse">
-          <div class="w-1/2 lg:w-1/4 my-1 pl-1">
-            <button class="btn bg-yellow" @click="showModalSort">
-              <i class="bx bx-sort-up bx-sm" />
-              <span>Urutkan</span>
-            </button>
-          </div>
-          <div class="w-1/2 lg:w-1/4 my-1 lg:pl-1">
-            <button class="btn bg-blue" @click="showModalFilter">
-              <i class="bx bx-filter bx-sm" />
-              <span>Filter</span>
-            </button>
-          </div>
-          <div class="w-full lg:w-1/2 my-1">
-            <div class="w-full px-4 py-2 bg-white border-solid border border-gray4 rounded flex justify-between items-center">
-              <input v-model="params.name" class="w-full focus:outline-none" type="text" placeholder="Search" @keyup.enter="fetchResource">
-              <i class="text-gray4 bx bx-search bx-sm cursor-pointer" @click="fetchResource" />
+          <div class="md:grid md:grid-cols-5 flex item-center">
+            <div class="md:col-span-2 w-full">
+              <div class="w-full px-4 py-2 bg-white border-solid border border-gray4 rounded flex justify-between items-center">
+                <input v-model="params.name" class="w-full focus:outline-none" type="text" placeholder="Search" @keyup.enter="fetchResource">
+                <i class="text-gray4 bx bx-search bx-sm cursor-pointer" @click="fetchResource" />
+              </div>
+            </div>
+            <div class="md:col-span-3 w-full">
+              <div class="md:grid md:grid-cols-3 flex item-center">
+                <div class="md:col-span-1 ml-2">
+                  <button class="btn bg-blue" @click="showModalFilter">
+                    <i class="bx bx-filter bx-sm" />
+                    <span>Filter</span>
+                  </button>
+                </div>
+                <div class="md:col-span-1 ml-2">
+                  <button class="btn bg-yellow" @click="showModalSort">
+                    <i class="bx bx-sort-up bx-sm" />
+                    <span>Urutkan</span>
+                  </button>
+                </div>
+                <div class="md:col-span-1 ml-2">
+                  <button class="btn" :class="isHasParams ? 'bg-red border border-red' : 'bg-white border border-grayText'" @click.stop="resetFilter">
+                    <span class="hover:text-black" :class="isHasParams ? 'text-white' : 'text-grayText'">
+                      Reset
+                    </span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -87,7 +100,7 @@
           <tbody v-else class="tbody">
             <tr>
               <td colspan="7" class="w-full p-4 text-center text-gray3">
-                No data available
+                Data tidak tersedia
               </td>
             </tr>
           </tbody>
@@ -107,7 +120,7 @@
     >
       <div class="bg-gray5 w-full h-full p-3">
         <h2 class="font-medium">
-          Filter Berdasarkan :
+          FILTER DATA RUANGAN / ASET :
         </h2>
         <div class="flex flex-col">
           <div class="w-full flex flex-col mt-3">
@@ -151,7 +164,7 @@
           <div class="w-full flex flex-col mt-3">
             <label class="font-medium" for="order">Urutan :</label>
             <select v-model="params.orderBy" name="order" class="focus:outline-none rounded p-3 appearance-none border-2 border-gray2 capitalize">
-              <option v-for="order in optionsOrderBy" :key="order.key" class="capitalize" :value="order.key">
+              <option v-for="order in optionsOrderByIdn" :key="order.key" class="capitalize" :value="order.key">
                 {{ order.value }}
               </option>
             </select>
@@ -210,14 +223,14 @@
             </select>
           </div>
           <div class="grid grid-cols-2 gap-4 mt-3">
+            <button class="btn bg-yellow" @click.stop="closeAdd">
+              Tutup
+            </button>
             <button v-if="submitForm == 'store'" :class="{'bg-gray4': formIsEmpty}" class="btn bg-primary" :disabled="formIsEmpty" @click.stop="storeResource">
-              Submit
+              Simpan
             </button>
             <button v-else :class="{'bg-gray4': formIsEmpty}" class="btn bg-primary" :disabled="formIsEmpty" @click.stop="updateResource">
-              Update
-            </button>
-            <button class="btn bg-yellow" @click.stop="closeAdd">
-              Close
+              Perbarui
             </button>
           </div>
         </div>
@@ -228,7 +241,7 @@
 <script>
 import { mapState } from 'vuex'
 import Pagination from '~/components/Pagination.vue'
-import { optionsStatusResource, optionsResourceType, optionsSortResource, optionsOrderBy, thResourceAsset } from '~/assets/constant/enum'
+import { optionsStatusResource, optionsResourceType, optionsSortResource, optionsOrderByIdn, thResourceAsset } from '~/assets/constant/enum'
 import {
   momentFormatDateId
 } from '~/utils'
@@ -249,6 +262,7 @@ export default {
       },
       form: {
         name: null,
+        isHasParams: false,
         description: null,
         status: 'active',
         capacity: 0,
@@ -256,7 +270,7 @@ export default {
       },
       momentFormatDateId,
       optionsStatusResource,
-      optionsOrderBy,
+      optionsOrderByIdn,
       optionsSortResource,
       optionsResourceType,
       submitForm: 'store'
@@ -285,12 +299,17 @@ export default {
     this.fetchResource()
   },
   methods: {
+    checkParams () {
+      // check if another params not null, if true: reset button still red / isHasparams = true
+      Object.values(this.params).find(element => element !== null) === undefined ? this.isHasParams = false : this.isHasParams = true
+    },
     initParams () {
       this.params.sortBy = 'name'
       this.params.orderBy = 'asc'
       this.params.status = null
       this.params.null = null
       this.params.page = null
+      this.isHasParams = false
     },
     initForm () {
       this.form.name = null
@@ -311,6 +330,8 @@ export default {
       this.$swal.fire({
         title: 'Hapus Data?',
         showCancelButton: true,
+        confirmButtonText: 'Ok',
+        cancelButtonText: 'Batal',
         type: 'warning',
         dangerMode: true
       }).then((isConfirm) => {
@@ -383,12 +404,15 @@ export default {
       this.initParams()
     },
     resetFilter () {
+      this.initForm()
+      this.checkParams()
       this.params.status = null
       this.fetchResource()
       this.activeData = 1
     },
     applyFilterAndSort () {
       this.fetchResource()
+      this.checkParams()
       this.activeData = 1
     },
     changeActivePagination (val) {

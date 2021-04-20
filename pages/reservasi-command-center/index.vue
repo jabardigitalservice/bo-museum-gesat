@@ -97,7 +97,7 @@
           <tbody v-else class="tbody">
             <tr>
               <td colspan="6" class="w-full p-4 text-center text-gray2">
-                No data available
+                Data tidak tersedia
               </td>
             </tr>
           </tbody>
@@ -161,14 +161,14 @@
             class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
             @click="clearFilter"
           >
-            Clear
+            Bersihkan
           </button>
           <button
             type="button"
             class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
             @click="onFilter"
           >
-            Submit
+            Terapkan
           </button>
         </div>
       </div>
@@ -181,11 +181,11 @@
     >
       <div class="p-8 space-y-4">
         <div class="window-header mb-2">
-          SORT DATA RESERVASI COMMAND CENTER
+          URUTKAN DATA RESERVASI COMMAND CENTER
         </div>
         <div>
           <label for="title" class="block text-sm">
-            Sort by
+            Urutkan Berdasarkan
           </label>
           <div class="mt-1">
             <select v-model="params.sortBy" name="approval_status" required class="form-input">
@@ -200,7 +200,7 @@
         </div>
         <div>
           <label class="block text-sm">
-            Order by
+            Urutkan Dari
           </label>
           <div class="mt-1">
             <select v-model="params.orderDirection" name="approval_status" required class="form-input">
@@ -219,7 +219,7 @@
             class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
             @click="clearSortby"
           >
-            Clear
+            Bersihkan
           </button>
           <button
             type="button"
@@ -228,7 +228,7 @@
             :class="!params.sortBy || !params.orderDirection ? 'cursor-not-allowed bg-gray4' : ''"
             @click="onSorting"
           >
-            Submit
+            Terapkan
           </button>
         </div>
       </div>
@@ -354,10 +354,10 @@
         <div>
           <button
             type="button"
-            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-blue text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
             @click="closeModalDetail"
           >
-            Close
+            Tutup
           </button>
         </div>
       </div>

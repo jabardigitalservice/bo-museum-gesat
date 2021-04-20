@@ -28,6 +28,14 @@ export const optionsOrderBy = [{
   value: 'Descending'
 }]
 
+export const optionsOrderByIdn = [{
+  key: 'asc',
+  value: 'A - Z / Terbaru'
+}, {
+  key: 'desc',
+  value: 'Z - A / Terlama'
+}]
+
 export const optionsStatusResource = [
   {
     value: 'active',
