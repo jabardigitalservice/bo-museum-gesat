@@ -261,6 +261,7 @@ export default {
         date: null,
         start_time: null,
         end_time: null,
+        holder: null,
         repeat_type: 'NONE',
         repeat: false
       },
@@ -470,8 +471,11 @@ export default {
       this.$modal.hide('add')
     },
     clearFormReservation () {
+      this.reservation.expand = false
+      this.reservation.isError = false
       this.form.title = null
       this.form.description = null
+      this.form.holder = null
     },
     handleEventAllow (dropInfo, draggedEvent) {
       const now = new Date()
