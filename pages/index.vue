@@ -20,9 +20,11 @@
             </label>
             <date-picker
               v-model="form.date"
+              use-utc
               placeholder="Tanggal Akhir"
               class="form-input rounded-md"
               required
+              @input="validateInputTime"
             />
           </div>
 
@@ -38,7 +40,7 @@
               type="text"
               required
               class="w-full form-input bg-white rounded-md"
-              @change="updateReservationEndTime"
+              @change="validateInputTime"
             >
               <option v-for="time in reservation.timeInterval" :key="time" :value="time">
                 {{ time }}
@@ -231,7 +233,7 @@ import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import { toMoment } from '@fullcalendar/moment'
 import listPlugin from '@fullcalendar/list'
 import allLocales from '@fullcalendar/core/locales-all'
-import { momentFormatDateId, momentFormatTimeISO, generateTimes } from '~/utils'
+import { momentFormatDateId, momentFormatTimeISO, generateTimes, momentFormatDate } from '~/utils'
 
 export default {
   layout: 'admin',
@@ -256,7 +258,8 @@ export default {
         endTime: null,
         timeInterval: generateTimes(),
         expand: false,
-        resourcesLists: null
+        resourcesLists: null,
+        isError: false
       },
       calendarOptions: {
         locales: allLocales,
@@ -336,6 +339,26 @@ export default {
     }
   },
   methods: {
+    validateInputTime () {
+      const userSelectedDate = momentFormatDate(this.form.date)
+      const today = momentFormatDate(new Date())
+
+      if (this.form.repeat || userSelectedDate !== today) {
+        this.reservation.isError = false
+        this.updateReservationEndTime()
+        return
+      }
+
+      const [hour, minute] = this.reservation.startTime.split(':')
+      const userSelectedTime = new Date().setHours(hour, minute)
+      const currentTime = new Date()
+
+      userSelectedTime <= currentTime
+        ? this.reservation.isError = true
+        : this.reservation.isError = false
+
+      this.updateReservationEndTime()
+    },
     sortResources (resources) {
       const sortedResource = resources.sort((a, b) =>
         b.resource_type.localeCompare(a.resource_type) || a.name.localeCompare(b.name)
