@@ -67,10 +67,16 @@
             </select>
           </div>
         </section>
+
         <!-- Alert -->
-        <section v-if="reservation.isError" class="w-full p-4 text-white text-sm bg-red mb-6">
-          <em />
-          Tidak dapat menambahkan reservasi sebelum waktu saat ini!
+        <section
+          v-if="reservation.isError"
+          class="w-full p-4 bg-red mb-6 flex gap-4 align-middle"
+        >
+          <i class="bx bx-error-circle bx-sm text-white" />
+          <p class="text-white text-sm">
+            Tidak dapat menambahkan reservasi sebelum waktu saat ini!
+          </p>
         </section>
 
         <!-- Repeat Booking -->
