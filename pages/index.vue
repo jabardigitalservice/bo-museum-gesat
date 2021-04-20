@@ -369,10 +369,7 @@ export default {
       const userSelectedTime = new Date().setHours(hour, minute)
       const currentTime = new Date()
 
-      userSelectedTime <= currentTime
-        ? this.reservation.isError = true
-        : this.reservation.isError = false
-
+      this.reservation.isError = userSelectedTime <= currentTime
       this.updateReservationEndTime()
     },
     sortResources (resources) {
@@ -382,7 +379,7 @@ export default {
       return sortedResource
     },
     updateRepeatStatus () {
-      this.form.repeat_type !== 'NONE' ? this.form.repeat = true : this.form.repeat = false
+      this.form.repeat = this.form.repeat_type !== 'NONE'
       this.validateInputTime()
     },
     checkedResources (id) {
