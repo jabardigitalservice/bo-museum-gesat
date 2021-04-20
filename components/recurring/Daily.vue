@@ -39,9 +39,10 @@
         <span class="text-red">*</span>
       </label>
       <date-picker
-        v-model="form.end_date"
+        :value="formEndDate"
         class="form-input rounded-md"
         required
+        @selected="onSelected"
       />
     </div>
   </div>
@@ -51,12 +52,17 @@
 import { days } from '../../assets/constant/enum'
 
 export default {
+  props: {
+    formEndDate: {
+      type: String,
+      default: null
+    }
+  },
   data () {
     return {
       dropdownOpened: false,
       form: {
-        days: [],
-        end_date: null
+        days: []
       },
       days
     }
@@ -72,6 +78,9 @@ export default {
     }
   },
   methods: {
+    onSelected (date) {
+      this.$emit('selected:form-end-date', new Date(date).toISOString())
+    },
     toggleDropdown () {
       this.dropdownOpened = !this.dropdownOpened
     }

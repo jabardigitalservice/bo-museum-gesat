@@ -89,7 +89,11 @@
             </select>
           </div>
           <div class="col-span-2">
-            <!-- Insert Dynamic Component Here -->
+            <Daily
+              v-if="form.repeat_type === 'DAILY'"
+              :form-end-date="form.end_date"
+              @selected:form-end-date="form.end_date = $event"
+            />
           </div>
         </section>
 
@@ -246,6 +250,7 @@ export default {
         asset_ids: [],
         description: null,
         date: null,
+        end_date: null,
         start_time: null,
         end_time: null,
         repeat_type: 'NONE',
@@ -524,6 +529,8 @@ export default {
         this.form.start_time = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD HH:mm')
         this.form.end_time = toMoment(selectInfo.end, selectInfo.view.calendar).format('YYYY-MM-DD HH:mm')
         this.form.date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
+        this.form.end_date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
+        this.form.repeat_type = 'NONE'
         calendarApi.unselect()
       } else {
         this.$toast.error('Tidak dapat menambahkan reservasi sebelum waktu saat ini!', {
