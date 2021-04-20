@@ -20,7 +20,6 @@
             </label>
             <date-picker
               v-model="form.date"
-              use-utc
               placeholder="Tanggal Akhir"
               class="form-input rounded-md"
               required
@@ -66,6 +65,11 @@
               </option>
             </select>
           </div>
+        </section>
+        <!-- Alert -->
+        <section v-if="reservation.isError" class="w-full p-4 text-white text-sm bg-red mb-6">
+          <em />
+          Tidak dapat menambahkan reservasi sebelum waktu saat ini!
         </section>
 
         <!-- Repeat Booking -->
