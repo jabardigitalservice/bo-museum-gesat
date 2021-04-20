@@ -23,7 +23,7 @@
           <!-- Select Options -->
           <div
             v-show="dropdownOpened"
-            class="flex flex-col shadow-lg border-2 border-gray3 p-2 overflow-auto bg-white h-56"
+            class="absolute w-full z-10 flex flex-col shadow-lg border-2 border-gray3 p-2 overflow-auto bg-white h-56"
           >
             <label v-for="day in days" :key="day.index" class="cursor-pointer p-1 hover:bg-blue">
               <input v-model="form.days" :value="day.index" type="checkbox">
