@@ -23,6 +23,7 @@
               placeholder="Tanggal Akhir"
               class="form-input rounded-md"
               required
+              :disabled-dates="reservation.disabledDates"
               @input="validateInputTime"
             />
           </div>
@@ -263,7 +264,12 @@ export default {
         timeInterval: generateTimes(),
         expand: false,
         resourcesLists: null,
-        isError: false
+        isError: false,
+        disabledDates: {
+        // disable datepicker from unlimited past to yesterday
+        // note: 86400000 is in ms = 1 day
+          to: new Date(Date.now() - 86400000)
+        }
       },
       calendarOptions: {
         locales: allLocales,
