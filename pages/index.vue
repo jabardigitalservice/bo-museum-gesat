@@ -370,11 +370,8 @@ export default {
       return sortedResource
     },
     updateRepeatStatus () {
-      if (this.repeat_type !== 'NONE') {
-        this.form.repeat = true
-        return
-      }
-      this.form.repeat = true
+      this.form.repeat_type !== 'NONE' ? this.form.repeat = true : this.form.repeat = false
+      this.validateInputTime()
     },
     checkedResources (id) {
       return this.form.asset_ids.indexOf(id)
