@@ -148,7 +148,7 @@
         </div>
         <div>
           <label for="title" class="block text-sm">
-            Rentang Tanggal Waktu Reservasi
+            Rentang Tanggal Kegiatan
           </label>
           <div class="flex mt-1">
             <date-picker
@@ -177,7 +177,7 @@
         </div>
         <div v-if="isAdmin">
           <label for="asset_id" class="block text-sm">
-            Ruangan / Aset
+            Ruangan/Aset
           </label>
           <div class="mt-1">
             <select v-model="params.asset_id" name="asset_id" required class="form-input">
@@ -230,7 +230,7 @@
         </div>
         <div>
           <label for="password" class="block text-sm">
-            Urutkan Dari
+            Urutkan dari
           </label>
           <div class="mt-1">
             <select v-model="params.orderBy" name="approval_status" required class="form-input">
@@ -267,7 +267,7 @@
         </div>
         <div v-if="isAdmin" class="md:grid md:grid-cols-5 text-sm">
           <div class="md:col-span-2 text-blue">
-            Nama Pegawai
+            Nama
           </div>
           <div class="md:col-span-3">
             {{ detailData.user_fullname || '-' }}
@@ -283,7 +283,7 @@
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
           <div class="md:col-span-2 text-blue">
-            Ruangan / Aset
+            Ruangan/Aset
           </div>
           <div class="md:col-span-3">
             {{ detailData.asset_name || '-' }}
@@ -291,7 +291,7 @@
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
           <div class="md:col-span-2 text-blue">
-            Waktu Reservasi
+            Tanggal dan Waktu Kegiatan
           </div>
           <div class="md:col-span-3">
             <div>{{ detailData.date && detailData.start_time && detailData.end_time ? getDisplayDateTimeManually(detailData.date, detailData.start_time, detailData.end_time) : '-' }}</div>
@@ -299,7 +299,7 @@
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
           <div class="md:col-span-2 text-blue">
-            Catatan Kegiatan
+            Catatan/Deskripsi Kegiatan
           </div>
           <div class="md:col-span-3">
             {{ detailData.description || '-' }}
@@ -384,9 +384,9 @@ export default {
       dataHeader: [
         'Nama',
         'Judul Kegiatan',
-        'Waktu Reservasi',
-        'Catatan',
-        'Reservasi Dibuat',
+        'Tanggal dan Waktu Kegiatan',
+        'Catatan/Deskripsi Kegiatan',
+        'Tanggal Reservasi Dibuat',
         'Aksi'
       ],
       disabledDates: {
@@ -542,10 +542,16 @@ export default {
       const findStats = statusReservation.find(el => el.key === stat)
       return findStats.value
     },
+    sortResources (resources) {
+      const sortedResource = resources.sort((a, b) =>
+        b.resource_type.localeCompare(a.resource_type) || a.name.localeCompare(b.name)
+      )
+      return sortedResource
+    },
     async getAssetList () {
       try {
         const response = await this.$axios.get('/asset/list')
-        this.dataAsset = response ? response.data.data : []
+        this.dataAsset = response ? this.sortResources(response.data.data) : []
       } catch (e) {
         this.errors = e
       }
