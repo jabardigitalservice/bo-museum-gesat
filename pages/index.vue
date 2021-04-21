@@ -23,6 +23,8 @@
               placeholder="Tanggal Akhir"
               class="form-input rounded-md"
               required
+              :disabled-dates="reservation.disabledDates"
+              @input="validateInputTime"
             />
           </div>
 
@@ -38,7 +40,7 @@
               type="text"
               required
               class="w-full form-input bg-white rounded-md"
-              @change="updateReservationEndTime"
+              @change="validateInputTime"
             >
               <option v-for="time in reservation.timeInterval" :key="time" :value="time">
                 {{ time }}
@@ -64,6 +66,17 @@
               </option>
             </select>
           </div>
+        </section>
+
+        <!-- Alert -->
+        <section
+          v-if="reservation.isError"
+          class="w-full p-4 bg-red mb-6 flex gap-4 align-middle"
+        >
+          <i class="bx bx-error-circle bx-sm text-white" />
+          <p class="text-white text-sm">
+            Tidak dapat menambahkan reservasi sebelum waktu saat ini!
+          </p>
         </section>
 
         <!-- Repeat Booking -->
@@ -231,7 +244,7 @@ import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import { toMoment } from '@fullcalendar/moment'
 import listPlugin from '@fullcalendar/list'
 import allLocales from '@fullcalendar/core/locales-all'
-import { momentFormatDateId, momentFormatTimeISO, generateTimes } from '~/utils'
+import { momentFormatDateId, momentFormatTimeISO, generateTimes, momentFormatDate } from '~/utils'
 
 export default {
   layout: 'admin',
@@ -256,7 +269,13 @@ export default {
         endTime: null,
         timeInterval: generateTimes(),
         expand: false,
-        resourcesLists: null
+        resourcesLists: null,
+        isError: false,
+        disabledDates: {
+        // disable datepicker from unlimited past to yesterday
+        // note: 86400000 is in ms = 1 day
+          to: new Date(Date.now() - 86400000)
+        }
       },
       calendarOptions: {
         locales: allLocales,
@@ -336,6 +355,23 @@ export default {
     }
   },
   methods: {
+    validateInputTime () {
+      const userSelectedDate = momentFormatDate(this.form.date)
+      const today = momentFormatDate(new Date())
+
+      if (this.form.repeat || userSelectedDate !== today) {
+        this.reservation.isError = false
+        this.updateReservationEndTime()
+        return
+      }
+
+      const [hour, minute] = this.reservation.startTime.split(':')
+      const userSelectedTime = new Date().setHours(hour, minute)
+      const currentTime = new Date()
+
+      this.reservation.isError = userSelectedTime <= currentTime
+      this.updateReservationEndTime()
+    },
     sortResources (resources) {
       const sortedResource = resources.sort((a, b) =>
         b.resource_type.localeCompare(a.resource_type) || a.name.localeCompare(b.name)
@@ -343,11 +379,8 @@ export default {
       return sortedResource
     },
     updateRepeatStatus () {
-      if (this.repeat_type !== 'NONE') {
-        this.form.repeat = true
-        return
-      }
-      this.form.repeat = true
+      this.form.repeat = this.form.repeat_type !== 'NONE'
+      this.validateInputTime()
     },
     checkedResources (id) {
       return this.form.asset_ids.indexOf(id)
