@@ -398,6 +398,11 @@ export default {
       const { timeInterval, startTime, endTime } = this.reservation
       const startTimeIndex = timeInterval.indexOf(startTime)
       const endTimeIndex = timeInterval.indexOf(endTime)
+      // if user select start time at 23:00, which is the last time available
+      if (startTimeIndex === timeInterval.length - 1) {
+        this.reservation.endTime = timeInterval[0]
+        return
+      }
       if (startTimeIndex >= endTimeIndex) {
         this.reservation.endTime = timeInterval[startTimeIndex + 1]
       }
