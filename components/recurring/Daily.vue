@@ -13,9 +13,7 @@
         <div class="relative">
           <button class="w-full form-input bg-white rounded-md cursor-pointer" @click="toggleDropdown">
             <div class="flex justify-between ">
-              <p>
-                <span v-for="(selectedDay, index) in selectedDays" :key="index">{{ selectedDay }}</span>
-              </p>
+              <p>{{ selectedDays }}</p>
               <i class="bx bxs-chevron-down" />
             </div>
           </button>
@@ -70,12 +68,11 @@ export default {
   },
   computed: {
     selectedDays () {
-      const selectedDays = []
-      this.formDays.forEach((day) => {
-        selectedDays.push(...this.days.filter(d => d.index === day))
-      })
-      selectedDays.sort((a, b) => a.index - b.index)
-      return [...selectedDays.map(selectedDay => selectedDay.name)].join(', ')
+      const days = this.formDays
+        .map(formDay => this.days.find(day => day.index === formDay))
+        .sort((a, b) => a.index - b.index)
+        .map(formday => formday.name)
+      return days.join(', ')
     }
   },
   methods: {
