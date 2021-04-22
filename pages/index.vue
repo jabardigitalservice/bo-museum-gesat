@@ -349,7 +349,7 @@ export default {
     },
     formIsError () {
       const { isError } = this.reservation
-      const isAssetEmpty = this.form.asset_ids?.length === 0
+      const isAssetEmpty = this.form.asset_ids ? this.form.asset_ids.length === 0 : true
       const isFormEmpty = [
         this.form.title
       ].some((value) => {
