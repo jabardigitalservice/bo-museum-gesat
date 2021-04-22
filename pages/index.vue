@@ -179,7 +179,7 @@
       <!-- Form Buttons -->
       <template #buttons>
         <ModalButton btn-type="close" @btn-click="closeFormReservation" />
-        <ModalButton btn-type="submit" :disabled="formIsEmpty" @btn-click="addReservation" />
+        <ModalButton btn-type="submit" :disabled="formIsError" @btn-click="addReservation" />
       </template>
     </BaseModal>
 
@@ -343,7 +343,9 @@ export default {
       const maxLength = timeInterval.length
       return timeInterval.slice(startTimeIndex + 1, maxLength)
     },
-    formIsEmpty () {
+    formIsError () {
+      const { isError } = this.reservation
+      const isAssetEmpty = this.form.asset_ids.length === 0
       const isFormEmpty = [
         this.form.title
       ].some((value) => {
@@ -352,7 +354,7 @@ export default {
         }
         return typeof value === 'undefined' || value === null
       })
-      return isFormEmpty
+      return isError || isAssetEmpty || isFormEmpty
     }
   },
   methods: {
