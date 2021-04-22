@@ -341,6 +341,10 @@ export default {
       const { timeInterval, startTime } = this.reservation
       const startTimeIndex = timeInterval.indexOf(startTime)
       const maxLength = timeInterval.length
+      // if user select start time at 23:00, show only the first index
+      if (startTimeIndex === maxLength - 1) {
+        return timeInterval.slice(0, 1)
+      }
       return timeInterval.slice(startTimeIndex + 1, maxLength)
     },
     formIsError () {
