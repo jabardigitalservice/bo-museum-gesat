@@ -360,7 +360,7 @@ export default {
       const userSelectedDate = momentFormatDate(this.form.date)
       const today = momentFormatDate(new Date())
 
-      if (this.form.repeat || userSelectedDate !== today) {
+      if (userSelectedDate !== today) {
         this.reservation.isError = false
         this.updateReservationEndTime()
         return
