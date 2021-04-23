@@ -94,12 +94,15 @@
               <option value="DAILY">
                 Perhari
               </option>
-              <option value="WEEKLY">
+
+              <!-- this feature will be implemented in the next sprint  -->
+
+              <!-- <option value="WEEKLY">
                 Perminggu
               </option>
               <option value="MONTHLY">
                 Perbulan
-              </option>
+              </option> -->
             </select>
           </div>
           <div class="col-span-2">
@@ -171,10 +174,13 @@
         </section>
 
         <!-- Holder Mail -->
-        <section class="mb-4">
+
+        <!-- this feature will be implemented in the next sprint -->
+
+        <!-- <section class="mb-4">
           <label for="holder-email" class="block text-sm">Tambahkan Email Penanggung Jawab</label>
           <input v-model="form.holder" name="holder-email" type="email" class="w-full form-input bg-white rounded-md">
-        </section>
+        </section> -->
 
         <!-- Notes/Description -->
         <section>
