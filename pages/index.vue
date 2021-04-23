@@ -71,11 +71,12 @@
         <!-- Alert -->
         <section
           v-if="reservation.isError"
-          class="w-full p-4 bg-red mb-6 flex gap-4 align-middle"
+          class="w-full p-4 bg-red mb-6 flex gap-4 place-items-center"
         >
           <i class="bx bx-error-circle bx-sm text-white" />
           <p class="text-white text-sm">
-            Tidak dapat menambahkan reservasi sebelum waktu saat ini!
+            Reservasi Anda untuk tanggal <b>{{ momentFormatDateId(form.date) }}</b> tidak dapat dibuat,
+            karena telah melewati waktu saat ini.
           </p>
         </section>
 
@@ -326,7 +327,8 @@ export default {
       detailData: {
         extendedProps: {}
       },
-      clickInfo: {}
+      clickInfo: {},
+      momentFormatDateId
     }
   },
   computed: {
