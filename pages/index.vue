@@ -94,12 +94,15 @@
               <option value="DAILY">
                 Perhari
               </option>
-              <option value="WEEKLY">
+
+              <!-- this feature will be implemented in the next sprint  -->
+
+              <!-- <option value="WEEKLY">
                 Perminggu
               </option>
               <option value="MONTHLY">
                 Perbulan
-              </option>
+              </option> -->
             </select>
           </div>
           <div class="col-span-2">
@@ -171,10 +174,13 @@
         </section>
 
         <!-- Holder Mail -->
-        <section class="mb-4">
+
+        <!-- this feature will be implemented in the next sprint -->
+
+        <!-- <section class="mb-4">
           <label for="holder-email" class="block text-sm">Tambahkan Email Penanggung Jawab</label>
           <input v-model="form.holder" name="holder-email" type="email" class="w-full form-input bg-white rounded-md">
-        </section>
+        </section> -->
 
         <!-- Notes/Description -->
         <section>
@@ -461,13 +467,30 @@ export default {
       })
     },
     addReservation () {
+      let reservationType = ''
+      switch (this.form.repeat_type) {
+        case 'DAILY':
+          reservationType = 'daily'
+          break
+        default:
+          reservationType = ''
+          break
+      }
+      const payload = {
+        ...this.form,
+        start_date: momentFormatDate(this.form.date),
+        end_date: momentFormatDate(this.form.end_date),
+        from: `${this.reservation.startTime}:00`,
+        to: `${this.reservation.endTime}:00`
+      }
+
       const calendarApi = this.$refs.fullCalendar.getApi()
       this.$toast.info('Sedang memproses', {
         iconPack: 'fontawesome',
         duration: 5000
       })
       this.$modal.hide('add')
-      this.$axios.post('/reservation', this.form).then(() => {
+      this.$axios.post(`/reservation/${reservationType}`, payload).then(() => {
         this.$toast.success('Reservasi berhasil dibuat', {
           iconPack: 'fontawesome',
           duration: 5000
