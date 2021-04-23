@@ -40,6 +40,7 @@
         :value="formEndDate"
         class="form-input rounded-md"
         required
+        :disabled-dates="disabledDates"
         @selected="onSelected"
       />
     </div>
@@ -63,7 +64,12 @@ export default {
   data () {
     return {
       dropdownOpened: false,
-      days
+      days,
+      disabledDates: {
+        // disable datepicker from unlimited past to yesterday
+        // note: 86400000 is in ms = 1 day
+        to: new Date(Date.now() - 86400000)
+      }
     }
   },
   computed: {
