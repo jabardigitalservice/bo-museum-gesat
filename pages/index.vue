@@ -185,7 +185,7 @@
       <!-- Form Buttons -->
       <template #buttons>
         <ModalButton btn-type="close" @btn-click="closeFormReservation" />
-        <ModalButton btn-type="submit" :disabled="formIsEmpty" @btn-click="addReservation" />
+        <ModalButton btn-type="submit" :disabled="formIsError" @btn-click="addReservation" />
       </template>
     </BaseModal>
 
@@ -349,9 +349,15 @@ export default {
       const { timeInterval, startTime } = this.reservation
       const startTimeIndex = timeInterval.indexOf(startTime)
       const maxLength = timeInterval.length
+      // if user select start time at 23:30, show only the first index
+      if (startTimeIndex === maxLength - 1) {
+        return timeInterval.slice(0, 1)
+      }
       return timeInterval.slice(startTimeIndex + 1, maxLength)
     },
-    formIsEmpty () {
+    formIsError () {
+      const { isError } = this.reservation
+      const isAssetEmpty = this.form.asset_ids ? this.form.asset_ids.length === 0 : true
       const isFormEmpty = [
         this.form.title
       ].some((value) => {
@@ -360,7 +366,7 @@ export default {
         }
         return typeof value === 'undefined' || value === null
       })
-      return isFormEmpty
+      return isError || isAssetEmpty || isFormEmpty
     }
   },
   methods: {
@@ -368,7 +374,7 @@ export default {
       const userSelectedDate = momentFormatDate(this.form.date)
       const today = momentFormatDate(new Date())
 
-      if (this.form.repeat || userSelectedDate !== today) {
+      if (userSelectedDate !== today) {
         this.reservation.isError = false
         this.updateReservationEndTime()
         return
@@ -404,6 +410,11 @@ export default {
       const { timeInterval, startTime, endTime } = this.reservation
       const startTimeIndex = timeInterval.indexOf(startTime)
       const endTimeIndex = timeInterval.indexOf(endTime)
+      // if user select start time at 23:30, which is the last time available
+      if (startTimeIndex === timeInterval.length - 1) {
+        this.reservation.endTime = timeInterval[0]
+        return
+      }
       if (startTimeIndex >= endTimeIndex) {
         this.reservation.endTime = timeInterval[startTimeIndex + 1]
       }
