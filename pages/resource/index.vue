@@ -438,6 +438,7 @@ export default {
       this.$axios.get('/asset', { params: this.params }).then((response) => {
         this.$store.commit('resource/SET_RESOURCE', response.data)
       })
+      this.checkParams()
     },
     resetFilter () {
       this.initForm()
