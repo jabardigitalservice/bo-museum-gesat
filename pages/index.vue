@@ -605,7 +605,7 @@ export default {
         this.form.start_time = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD HH:mm')
         this.form.end_time = toMoment(selectInfo.end, selectInfo.view.calendar).format('YYYY-MM-DD HH:mm')
         this.form.date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
-        this.form.end_date = toMoment(selectInfo.stagetReservationsrt, selectInfo.view.calendar).format('YYYY-MM-DD')
+        this.form.end_date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
         this.form.repeat_type = 'NONE'
         this.form.days = []
         calendarApi.unselect()
