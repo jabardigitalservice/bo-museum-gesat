@@ -13,9 +13,7 @@
         <div class="relative">
           <button class="w-full form-input bg-white rounded-md cursor-pointer" @click="toggleDropdown">
             <div class="flex justify-between ">
-              <p>
-                <span v-for="(selectedDay, index) in selectedDays" :key="index">{{ selectedDay }}</span>
-              </p>
+              <p>{{ selectedDays }}</p>
               <i class="bx bxs-chevron-down" />
             </div>
           </button>
@@ -23,10 +21,10 @@
           <!-- Select Options -->
           <div
             v-show="dropdownOpened"
-            class="flex flex-col shadow-lg border-2 border-gray3 p-2 overflow-auto bg-white h-56"
+            class="absolute w-full z-10 flex flex-col shadow-lg border-2 border-gray3 p-2 overflow-auto bg-white h-56"
           >
             <label v-for="day in days" :key="day.index" class="cursor-pointer p-1 hover:bg-blue">
-              <input v-model="form.days" :value="day.index" type="checkbox">
+              <input :value="day.index" type="checkbox" @change="$emit('change:form-days', Number($event.target.value))">
               {{ day.name }}
             </label>
           </div>
@@ -39,9 +37,10 @@
         <span class="text-red">*</span>
       </label>
       <date-picker
-        v-model="form.end_date"
+        :value="formEndDate"
         class="form-input rounded-md"
         required
+        @selected="onSelected"
       />
     </div>
   </div>
@@ -51,27 +50,35 @@
 import { days } from '../../assets/constant/enum'
 
 export default {
+  props: {
+    formDays: {
+      type: Array,
+      default: () => ([])
+    },
+    formEndDate: {
+      type: String,
+      default: null
+    }
+  },
   data () {
     return {
       dropdownOpened: false,
-      form: {
-        days: [],
-        end_date: null
-      },
       days
     }
   },
   computed: {
     selectedDays () {
-      const selectedDays = []
-      this.form.days.forEach((day) => {
-        selectedDays.push(...this.days.filter(d => d.index === day))
-      })
-      selectedDays.sort((a, b) => a.index - b.index)
-      return [...selectedDays.map(selectedDay => selectedDay.name)].join(', ')
+      const days = this.formDays
+        .map(formDay => this.days.find(day => day.index === formDay))
+        .sort((a, b) => a.index - b.index)
+        .map(formday => formday.name)
+      return days.join(', ')
     }
   },
   methods: {
+    onSelected (date) {
+      this.$emit('selected:form-end-date', new Date(date).toISOString())
+    },
     toggleDropdown () {
       this.dropdownOpened = !this.dropdownOpened
     }
