@@ -194,7 +194,7 @@
       <template #body>
         <div class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
-            Nama Pegawai
+            Nama
           </div>
           <div class="md:col-span-3">
             {{ detailData.extendedProps.name || '-' }}
@@ -210,7 +210,7 @@
         </div>
         <div class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
-            Ruangan / Aset
+            Ruangan/Aset
           </div>
           <div class="md:col-span-3">
             {{ detailData.extendedProps.resourceName || '-' }}
@@ -226,7 +226,7 @@
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
           <div class="md:col-span-2 text-blue">
-            Catatan Kegiatan
+            Catatan/Deskripsi Kegiatan
           </div>
           <div class="md:col-span-3">
             {{ detailData.extendedProps.catatan || '-' }}

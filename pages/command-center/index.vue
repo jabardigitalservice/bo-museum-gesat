@@ -75,7 +75,7 @@
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium"
               >
-                <i title="Edit Tanggal" class="bx bx-calendar-edit bx-sm cursor-pointer" @click="editDate(data)" />
+                <i title="Edit Tanggal" class="bx bx-edit bx-sm cursor-pointer" @click="editDate(data)" />
                 <i title="Hapus Tanggal" class="bx bx-trash bx-sm cursor-pointer text-red" @click="deleteCloseDate(data)" />
               </td>
             </tr>
@@ -101,7 +101,7 @@
       >
         <div class="w-full h-full p-4">
           <div class="window-header mb-2">
-            TAMBAH TANGGAL TUTUP
+            {{ titleAdd }} TANGGAL TUTUP
           </div>
           <div>
             <div class="mb-2">
@@ -229,7 +229,7 @@
       >
         <div class="w-full h-full p-3 overflow-auto">
           <div class="window-header mb-2">
-            TAMBAH SHIFT
+            {{ titleAdd }} SHIFT
           </div>
           <div>
             <div class="flex flex-col">
@@ -361,6 +361,9 @@ export default {
       return (
         (!valShift || valShift <= 0 || /[^0-9]\d*$/.test(valShift)) || isFormEmpty
       )
+    },
+    titleAdd () {
+      return this.submitForm === 'store' ? 'TAMBAH' : 'PERBARUI'
     }
   },
   watch: {

@@ -30,10 +30,10 @@ export const optionsOrderBy = [{
 
 export const optionsOrderByIdn = [{
   key: 'asc',
-  value: 'A - Z / Terbaru'
+  value: 'A-Z / Terlama'
 }, {
   key: 'desc',
-  value: 'Z - A / Terlama'
+  value: 'Z-A / Terbaru'
 }]
 
 export const optionsStatusResource = [

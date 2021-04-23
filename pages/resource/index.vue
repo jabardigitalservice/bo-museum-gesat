@@ -3,7 +3,7 @@
     <div class="flex flex-col">
       <!-- title -->
       <h1 class="text-4xl font-normal text-gray1">
-        Ruangan / Aset
+        Ruangan/Aset
       </h1>
       <!-- filter and add button -->
       <div class="w-full flex flex-wrap my-3 ">
@@ -19,7 +19,7 @@
           <div class="md:grid md:grid-cols-5 flex item-center">
             <div class="md:col-span-2 w-full">
               <div class="w-full px-4 py-2 bg-white border-solid border border-gray4 rounded flex justify-between items-center">
-                <input v-model="params.name" class="w-full focus:outline-none" type="text" placeholder="Search" @keyup.enter="fetchResource">
+                <input v-model="params.name" class="w-full focus:outline-none" type="text" placeholder="Cari" @keyup.enter="fetchResource">
                 <i class="text-gray4 bx bx-search bx-sm cursor-pointer" @click="fetchResource" />
               </div>
             </div>
@@ -120,7 +120,7 @@
     >
       <div class="bg-gray5 w-full h-full p-3">
         <h2 class="font-medium">
-          FILTER DATA RUANGAN / ASET :
+          FILTER DATA RUANGAN/ASET
         </h2>
         <div class="flex flex-col">
           <div class="w-full flex flex-col mt-3">
@@ -132,11 +132,15 @@
             </select>
           </div>
           <div class="grid grid-cols-2 gap-4 mt-3">
-            <button class="btn bg-primary" @click.stop="applyFilterAndSort">
-              Terapkan
-            </button>
             <button class="btn bg-yellow" @click.stop="resetFilter">
               Reset
+            </button>
+            <button
+              :class="checkFilterIsEmpty ? 'btn-disable border-2 rounded' : 'btn bg-primary'"
+              :disabled="checkFilterIsEmpty"
+              @click.stop="applyFilterAndSort"
+            >
+              Terapkan
             </button>
           </div>
         </div>
@@ -152,9 +156,12 @@
       :adaptive="true"
     >
       <div class="bg-gray5 w-full h-full p-3">
+        <h2 class="font-medium">
+          URUTKAN DATA RUANGAN/ASET
+        </h2>
         <div class="flex flex-col">
           <div class="w-full flex flex-col">
-            <label class="font-medium" for="sort">Urut Berdasarkan :</label>
+            <label class="font-medium" for="sort">Urutkan Berdasarkan</label>
             <select v-model="params.sortBy" name="sort" class="focus:outline-none rounded p-3 appearance-none border-2 border-gray2">
               <option v-for="sort in optionsSortResource" :key="sort.value" :value="sort.value">
                 {{ sort.label }}
@@ -162,7 +169,7 @@
             </select>
           </div>
           <div class="w-full flex flex-col mt-3">
-            <label class="font-medium" for="order">Urutan :</label>
+            <label class="font-medium" for="order">Urutkan dari</label>
             <select v-model="params.orderBy" name="order" class="focus:outline-none rounded p-3 appearance-none border-2 border-gray2 capitalize">
               <option v-for="order in optionsOrderByIdn" :key="order.key" class="capitalize" :value="order.key">
                 {{ order.value }}
@@ -170,11 +177,15 @@
             </select>
           </div>
           <div class="grid grid-cols-2 gap-4 mt-3">
-            <button class="btn bg-primary" @click.stop="applyFilterAndSort">
-              Terapkan
-            </button>
             <button class="btn bg-yellow" @click.stop="applyFilterAndSort">
               Reset
+            </button>
+            <button
+              :class="checkSortIsEmpty ? 'btn-disable border-2 rounded' : 'btn bg-primary'"
+              :disabled="checkSortIsEmpty"
+              @click.stop="applyFilterAndSort"
+            >
+              Terapkan
             </button>
           </div>
         </div>
@@ -191,11 +202,11 @@
     >
       <div class="bg-gray5 w-full h-full p-3 overflow-auto">
         <h2 class="font-medium text-xl">
-          Tambahkan Ruangan / Aset Baru
+          {{ titleAdd }} RUANGAN/ASET BARU
         </h2>
         <div class="flex flex-col">
           <div class="w-full flex flex-col mt-3">
-            <label class="font-medium" for="status">Nama Ruangan / Aset</label>
+            <label class="font-medium" for="status">Nama</label>
             <input v-model="form.name" type="text" class="focus:outline-none p-3 rounded border-2 border-gray2">
           </div>
           <div class="w-full flex flex-col mt-3">
@@ -215,7 +226,7 @@
             <input v-model="form.capacity" type="number" class="focus:outline-none p-3 rounded border-2 border-gray2">
           </div>
           <div class="w-full flex flex-col mt-3">
-            <label class="font-medium" for="status">Tipe Ruangan</label>
+            <label class="font-medium" for="status">Tipe</label>
             <select v-model="form.resource_type" name="status" class="capitalize focus:outline-none rounded p-3 appearance-none border-2 border-gray2">
               <option v-for="(type, index) in optionsResourceType" :key="index" class="capitalize" :value="type">
                 {{ type }}
@@ -254,8 +265,8 @@ export default {
       activeData: 1,
       dataHeader: thResourceAsset,
       params: {
-        sortBy: 'name',
-        orderBy: 'asc',
+        sortBy: null,
+        orderBy: null,
         name: null,
         page: null,
         status: null
@@ -293,6 +304,32 @@ export default {
         return typeof value === 'undefined' || value === null
       })
       return isFormEmpty
+    },
+    checkFilterIsEmpty () {
+      const isFormEmpty = [
+        this.params.status
+      ].some((value) => {
+        if (typeof value === 'string') {
+          return value.length === 0
+        }
+        return typeof value === 'undefined' || value === null
+      })
+      return isFormEmpty
+    },
+    checkSortIsEmpty () {
+      const isFormEmpty = [
+        this.params.sortBy,
+        this.params.orderBy
+      ].some((value) => {
+        if (typeof value === 'string') {
+          return value.length === 0
+        }
+        return typeof value === 'undefined' || value === null
+      })
+      return isFormEmpty
+    },
+    titleAdd () {
+      return this.submitForm === 'store' ? 'TAMBAH' : 'PERBARUI'
     }
   },
   created () {
@@ -304,10 +341,10 @@ export default {
       Object.values(this.params).find(element => element !== null) === undefined ? this.isHasParams = false : this.isHasParams = true
     },
     initParams () {
-      this.params.sortBy = 'name'
-      this.params.orderBy = 'asc'
+      this.params.sortBy = null
+      this.params.orderBy = null
       this.params.status = null
-      this.params.null = null
+      this.params.name = null
       this.params.page = null
       this.isHasParams = false
     },
@@ -401,10 +438,11 @@ export default {
       this.$axios.get('/asset', { params: this.params }).then((response) => {
         this.$store.commit('resource/SET_RESOURCE', response.data)
       })
-      this.initParams()
+      this.checkParams()
     },
     resetFilter () {
       this.initForm()
+      this.initParams()
       this.checkParams()
       this.params.status = null
       this.fetchResource()
@@ -422,9 +460,11 @@ export default {
     },
     showModalFilter () {
       this.params.status = 'active'
+      this.initParams()
       this.$modal.show('filter')
     },
     showModalSort () {
+      this.initParams()
       this.$modal.show('sort')
     },
     showModalAdd () {
