@@ -137,16 +137,12 @@
       <Pagination :active-pagination="activeData" :length-data="meta.last_page" @update="changeActivePagination" />
     </div>
     <!-- modal filter -->
-    <modal
-      name="filter"
-      height="70%"
-      :adaptive="true"
+    <BaseModal
+      modal-name="filter"
+      modal-title="Filter Data Reservasi"
     >
-      <div class="p-8 space-y-4">
-        <div class="window-header mb-2">
-          FILTER DATA RESERVASI
-        </div>
-        <div>
+      <template #body>
+        <div class="mb-4">
           <label for="title" class="block text-sm">
             Rentang Tanggal Kegiatan
           </label>
@@ -163,7 +159,7 @@
             />
           </div>
         </div>
-        <div v-if="false">
+        <div v-if="false" class="mb-4">
           <label class="block text-sm">
             Status
           </label>
@@ -187,36 +183,33 @@
             </select>
           </div>
         </div>
+      </template>
+      <template #buttons>
+        <button
+          type="button"
+          class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+          @click="clearFilter"
+        >
+          Bersihkan
+        </button>
+        <button
+          type="button"
+          :class="checkformIsEmpty ? 'btn-disable' : 'btn-primary'"
+          :disabled="checkformIsEmpty"
+          @click="onFilter"
+        >
+          Terapkan
+        </button>
+      </template>
+    </BaseModal>
 
-        <div class="flex space-x-4">
-          <button
-            type="button"
-            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="clearFilter"
-          >
-            Bersihkan
-          </button>
-          <button
-            type="button"
-            :class="checkformIsEmpty ? 'btn-disable' : 'btn-primary'"
-            :disabled="checkformIsEmpty"
-            @click="onFilter"
-          >
-            Terapkan
-          </button>
-        </div>
-      </div>
-    </modal>
-    <modal
-      name="sort"
-      height="auto"
-      :adaptive="true"
+    <!-- modal sort -->
+    <BaseModal
+      modal-name="sort"
+      modal-title="Urutkan Data Reservasi"
     >
-      <div class="p-8 space-y-4">
-        <div class="window-header mb-2">
-          URUTKAN DATA RESERVASI
-        </div>
-        <div>
+      <template #body>
+        <div class="mb-4">
           <label for="title" class="block text-sm">
             Urutkan Berdasarkan
           </label>
@@ -240,32 +233,30 @@
             </select>
           </div>
         </div>
+      </template>
+      <template #buttons>
+        <button
+          type="button"
+          class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+          @click="clearSortby"
+        >
+          Bersihkan
+        </button>
+        <button
+          type="button"
+          :class="checkSortIsEmpty ? 'btn-disable' : 'btn-primary'"
+          :disabled="checkSortIsEmpty"
+          @click="onSorting"
+        >
+          Terapkan
+        </button>
+      </template>
+    </BaseModal>
 
-        <div class="flex space-x-4">
-          <button
-            type="button"
-            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="clearSortby"
-          >
-            Bersihkan
-          </button>
-          <button
-            type="button"
-            :class="checkSortIsEmpty ? 'btn-disable' : 'btn-primary'"
-            :disabled="checkSortIsEmpty"
-            @click="onSorting"
-          >
-            Terapkan
-          </button>
-        </div>
-      </div>
-    </modal>
-    <modal name="detail" :adaptive="true" :height="`auto`">
-      <div class="p-8 space-y-4">
-        <div class="window-header mb-2">
-          DETAIL RESERVASI
-        </div>
-        <div v-if="isAdmin" class="md:grid md:grid-cols-5 text-sm">
+    <!-- modal detail reservasi  -->
+    <BaseModal modal-name="detail" modal-title="Detail Reservasi">
+      <template #body>
+        <div v-if="isAdmin" class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
             Nama
           </div>
@@ -273,7 +264,7 @@
             {{ detailData.user_fullname || '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
+        <div class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
             Judul Kegiatan
           </div>
@@ -281,7 +272,7 @@
             {{ detailData.title || '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
+        <div class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
             Ruangan/Aset
           </div>
@@ -289,7 +280,7 @@
             {{ detailData.asset_name || '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
+        <div class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
             Tanggal dan Waktu Kegiatan
           </div>
@@ -297,7 +288,7 @@
             <div>{{ detailData.date && detailData.start_time && detailData.end_time ? getDisplayDateTimeManually(detailData.date, detailData.start_time, detailData.end_time) : '-' }}</div>
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
+        <div class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
             Catatan/Deskripsi Kegiatan
           </div>
@@ -305,7 +296,7 @@
             {{ detailData.description || '-' }}
           </div>
         </div>
-        <div v-if="false" class="md:grid md:grid-cols-5 text-sm">
+        <div v-if="false" class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
             Status
           </div>
@@ -313,7 +304,7 @@
             {{ detailData.approval_status ? findStatus(detailData.approval_status) : '-' }}
           </div>
         </div>
-        <div v-if="false" class="md:grid md:grid-cols-5 text-sm">
+        <div v-if="false" class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
             Catatan Admin FO
           </div>
@@ -321,7 +312,7 @@
             {{ detailData.note || '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
+        <div class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
             Tanggal Reservasi Dibuat
           </div>
@@ -329,7 +320,7 @@
             {{ detailData.created_at ? getDisplayDateTime(detailData.created_at) : '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm">
+        <div class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
             Tanggal Pembaruan
           </div>
@@ -345,17 +336,17 @@
             {{ detailData.approval_date ? getDisplayDateTime(detailData.approval_date) : '-' }}
           </div>
         </div>
-        <div>
-          <button
-            type="button"
-            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="closeModalDetail"
-          >
-            Tutup
-          </button>
-        </div>
-      </div>
-    </modal>
+      </template>
+      <template #buttons>
+        <button
+          type="button"
+          class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+          @click="closeModalDetail"
+        >
+          Tutup
+        </button>
+      </template>
+    </BaseModal>
   </div>
 </template>
 
