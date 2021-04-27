@@ -132,8 +132,8 @@
             </select>
           </div>
           <div class="grid grid-cols-2 gap-4 mt-3">
-            <button class="btn bg-yellow" @click.stop="resetFilter">
-              Reset
+            <button class="btn bg-yellow" @click.stop="resetFilterModal">
+              Bersihkan
             </button>
             <button
               :class="checkFilterIsEmpty ? 'btn-disable border-2 rounded' : 'btn bg-primary'"
@@ -177,8 +177,8 @@
             </select>
           </div>
           <div class="grid grid-cols-2 gap-4 mt-3">
-            <button class="btn bg-yellow" @click.stop="applyFilterAndSort">
-              Reset
+            <button class="btn bg-yellow" @click.stop="resetFilterModal">
+              Bersihkan
             </button>
             <button
               :class="checkSortIsEmpty ? 'btn-disable border-2 rounded' : 'btn bg-primary'"
@@ -202,7 +202,7 @@
     >
       <div class="bg-gray5 w-full h-full p-3 overflow-auto">
         <h2 class="font-medium text-xl">
-          {{ titleAdd }} RUANGAN/ASET BARU
+          {{ titleAdd }} RUANGAN/ASET
         </h2>
         <div class="flex flex-col">
           <div class="w-full flex flex-col mt-3">
@@ -439,6 +439,11 @@ export default {
         this.$store.commit('resource/SET_RESOURCE', response.data)
       })
       this.checkParams()
+    },
+    resetFilterModal () {
+      this.initForm()
+      this.initParams()
+      this.params.status = null
     },
     resetFilter () {
       this.initForm()
