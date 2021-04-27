@@ -110,143 +110,111 @@
       <Pagination :active-pagination="activeData" :length-data="metaResource.last_page" @update="changeActivePagination" />
     </div>
     <!-- modal filter -->
-    <modal
-      name="filter"
-      :min-width="320"
-      :max-width="500"
-      width="80%"
-      height="auto"
-      :adaptive="true"
+    <BaseModal
+      modal-name="filter"
+      modal-title="Filter Data Ruangan/Aset"
     >
-      <div class="bg-gray5 w-full h-full p-3">
-        <h2 class="font-medium">
-          FILTER DATA RUANGAN/ASET
-        </h2>
-        <div class="flex flex-col">
-          <div class="w-full flex flex-col mt-3">
-            <label class="font-medium" for="status">Status</label>
-            <select v-model="params.status" name="status" class="focus:outline-none rounded p-3 appearance-none border-2 border-gray2">
-              <option v-for="status in optionsStatusResource" :key="status.value" :value="status.value">
-                {{ status.label }}
-              </option>
-            </select>
-          </div>
-          <div class="grid grid-cols-2 gap-4 mt-3">
-            <button class="btn bg-yellow" @click.stop="resetFilter">
-              Reset
-            </button>
-            <button
-              :class="checkFilterIsEmpty ? 'btn-disable border-2 rounded' : 'btn bg-primary'"
-              :disabled="checkFilterIsEmpty"
-              @click.stop="applyFilterAndSort"
-            >
-              Terapkan
-            </button>
-          </div>
+      <template #body>
+        <div>
+          <label for="status" class="block text-sm">Status</label>
+          <select v-model="params.status" name="status" class="w-full form-input bg-white rounded-md">
+            <option v-for="status in optionsStatusResource" :key="status.value" :value="status.value">
+              {{ status.label }}
+            </option>
+          </select>
         </div>
-      </div>
-    </modal>
+      </template>
+      <template #buttons>
+        <ModalButton btn-type="clear" @btn-click="resetFilter" />
+        <ModalButton
+          btn-type="set"
+          :disabled="checkFilterIsEmpty"
+          @btn-click="applyFilterAndSort"
+        />
+      </template>
+    </BaseModal>
+
     <!-- modal sortby -->
-    <modal
-      name="sort"
-      :min-width="320"
-      :max-width="500"
-      width="80%"
-      height="auto"
-      :adaptive="true"
+    <BaseModal
+      modal-name="sort"
+      modal-title="Urutkan Data Ruangan/Aset"
     >
-      <div class="bg-gray5 w-full h-full p-3">
-        <h2 class="font-medium">
-          URUTKAN DATA RUANGAN/ASET
-        </h2>
-        <div class="flex flex-col">
-          <div class="w-full flex flex-col">
-            <label class="font-medium" for="sort">Urutkan Berdasarkan</label>
-            <select v-model="params.sortBy" name="sort" class="focus:outline-none rounded p-3 appearance-none border-2 border-gray2">
-              <option v-for="sort in optionsSortResource" :key="sort.value" :value="sort.value">
-                {{ sort.label }}
-              </option>
-            </select>
-          </div>
-          <div class="w-full flex flex-col mt-3">
-            <label class="font-medium" for="order">Urutkan dari</label>
-            <select v-model="params.orderBy" name="order" class="focus:outline-none rounded p-3 appearance-none border-2 border-gray2 capitalize">
-              <option v-for="order in optionsOrderByIdn" :key="order.key" class="capitalize" :value="order.key">
-                {{ order.value }}
-              </option>
-            </select>
-          </div>
-          <div class="grid grid-cols-2 gap-4 mt-3">
-            <button class="btn bg-yellow" @click.stop="applyFilterAndSort">
-              Reset
-            </button>
-            <button
-              :class="checkSortIsEmpty ? 'btn-disable border-2 rounded' : 'btn bg-primary'"
-              :disabled="checkSortIsEmpty"
-              @click.stop="applyFilterAndSort"
-            >
-              Terapkan
-            </button>
-          </div>
+      <template #body>
+        <div class="w-full flex flex-col">
+          <label class="block text-sm" for="sort">Urutkan Berdasarkan</label>
+          <select v-model="params.sortBy" name="sort" class="w-full form-input bg-white rounded-md">
+            <option v-for="sort in optionsSortResource" :key="sort.value" :value="sort.value">
+              {{ sort.label }}
+            </option>
+          </select>
         </div>
-      </div>
-    </modal>
+        <div class="w-full flex flex-col mt-3">
+          <label class="block text-sm" for="order">Urutkan dari</label>
+          <select v-model="params.orderBy" name="order" class="w-full form-input bg-white rounded-md">
+            <option v-for="order in optionsOrderByIdn" :key="order.key" class="capitalize" :value="order.key">
+              {{ order.value }}
+            </option>
+          </select>
+        </div>
+      </template>
+      <template #buttons>
+        <ModalButton btn-type="reset" @btn-click="applyFilterAndSort" />
+        <ModalButton
+          btn-type="set"
+          :disabled="checkSortIsEmpty"
+          @btn-click="applyFilterAndSort"
+        />
+      </template>
+    </BaseModal>
+
     <!-- modal add / edit -->
-    <modal
-      name="add"
-      :min-width="320"
-      :max-width="500"
-      width="80%"
-      height="80%"
-      :adaptive="true"
+    <BaseModal
+      modal-name="add"
+      :modal-title="`${titleAdd} RUANGAN/ASET BARU`"
+      overflow
     >
-      <div class="bg-gray5 w-full h-full p-3 overflow-auto">
-        <h2 class="font-medium text-xl">
-          {{ titleAdd }} RUANGAN/ASET BARU
-        </h2>
-        <div class="flex flex-col">
-          <div class="w-full flex flex-col mt-3">
-            <label class="font-medium" for="status">Nama</label>
-            <input v-model="form.name" type="text" class="focus:outline-none p-3 rounded border-2 border-gray2">
-          </div>
-          <div class="w-full flex flex-col mt-3">
-            <label class="font-medium" for="status">Deskripsi</label>
-            <textarea v-model="form.description" class="focus:outline-none rounded p-3 border-2 border-gray2" cols="10" rows="10" />
-          </div>
-          <div class="w-full flex flex-col mt-3">
-            <label class="font-medium" for="status">Status</label>
-            <select v-model="form.status" name="status" class="focus:outline-none rounded p-3 appearance-none border-2 border-gray2">
-              <option v-for="status in optionsStatusResource" :key="status.value" :value="status.value">
-                {{ status.label }}
-              </option>
-            </select>
-          </div>
-          <div class="w-full flex flex-col mt-3">
-            <label class="font-medium" for="status">Kapasitas</label>
-            <input v-model="form.capacity" type="number" class="focus:outline-none p-3 rounded border-2 border-gray2">
-          </div>
-          <div class="w-full flex flex-col mt-3">
-            <label class="font-medium" for="status">Tipe</label>
-            <select v-model="form.resource_type" name="status" class="capitalize focus:outline-none rounded p-3 appearance-none border-2 border-gray2">
-              <option v-for="(type, index) in optionsResourceType" :key="index" class="capitalize" :value="type">
-                {{ type }}
-              </option>
-            </select>
-          </div>
-          <div class="grid grid-cols-2 gap-4 mt-3">
-            <button class="btn bg-yellow" @click.stop="closeAdd">
-              Tutup
-            </button>
-            <button v-if="submitForm == 'store'" :class="{'bg-gray4': formIsEmpty}" class="btn bg-primary" :disabled="formIsEmpty" @click.stop="storeResource">
-              Simpan
-            </button>
-            <button v-else :class="{'bg-gray4': formIsEmpty}" class="btn bg-primary" :disabled="formIsEmpty" @click.stop="updateResource">
-              Perbarui
-            </button>
-          </div>
+      <template #body>
+        <div class="mb-4">
+          <label class="block text-sm" for="status">Nama</label>
+          <input v-model="form.name" type="text" class="w-full form-input bg-white rounded-md">
         </div>
-      </div>
-    </modal>
+        <div class="mb-4">
+          <label class="block text-sm" for="status">Deskripsi</label>
+          <textarea v-model="form.description" class="w-full form-input bg-white rounded-md" rows="5" />
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm" for="status">Status</label>
+          <select v-model="form.status" name="status" class="w-full form-input bg-white rounded-md">
+            <option v-for="status in optionsStatusResource" :key="status.value" :value="status.value">
+              {{ status.label }}
+            </option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm" for="status">Kapasitas</label>
+          <input v-model="form.capacity" type="number" class="w-full form-input bg-white rounded-md">
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm" for="status">Tipe</label>
+          <select v-model="form.resource_type" name="status" class="capitalize w-full form-input bg-white rounded-md">
+            <option v-for="(type, index) in optionsResourceType" :key="index" class="capitalize" :value="type">
+              {{ type }}
+            </option>
+          </select>
+        </div>
+      </template>
+      <template #buttons>
+        <button class="btn bg-yellow" @click.stop="closeAdd">
+          Tutup
+        </button>
+        <button v-if="submitForm == 'store'" :class="{'bg-gray4': formIsEmpty}" class="btn bg-primary" :disabled="formIsEmpty" @click.stop="storeResource">
+          Simpan
+        </button>
+        <button v-else :class="{'bg-gray4': formIsEmpty}" class="btn bg-primary" :disabled="formIsEmpty" @click.stop="updateResource">
+          Perbarui
+        </button>
+      </template>
+    </BaseModal>
   </div>
 </template>
 <script>
