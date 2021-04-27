@@ -125,7 +125,7 @@
         </div>
       </template>
       <template #buttons>
-        <ModalButton btn-type="clear" @btn-click="resetFilter" />
+        <ModalButton btn-type="clear" @btn-click="resetFilterModal" />
         <ModalButton
           btn-type="set"
           :disabled="checkFilterIsEmpty"
@@ -158,7 +158,7 @@
         </div>
       </template>
       <template #buttons>
-        <ModalButton btn-type="reset" @btn-click="applyFilterAndSort" />
+        <ModalButton btn-type="clear" @btn-click="resetFilterModal" />
         <ModalButton
           btn-type="set"
           :disabled="checkSortIsEmpty"
@@ -170,7 +170,7 @@
     <!-- modal add / edit -->
     <BaseModal
       modal-name="add"
-      :modal-title="`${titleAdd} RUANGAN/ASET BARU`"
+      :modal-title="`${titleAdd} RUANGAN/ASET`"
       overflow
     >
       <template #body>
@@ -204,15 +204,19 @@
         </div>
       </template>
       <template #buttons>
-        <button class="btn bg-yellow" @click.stop="closeAdd">
-          Tutup
-        </button>
-        <button v-if="submitForm == 'store'" :class="{'bg-gray4': formIsEmpty}" class="btn bg-primary" :disabled="formIsEmpty" @click.stop="storeResource">
-          Simpan
-        </button>
-        <button v-else :class="{'bg-gray4': formIsEmpty}" class="btn bg-primary" :disabled="formIsEmpty" @click.stop="updateResource">
-          Perbarui
-        </button>
+        <ModalButton btn-type="close" @btn-click="closeAdd" />
+        <ModalButton
+          v-if="submitForm == 'store'"
+          btn-type="submit"
+          :disabled="formIsEmpty"
+          @btn-click="storeResource"
+        />
+        <ModalButton
+          v-else
+          btn-type="update"
+          :disabled="formIsEmpty"
+          @btn-click="updateResource"
+        />
       </template>
     </BaseModal>
   </div>
@@ -407,6 +411,11 @@ export default {
         this.$store.commit('resource/SET_RESOURCE', response.data)
       })
       this.checkParams()
+    },
+    resetFilterModal () {
+      this.initForm()
+      this.initParams()
+      this.params.status = null
     },
     resetFilter () {
       this.initForm()
