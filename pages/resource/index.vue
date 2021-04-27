@@ -206,7 +206,7 @@
       <template #buttons>
         <ModalButton btn-type="close" @btn-click="closeAdd" />
         <ModalButton
-          v-if="submitForm == 'store'"
+          v-if="submitForm === 'store'"
           btn-type="submit"
           :disabled="formIsEmpty"
           @btn-click="storeResource"
