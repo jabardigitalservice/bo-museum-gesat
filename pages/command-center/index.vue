@@ -91,57 +91,43 @@
       </div>
       <Pagination :active-pagination="activeData" :length-data="meta.last_page" @update="changeActivePagination" />
       <!-- modal add close date -->
-      <modal
-        name="addCloseDate"
-        :adaptive="true"
-        :height="`auto`"
-        :max-width="500"
-        :min-width="320"
-        styles="overflow: visible"
+      <BaseModal
+        modal-name="addCloseDate"
+        :modal-title="`${titleAdd} TANGGAL TUTUP`"
       >
-        <div class="w-full h-full p-4">
-          <div class="window-header mb-2">
-            {{ titleAdd }} TANGGAL TUTUP
+        <template #body>
+          <div class="mb-4">
+            <label for="closeDate" class="block text-sm">Tanggal Tutup</label>
+            <date-picker
+              v-model="form.selectedDate"
+              placeholder="Pilih Tanggal Tutup"
+              class="w-full form-input bg-white rounded-md"
+              name="closeDate"
+            />
           </div>
           <div>
-            <div class="mb-2">
-              <label for="closeDate" class="block text-sm">Tanggal Tutup</label>
-              <date-picker
-                v-model="form.selectedDate"
-                placeholder="Pilih Tanggal Tutup"
-                class="form-input rounded-md"
-                name="closeDate"
-              />
-            </div>
-            <div class="mb-2">
-              <label for="notes" class="block text-sm">Keterangan</label>
-              <textarea
-                v-model="form.notes"
-                class="form-input rounded-md"
-                name="notes"
-                cols="15"
-                rows="4"
-                placeholder="Masukkan Alasan Tutup"
-              />
-            </div>
-            <div class="flex space-x-4">
-              <button
-                type="button"
-                class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-                @click="closeModalAdd"
-              >
-                Batal
-              </button>
-              <button
-                class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-                @click="verifiedData"
-              >
-                Simpan
-              </button>
-            </div>
+            <label for="notes" class="block text-sm">Keterangan</label>
+            <textarea
+              v-model="form.notes"
+              class="form-input rounded-md"
+              name="notes"
+              cols="15"
+              rows="4"
+              placeholder="Masukkan Alasan Tutup"
+            />
           </div>
-        </div>
-      </modal>
+        </template>
+        <template #buttons>
+          <ModalButton
+            btn-type="close"
+            @btn-click="closeModalAdd"
+          />
+          <ModalButton
+            btn-type="submit"
+            @btn-click="verifiedData"
+          />
+        </template>
+      </BaseModal>
       <!-- title -->
       <h1 class="text-4xl font-normal text-gray1">
         Pengaturan Waktu Kunjungan
@@ -220,82 +206,63 @@
       </div>
       <Pagination :active-pagination="activeDataShift" :length-data="metaShift.last_page" @update="changeActivePaginationShift" />
       <!-- modal add shift -->
-      <modal
-        name="addShift"
-        :adaptive="true"
-        :height="`auto`"
-        :max-width="500"
-        :min-width="320"
+      <BaseModal
+        modal-name="addShift"
+        :modal-title="`${ titleAdd } SHIFT`"
+        overflow
       >
-        <div class="w-full h-full p-3 overflow-auto">
-          <div class="window-header mb-2">
-            {{ titleAdd }} SHIFT
+        <template #body>
+          <div class="mb-4">
+            <label for="nameShift" class="block text-sm">Nama</label>
+            <input v-model="formShift.nameShift" class="w-full form-input bg-white rounded-md" type="text" placeholder="Nama Shift" name="nameShift">
+          </div>
+          <div class="mb-4">
+            <label for="timeShift" class="block text-sm">Waktu Kunjungan</label>
+            <div class="flex sm:flex-col md:flex-row gap-8">
+              <select v-model="formShift.startShift" name="startShift" class="form-input bg-white rounded-md">
+                <option v-for="times in generatedTimes" :key="times" :value="times">
+                  {{ times }}
+                </option>
+              </select>
+              <span> - </span>
+              <select v-model="formShift.endShift" name="endShift" class="form-input bg-white rounded-md">
+                <option v-for="times in generatedTimes" :key="times" :value="times">
+                  {{ times }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label for="quotaShift" class="block text-sm" min="1">Kapasitas</label>
+            <input
+              v-model="formShift.capacityShift"
+              name="quotaShift"
+              type="number"
+              class="w-full form-input bg-white rounded-md"
+              placeholder="Kapasitas Peserta Per Shift"
+            >
           </div>
           <div>
-            <div class="flex flex-col">
-              <div class="w-full flex flex-col mt-3">
-                <label for="nameShift" class="block text-sm">Nama</label>
-                <input v-model="formShift.nameShift" class="w-full focus:outline-none p-3 rounded-md border border-gray2" type="text" placeholder="Nama Shift" name="nameShift">
-              </div>
-              <div class="w-full flex flex-col mt-3">
-                <label for="timeShift" class="block text-sm">Waktu Kunjungan</label>
-                <div class="flex space-x-4">
-                  <div class="rounded-md p-3 border border-gray2">
-                    <select v-model="formShift.startShift" name="startShift" class="px-2 outline-none bg-transparent">
-                      <option v-for="times in generatedTimes" :key="times" :value="times">
-                        {{ times }}
-                      </option>
-                    </select>
-                  </div>
-                  <span class="p-3"> - </span>
-                  <div class="rounded-md p-3 border border-gray2">
-                    <select v-model="formShift.endShift" name="endShift" class="px-2 outline-none bg-transparent">
-                      <option v-for="times in generatedTimes" :key="times" :value="times">
-                        {{ times }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="w-full flex flex-col mt-3">
-                <label for="quotaShift" class="block text-sm" min="1">Kapasitas</label>
-                <input
-                  v-model="formShift.capacityShift"
-                  name="quotaShift"
-                  type="number"
-                  class="focus:outline-none p-3 rounded border border-gray2"
-                  placeholder="Kapasitas Peserta Per Shift"
-                >
-              </div>
-              <div class="w-full flex flex-col mt-3">
-                <label for="statusShift" class="block text-sm">Status</label>
-                <select v-model="formShift.statusShift" name="statusShift" class="p-3 rounded-md px-2 outline-none border border-gray2 bg-transparent">
-                  <option v-for="status in dataStatus" :key="status" :value="status">
-                    {{ status }}
-                  </option>
-                </select>
-              </div>
-            </div>
-            <div class="flex space-x-4">
-              <button
-                type="button"
-                class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-                @click="closeModalAddShift"
-              >
-                Tutup
-              </button>
-              <button
-                :class="{'bg-gray4': formIsEmpty}"
-                :disabled="formIsEmpty"
-                class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-                @click.stop="verifiedDataShift"
-              >
-                Simpan
-              </button>
-            </div>
+            <label for="statusShift" class="block text-sm">Status</label>
+            <select v-model="formShift.statusShift" name="statusShift" class="w-full form-input bg-white rounded-md">
+              <option v-for="status in dataStatus" :key="status" :value="status">
+                {{ status }}
+              </option>
+            </select>
           </div>
-        </div>
-      </modal>
+        </template>
+        <template #buttons>
+          <ModalButton
+            btn-type="close"
+            @btn-click="closeModalAddShift"
+          />
+          <ModalButton
+            btn-type="submit"
+            :disabled="formIsEmpty"
+            @btn-click="verifiedDataShift"
+          />
+        </template>
+      </BaseModal>
     </div>
   </div>
 </template>
