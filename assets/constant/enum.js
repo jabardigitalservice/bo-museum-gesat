@@ -53,7 +53,7 @@ export const optionsResourceType = ['offline', 'online']
 export const optionsSortResource = [
   {
     value: 'name',
-    label: 'Ruangan / Aset'
+    label: 'Ruangan/Aset'
   },
   {
     value: 'created_at',
@@ -136,7 +136,7 @@ export const menus = [
   {
     parent: 1,
     path: '/resource',
-    label: 'Ruangan / Aset',
+    label: 'Ruangan/Aset',
     iconClass: 'bx-cabinet',
     role: [
       'admin_reservasi'

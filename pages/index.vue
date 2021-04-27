@@ -212,7 +212,7 @@
         </div>
         <div class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
-            Waktu Reservasi
+            Waktu dan Tanggal Kegiatan
           </div>
           <div class="md:col-span-3">
             <div>{{ detailData.start && detailData.end ? getDisplayDateTimeManually(detailData.start, detailData.startStr, detailData.endStr) : '-' }}</div>
