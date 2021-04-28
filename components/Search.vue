@@ -1,16 +1,12 @@
 <template>
-  <modal
-    name="search"
-    height="50%"
-    :adaptive="true"
+  <BaseModal
+    modal-name="search"
+    modal-title="Cari Data Reservasi"
   >
-    <div class="p-8 space-y-4">
-      <div class="window-header mb-2">
-        SEARCH DATA RESERVASI
-      </div>
-      <div>
+    <template #body>
+      <div class="mb-4">
         <label class="block text-sm">
-          Criteria
+          Kriteria
           <div class="mt-1">
             <select
               :value="by"
@@ -32,7 +28,7 @@
       </div>
       <div>
         <label class="block text-sm">
-          Keyword
+          Kata Kunci
           <div class="flex mt-1">
             <input
               :value="keyword"
@@ -43,26 +39,21 @@
           </div>
         </label>
       </div>
-      <div class="flex space-x-4">
-        <button
-          type="button"
-          class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-          @click="$emit('clear-search')"
-        >
-          Clear
-        </button>
-        <button
-          type="button"
-          class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-          :disabled="!by || !keyword"
-          :class="!by || !keyword ? 'cursor-not-allowed bg-gray4' : ''"
-          @click="$emit('on-search')"
-        >
-          Submit
-        </button>
-      </div>
-    </div>
-  </modal>
+    </template>
+    <template #buttons>
+      <ModalButton
+        type="button"
+        btn-type="clear"
+        @btn-click="$emit('clear-search')"
+      />
+      <ModalButton
+        btn-type="set"
+        :disabled="!by || !keyword"
+        :class="!by || !keyword ? 'cursor-not-allowed bg-gray4' : ''"
+        @btn-click="$emit('on-search')"
+      />
+    </template>
+  </BaseModal>
 </template>
 
 <script>
