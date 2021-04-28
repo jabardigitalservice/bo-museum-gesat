@@ -42,7 +42,6 @@
     </template>
     <template #buttons>
       <ModalButton
-        type="button"
         btn-type="clear"
         @btn-click="$emit('clear-search')"
       />
