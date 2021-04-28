@@ -9,7 +9,7 @@
       </div>
     </div>
     <!-- Modal Add Reservation  -->
-    <BaseModal modal-name="add" modal-title="Tambah Reservasi Baru">
+    <BaseModal modal-name="add" modal-title="Tambah Reservasi Baru" overflow>
       <template #body>
         <!-- Date and Time -->
         <section class="grid md:grid-cols-4 sm:grid-cols-1 gap-4 mb-6">

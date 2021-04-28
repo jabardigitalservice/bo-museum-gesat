@@ -116,17 +116,12 @@
       @input-keyword="params.keyword = $event"
     />
     <!-- FILTER MODAL -->
-    <modal
-      name="filter"
-      height="60%"
-      :adaptive="true"
-      styles="overflow: visible"
+    <BaseModal
+      modal-name="filter"
+      modal-title="Filter Data Reservasi"
     >
-      <div class="p-8 space-y-4">
-        <div class="window-header mb-2">
-          FILTER DATA RESERVASI
-        </div>
-        <div>
+      <template #body>
+        <div class="mb-4">
           <label for="title" class="block text-sm">
             Rentang Tanggal
           </label>
@@ -143,7 +138,7 @@
             />
           </div>
         </div>
-        <div>
+        <div class="mb-4">
           <label class="block text-sm">
             Status
           </label>
@@ -155,40 +150,39 @@
             </select>
           </div>
         </div>
-        <div class="flex space-x-4">
-          <button
-            type="button"
-            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="clearFilter"
-          >
-            Bersihkan
-          </button>
-          <button
-            type="button"
-            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="onFilter"
-          >
-            Terapkan
-          </button>
-        </div>
-      </div>
-    </modal>
+      </template>
+      <template #buttons>
+        <ModalButton
+          btn-type="clear"
+          @btn-click="clearFilter"
+        />
+        <ModalButton
+          btn-type="set"
+          @btn-click="onFilter"
+        />
+      </template>
+    </BaseModal>
     <!-- SORT MODAL -->
-    <modal
-      name="sort"
-      height="auto"
-      :adaptive="true"
+    <BaseModal
+      modal-name="sort"
+      modal-title="Urutkan Data Reservasi Command Center"
     >
-      <div class="p-8 space-y-4">
-        <div class="window-header mb-2">
-          URUTKAN DATA RESERVASI COMMAND CENTER
-        </div>
-        <div>
+      <template #body>
+        <div class="mb-4">
           <label for="title" class="block text-sm">
             Urutkan Berdasarkan
           </label>
           <div class="mt-1">
-            <select v-model="params.sortBy" name="approval_status" required class="form-input">
+            <select
+              v-model="params.sortBy"
+              name="approval_status"
+              required
+              class="
+              w-full
+              form-input
+              bg-white
+              rounded-md"
+            >
               <option value="created_at">
                 Created Date
               </option>
@@ -203,7 +197,12 @@
             Urutkan Dari
           </label>
           <div class="mt-1">
-            <select v-model="params.orderDirection" name="approval_status" required class="form-input">
+            <select
+              v-model="params.orderDirection"
+              name="approval_status"
+              required
+              class="w-full form-input bg-white rounded-md"
+            >
               <option value="desc">
                 Terbaru
               </option>
@@ -213,26 +212,21 @@
             </select>
           </div>
         </div>
-        <div class="flex space-x-4">
-          <button
-            type="button"
-            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="clearSortby"
-          >
-            Bersihkan
-          </button>
-          <button
-            type="button"
-            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            :disabled="!params.sortBy || !params.orderDirection"
-            :class="!params.sortBy || !params.orderDirection ? 'cursor-not-allowed bg-gray4' : ''"
-            @click="onSorting"
-          >
-            Terapkan
-          </button>
-        </div>
-      </div>
-    </modal>
+      </template>
+      <template #buttons>
+        <ModalButton
+          btn-type="clear"
+          @btn-click="clearSortby"
+        />
+        <ModalButton
+          btn-type="set"
+          :disabled="!params.sortBy || !params.orderDirection"
+          @btn-click="onSorting"
+        >
+          Terapkan
+        </ModalButton>
+      </template>
+    </BaseModal>
     <!-- DETAIL RESERVATION -->
     <modal name="detail" :adaptive="true" :height="'auto'" :width="'80%'">
       <div class="p-8">
