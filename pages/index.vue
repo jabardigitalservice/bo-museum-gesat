@@ -367,6 +367,7 @@ export default {
     formIsError () {
       const { isError } = this.reservation
       const isAssetEmpty = this.form.asset_ids ? this.form.asset_ids.length === 0 : true
+      const isDaysEmpty = this.form.repeat_type === 'DAILY' && !this.form.days.length
       const isFormEmpty = [
         this.form.title
       ].some((value) => {
@@ -375,7 +376,7 @@ export default {
         }
         return typeof value === 'undefined' || value === null
       })
-      return isError || isAssetEmpty || isFormEmpty
+      return isError || isAssetEmpty || isDaysEmpty || isFormEmpty
     }
   },
   watch: {
