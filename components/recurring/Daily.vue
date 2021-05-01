@@ -73,7 +73,13 @@ export default {
   },
   computed: {
     disabledDates () {
-      return { to: new Date(new Date(this.formStartDate)) }
+      return {
+        to: new Date(new Date(this.formStartDate)),
+        ranges: [{
+          from: new Date(new Date(this.formStartDate)).setFullYear(new Date(new Date(this.formStartDate)).getFullYear() + 1),
+          to: new Date(new Date(this.formStartDate)).setFullYear(new Date(new Date(this.formStartDate)).getFullYear() + 10)
+        }]
+      }
     },
     selectedDays () {
       const days = this.formDays
