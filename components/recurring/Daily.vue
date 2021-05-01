@@ -37,7 +37,7 @@
         <span class="text-red">*</span>
       </label>
       <date-picker
-        :value="formEndDate"
+        :value="endDate"
         class="form-input rounded-md"
         required
         :disabled-dates="disabledDates"
@@ -56,6 +56,10 @@ export default {
       type: Array,
       default: () => ([])
     },
+    formStartDate: {
+      type: String,
+      default: null
+    },
     formEndDate: {
       type: String,
       default: null
@@ -64,21 +68,22 @@ export default {
   data () {
     return {
       dropdownOpened: false,
-      days,
-      disabledDates: {
-        // disable datepicker from unlimited past to yesterday
-        // note: 86400000 is in ms = 1 day
-        to: new Date(Date.now() - 86400000)
-      }
+      days
     }
   },
   computed: {
+    disabledDates () {
+      return { to: new Date(new Date(this.formStartDate)) }
+    },
     selectedDays () {
       const days = this.formDays
         .map(formDay => this.days.find(day => day.index === formDay))
         .sort((a, b) => a.index - b.index)
         .map(formday => formday.name)
       return days.join(', ')
+    },
+    endDate () {
+      return this.formEndDate < this.disabledDates.to.toISOString() ? this.disabledDates.to : this.formEndDate
     }
   },
   methods: {

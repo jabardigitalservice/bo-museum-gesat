@@ -108,6 +108,7 @@
           <div class="col-span-2">
             <Daily
               v-if="form.repeat_type === 'DAILY'"
+              :form-start-date="form.date"
               :form-end-date="form.end_date"
               :form-days="form.days"
               @selected:form-end-date="form.end_date = $event"
@@ -375,6 +376,11 @@ export default {
         return typeof value === 'undefined' || value === null
       })
       return isError || isAssetEmpty || isFormEmpty
+    }
+  },
+  watch: {
+    'form.date' () {
+      this.form.date = momentFormatDate(this.form.date)
     }
   },
   methods: {
