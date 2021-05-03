@@ -48,7 +48,9 @@ export default {
 
   sentry: {
     dsn: process.env.SENTRY_LARAVEL_DSN, // project's DSN here
-    config: {} // Additional config
+    config: {
+      environment: process.env.APP_ENV || 'localhost'
+    } // Additional config
   },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
