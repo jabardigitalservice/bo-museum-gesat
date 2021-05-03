@@ -231,7 +231,6 @@
     <BaseModal
       modal-name="detail"
       modal-title="Detail Reservasi"
-      :adaptive="true"
       overflow
     >
       <template #body>
