@@ -673,6 +673,12 @@ export default {
       } else {
         this.form.days.push(val)
       }
+    },
+    showErrorToast (message) {
+      this.$toast.error(message, {
+        iconPack: 'fontawesome',
+        duration: 5000
+      })
     }
   }
 }
