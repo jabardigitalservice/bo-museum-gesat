@@ -1,12 +1,17 @@
 <template>
   <button
     class="btn-style"
-    :disabled="disabled"
+    :disabled="disabled || loading"
     :class="disabled ? 'bg-gray4' : buttonStyle"
     @click="$emit('btn-click')"
   >
     <slot name="label">
-      {{ buttonLabel }}
+      <div v-if="loading">
+        <div class="spinner" />
+      </div>
+      <div v-else>
+        {{ buttonLabel }}
+      </div>
     </slot>
   </button>
 </template>
@@ -19,6 +24,10 @@ export default {
       default: 'close'
     },
     disabled: {
+      type: Boolean,
+      default: false
+    },
+    loading: {
       type: Boolean,
       default: false
     }
@@ -72,5 +81,11 @@ export default {
 
 .btn-style:focus {
   @apply outline-none;
+}
+
+.spinner {
+  @apply w-5 h-5 rounded-full border-2 border-transparent animate-spin;
+  border-top-color: white;
+  border-right-color: white;
 }
 </style>
