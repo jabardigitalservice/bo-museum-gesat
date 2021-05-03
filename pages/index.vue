@@ -500,10 +500,6 @@ export default {
       }
 
       const calendarApi = this.$refs.fullCalendar.getApi()
-      this.$toast.info('Sedang memproses', {
-        iconPack: 'fontawesome',
-        duration: 5000
-      })
       this.reservation.isLoading = true
       this.$axios.post(`/reservation/${reservationType}`, payload).then(() => {
         this.$toast.success('Reservasi berhasil dibuat', {
