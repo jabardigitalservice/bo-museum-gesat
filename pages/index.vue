@@ -9,7 +9,12 @@
       </div>
     </div>
     <!-- Modal Add Reservation  -->
-    <BaseModal modal-name="add" modal-title="Tambah Reservasi Baru" overflow>
+    <BaseModal
+      modal-name="add"
+      modal-title="Tambah Reservasi Baru"
+      overflow
+      :loading="reservation.isLoading"
+    >
       <template #body>
         <!-- Date and Time -->
         <section class="grid md:grid-cols-4 sm:grid-cols-1 gap-4 mb-6">
@@ -191,8 +196,17 @@
 
       <!-- Form Buttons -->
       <template #buttons>
-        <ModalButton btn-type="close" @btn-click="closeFormReservation" />
-        <ModalButton btn-type="submit" :disabled="formIsError" @btn-click="addReservation" />
+        <ModalButton
+          btn-type="close"
+          :disabled="reservation.isLoading"
+          @btn-click="closeFormReservation"
+        />
+        <ModalButton
+          btn-type="submit"
+          :disabled="formIsError"
+          :loading="reservation.isLoading"
+          @btn-click="addReservation"
+        />
       </template>
     </BaseModal>
 
@@ -291,7 +305,8 @@ export default {
         // disable datepicker from unlimited past to yesterday
         // note: 86400000 is in ms = 1 day
           to: new Date(Date.now() - 86400000)
-        }
+        },
+        isLoading: false
       },
       calendarOptions: {
         locales: allLocales,
@@ -485,17 +500,15 @@ export default {
       }
 
       const calendarApi = this.$refs.fullCalendar.getApi()
-      this.$toast.info('Sedang memproses', {
-        iconPack: 'fontawesome',
-        duration: 5000
-      })
-      this.$modal.hide('add')
+      this.reservation.isLoading = true
       this.$axios.post(`/reservation/${reservationType}`, payload).then(() => {
         this.$toast.success('Reservasi berhasil dibuat', {
           iconPack: 'fontawesome',
           duration: 5000
         })
         calendarApi.refetchEvents()
+        this.reservation.isLoading = false
+        this.$modal.hide('add')
       }).catch((e) => {
         if (e.response.data?.code === 403) {
           this.$toast.error('Anda tidak ada akses untuk menambah data ini.', {
@@ -508,6 +521,8 @@ export default {
             duration: 5000
           })
         }
+        this.reservation.isLoading = false
+        this.$modal.hide('add')
       })
     },
     closeFormReservation () {
@@ -517,6 +532,7 @@ export default {
     clearFormReservation () {
       this.reservation.expand = false
       this.reservation.isError = false
+      this.reservation.isLoading = false
       this.form.title = null
       this.form.description = null
       this.form.holder = null

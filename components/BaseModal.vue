@@ -5,6 +5,7 @@
     height="auto"
     :max-height="800"
     styles="overflow: visible"
+    :click-to-close="!loading"
   >
     <div
       class="p-8 h-auto max-h-full flex flex-col"
@@ -15,7 +16,7 @@
         <h2 class="window-header uppercase">
           {{ modalTitle }}
         </h2>
-        <button title="Tutup" @click="$modal.hide(modalName)">
+        <button title="Tutup" @click="!loading && $modal.hide(modalName)">
           <i class="text-gray2 bx bx-x bx-sm cursor-pointer" />
         </button>
       </section>
@@ -45,6 +46,10 @@ export default {
       default: 'defaultModal'
     },
     overflow: {
+      type: Boolean,
+      default: false
+    },
+    loading: {
       type: Boolean,
       default: false
     }
