@@ -510,19 +510,22 @@ export default {
         this.reservation.isLoading = false
         this.$modal.hide('add')
       }).catch((e) => {
-        if (e.response.data?.code === 403) {
-          this.$toast.error('Anda tidak ada akses untuk menambah data ini.', {
-            iconPack: 'fontawesome',
-            duration: 5000
-          })
-        } else {
-          this.$toast.error('Terjadi Kesalahan', {
-            iconPack: 'fontawesome',
-            duration: 5000
-          })
-        }
         this.reservation.isLoading = false
         this.$modal.hide('add')
+        if (e.response.data?.code === 403) {
+          return this.showErrorToast('Anda tidak ada akses untuk menambah data ini.')
+        }
+        if (e.response.status === 422) {
+          const { errors } = e.response.data
+          if ('asset_ids' in errors) {
+            return this.showErrorToast(errors.asset_ids.join(', '))
+          }
+          if ('days' in errors) {
+            return this.showErrorToast(errors.days.join(', '))
+          }
+          return this.showErrorToast('Mohon maaf, terjadi kesalahan.')
+        }
+        return this.showErrorToast('Mohon maaf, terjadi kesalahan.')
       })
     },
     closeFormReservation () {
