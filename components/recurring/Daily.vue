@@ -73,11 +73,14 @@ export default {
   },
   computed: {
     disabledDates () {
+      const startDate = new Date(this.formStartDate)
+      const oneYearAhead = new Date(this.formStartDate).setFullYear(startDate.getFullYear() + 1)
+      const tenYearsAhead = new Date(this.formStartDate).setFullYear(startDate.getFullYear() + 10)
       return {
-        to: new Date(new Date(this.formStartDate)),
+        to: startDate,
         ranges: [{
-          from: new Date(new Date(this.formStartDate)).setFullYear(new Date(new Date(this.formStartDate)).getFullYear() + 1),
-          to: new Date(new Date(this.formStartDate)).setFullYear(new Date(new Date(this.formStartDate)).getFullYear() + 10)
+          from: oneYearAhead,
+          to: tenYearsAhead
         }]
       }
     },
@@ -89,7 +92,9 @@ export default {
       return days.join(', ')
     },
     endDate () {
-      return this.formEndDate < this.disabledDates.to.toISOString() ? this.disabledDates.to : this.formEndDate
+      const startDate = this.disabledDates.to
+      const endDate = this.formEndDate
+      return endDate < startDate.toISOString() ? startDate : endDate
     }
   },
   methods: {
