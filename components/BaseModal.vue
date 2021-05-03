@@ -51,7 +51,7 @@ export default {
     },
     loading: {
       type: Boolean,
-      defaultf: false
+      default: false
     }
   }
 }
