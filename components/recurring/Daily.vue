@@ -73,9 +73,10 @@ export default {
   },
   computed: {
     disabledDates () {
+      const yesterday = new Date(new Date().setDate(new Date().getDate() - 1))
       const startDate = new Date(this.formStartDate)
-      const oneYearAhead = new Date(this.formStartDate).setFullYear(startDate.getFullYear() + 1)
-      const tenYearsAhead = new Date(this.formStartDate).setFullYear(startDate.getFullYear() + 10)
+      const oneYearAhead = yesterday.setFullYear(new Date().getFullYear() + 1)
+      const tenYearsAhead = yesterday.setFullYear(new Date().getFullYear() + 10)
       return {
         to: startDate,
         ranges: [{
