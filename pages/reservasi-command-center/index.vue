@@ -228,134 +228,126 @@
       </template>
     </BaseModal>
     <!-- DETAIL RESERVATION -->
-    <modal name="detail" :adaptive="true" :height="'auto'" :width="'80%'">
-      <div class="p-8">
-        <div class="mb-4 text-center font-medium">
-          DETAIL RESERVASI
-        </div>
-        <div class="grid grid-cols-3 gap-4">
-          <div class="space-y-2">
-            <div class="flex flex-col">
-              <div class="text-sm text-gray2">
-                Nama Penanggung Jawab
-              </div>
-              <div class="font-medium text-blue">
-                {{ reservationDetail.name }}
-              </div>
+    <BaseModal
+      modal-name="detail"
+      modal-title="Detail Reservasi"
+      overflow
+    >
+      <template #body>
+        <div class="grid sm:grid-cols-1 md:grid-cols-3 md:grid-rows-4 md:col-gap-6 row-gap-4">
+          <div class="flex flex-col">
+            <div class="text-sm text-gray2">
+              Nama Penanggung Jawab
             </div>
-            <div class="flex flex-col">
-              <div class="text-sm text-gray2">
-                NIK
-              </div>
-              <div class="font-medium text-blue">
-                {{ reservationDetail.nik }}
-              </div>
-            </div>
-            <div class="flex flex-col">
-              <div class="text-sm text-gray2">
-                Asal Instansi
-              </div>
-              <div class="font-medium text-blue">
-                {{ reservationDetail.organization_name || '-' }}
-              </div>
-            </div>
-            <div class="flex flex-col">
-              <div class="text-sm text-gray2">
-                Alamat
-              </div>
-              <div class="font-medium text-blue">
-                {{ reservationDetail.address || '-' }}
-              </div>
-            </div>
-            <div class="flex flex-col">
-              <div class="text-sm text-gray2">
-                Nomor Telepon Penanggung Jawab
-              </div>
-              <div class="font-medium text-blue">
-                {{ reservationDetail.phone_number }}
-              </div>
+            <div class="font-medium text-blue">
+              {{ reservationDetail.name }}
             </div>
           </div>
-          <div class="space-y-2">
-            <div class="flex flex-col">
-              <div class="text-sm text-gray2">
-                Alamat Email
-              </div>
-              <div class="font-medium text-blue">
-                {{ reservationDetail.email }}
-              </div>
+          <div class="flex flex-col">
+            <div class="text-sm text-gray2">
+              NIK
             </div>
-            <div class="flex flex-col">
-              <div class="text-sm text-gray2">
-                Maksud dan Tujuan Kunjungan
-              </div>
-              <div class="font-medium text-blue">
-                {{ reservationDetail.purpose || '-' }}
-              </div>
-            </div>
-            <div class="flex flex-col">
-              <div class="text-sm text-gray2">
-                Jumlah Peserta
-              </div>
-              <div class="font-medium text-blue">
-                {{ reservationDetail.visitors }}
-              </div>
-            </div>
-            <div class="flex flex-col">
-              <div class="text-sm text-gray2">
-                Shift Kunjungan
-              </div>
-              <div class="font-medium text-blue">
-                {{ reservationDetail.command_center_shift || '-' }}
-              </div>
+            <div class="font-medium text-blue">
+              {{ reservationDetail.nik }}
             </div>
           </div>
-          <div class="space-y-2">
-            <div class="flex flex-col">
-              <div class="text-sm text-gray2">
-                Tanggal Kunjungan
-              </div>
-              <div class="font-medium text-blue">
-                {{ getDisplayDateTime(reservationDetail.reservation_date, false) }}
-              </div>
+          <div class="flex flex-col">
+            <div class="text-sm text-gray2">
+              Asal Instansi
             </div>
-            <div class="flex flex-col">
-              <div class="text-sm text-gray2">
-                Tanggal Reservasi Dibuat
-              </div>
-              <div class="font-medium text-blue">
-                {{ getDisplayDateTime(reservationDetail.created_at) }}
-              </div>
+            <div class="font-medium text-blue">
+              {{ reservationDetail.organization_name || '-' }}
             </div>
-            <div class="flex flex-col">
-              <div class="text-sm text-gray2">
-                Tanggal Pembaruan
-              </div>
-              <div class="font-medium text-blue">
-                {{ getDisplayDateTime(reservationDetail.updated_at) }}
-              </div>
+          </div>
+          <div class="flex flex-col">
+            <div class="text-sm text-gray2">
+              Alamat
             </div>
-            <div class="flex flex-col">
-              <div class="text-sm text-gray2">
-                Tanggal Verifikasi Admin
-              </div>
-              <div class="font-medium text-blue">
-                {{ reservationDetail.approval_date ? getDisplayDateTime(reservationDetail.approval_date) : '-' }}
-              </div>
+            <div class="font-medium text-blue">
+              {{ reservationDetail.address || '-' }}
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <div class="text-sm text-gray2">
+              Nomor Telepon Penanggung Jawab
+            </div>
+            <div class="font-medium text-blue">
+              {{ reservationDetail.phone_number }}
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <div class="text-sm text-gray2">
+              Alamat Email
+            </div>
+            <div class="font-medium text-blue">
+              {{ reservationDetail.email }}
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <div class="text-sm text-gray2">
+              Maksud dan Tujuan Kunjungan
+            </div>
+            <div class="font-medium text-blue">
+              {{ reservationDetail.purpose || '-' }}
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <div class="text-sm text-gray2">
+              Jumlah Peserta
+            </div>
+            <div class="font-medium text-blue">
+              {{ reservationDetail.visitors }}
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <div class="text-sm text-gray2">
+              Shift Kunjungan
+            </div>
+            <div class="font-medium text-blue">
+              {{ reservationDetail.command_center_shift || '-' }}
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <div class="text-sm text-gray2">
+              Tanggal Kunjungan
+            </div>
+            <div class="font-medium text-blue">
+              {{ getDisplayDateTime(reservationDetail.reservation_date, false) }}
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <div class="text-sm text-gray2">
+              Tanggal Reservasi Dibuat
+            </div>
+            <div class="font-medium text-blue">
+              {{ getDisplayDateTime(reservationDetail.created_at) }}
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <div class="text-sm text-gray2">
+              Tanggal Pembaruan
+            </div>
+            <div class="font-medium text-blue">
+              {{ getDisplayDateTime(reservationDetail.updated_at) }}
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <div class="text-sm text-gray2">
+              Tanggal Verifikasi Admin
+            </div>
+            <div class="font-medium text-blue">
+              {{ reservationDetail.approval_date ? getDisplayDateTime(reservationDetail.approval_date) : '-' }}
             </div>
           </div>
         </div>
-        <div>
-          <button
-            type="button"
-            class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
-            @click="closeModalDetail"
-          >
-            Tutup
-          </button>
-        </div>
-      </div>
-    </modal>
+      </template>
+      <template #buttons>
+        <ModalButton
+          btn-type="close"
+          @btn-click="closeModalDetail"
+        />
+      </template>
+    </BaseModal>
   </div>
 </template>
 
