@@ -113,6 +113,7 @@
           <div class="col-span-2">
             <Daily
               v-if="form.repeat_type === 'DAILY'"
+              :form-start-date="form.date"
               :form-end-date="form.end_date"
               :form-days="form.days"
               @selected:form-end-date="form.end_date = $event"
@@ -381,6 +382,7 @@ export default {
     formIsError () {
       const { isError } = this.reservation
       const isAssetEmpty = this.form.asset_ids ? this.form.asset_ids.length === 0 : true
+      const isDaysEmpty = this.form.repeat_type === 'DAILY' && !this.form.days.length
       const isFormEmpty = [
         this.form.title
       ].some((value) => {
@@ -389,7 +391,12 @@ export default {
         }
         return typeof value === 'undefined' || value === null
       })
-      return isError || isAssetEmpty || isFormEmpty
+      return isError || isAssetEmpty || isDaysEmpty || isFormEmpty
+    }
+  },
+  watch: {
+    'form.date' () {
+      this.form.date = momentFormatDate(this.form.date)
     }
   },
   methods: {
