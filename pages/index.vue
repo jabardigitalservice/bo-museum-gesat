@@ -512,7 +512,7 @@ export default {
       }).catch((e) => {
         this.reservation.isLoading = false
         this.$modal.hide('add')
-        if (e.response.data?.code === 403) {
+        if (e.response.status === 403) {
           return this.showErrorToast('Anda tidak ada akses untuk menambah data ini.')
         }
         if (e.response.status === 422) {
