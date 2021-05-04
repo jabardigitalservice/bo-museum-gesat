@@ -24,7 +24,7 @@
             class="absolute w-full z-10 flex flex-col shadow-lg border-2 border-gray3 p-2 overflow-auto bg-white h-56"
           >
             <label v-for="day in days" :key="day.index" class="cursor-pointer p-1 hover:bg-blue">
-              <input :value="day.index" type="checkbox" @change="$emit('change:form-days', Number($event.target.value))">
+              <input :value="day.index" type="checkbox" :checked="checkedDays(day.index)" @change="$emit('change:form-days', Number($event.target.value))">
               {{ day.name }}
             </label>
           </div>
@@ -103,6 +103,9 @@ export default {
     },
     toggleDropdown () {
       this.dropdownOpened = !this.dropdownOpened
+    },
+    checkedDays (id) {
+      return this.formDays.includes(id)
     }
   }
 }
