@@ -11,6 +11,7 @@
         <input
           type="number"
           class="w-full form-input bg-white rounded-md cursor-pointer"
+          :value="formWeek"
           @input="$emit('input:form-week', $event.target.value)"
         >
       </div>
@@ -77,6 +78,10 @@ export default {
       default: null
     },
     formEndDate: {
+      type: String,
+      default: null
+    },
+    formWeek: {
       type: String,
       default: null
     }

@@ -304,7 +304,7 @@ export default {
         repeat_type: 'NONE',
         repeat: false,
         days: [],
-        week: null
+        week: 1
       },
       reservation: {
         startTime: null,
