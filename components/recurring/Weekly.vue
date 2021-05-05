@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-4">
     <div>
-      <label for="spaces" class="block text-sm">
+      <label class="block text-sm">
         Berapa Minggu Sekali
         <span class="text-red">*</span>
       </label>
@@ -16,7 +16,7 @@
       </div>
     </div>
     <div>
-      <label for="spaces" class="block text-sm">
+      <label class="block text-sm">
         Hari
         <span class="text-red">*</span>
       </label>
