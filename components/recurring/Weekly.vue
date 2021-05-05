@@ -103,7 +103,7 @@ export default {
     selectedDays () {
       const days = this.formDays
         .map(formDay => this.days.find(day => day.index === formDay))
-        .sort((a, b) => a.index - b.index)
+        .sort((a, b) => a.index === 0 ? 1 : b.index === 0 ? -1 : a.index - b.index)
         .map(formday => formday.name)
       return days.join(', ')
     },
