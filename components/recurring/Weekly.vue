@@ -27,7 +27,7 @@
         <!-- Select Dropdown -->
         <div class="relative">
           <button class="w-full form-input bg-white rounded-md cursor-pointer" @click="toggleDropdown">
-            <div class="flex justify-between ">
+            <div class="flex justify-between text-left">
               <p>
                 <span v-for="(selectedDay, index) in selectedDays" :key="index">{{ selectedDay }}</span>
               </p>
