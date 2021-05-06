@@ -12,7 +12,7 @@
         <!-- Select Dropdown -->
         <div class="relative">
           <button class="w-full form-input bg-white rounded-md cursor-pointer" @click="toggleDropdown">
-            <div class="flex justify-between ">
+            <div class="flex justify-between text-left">
               <p>{{ selectedDays }}</p>
               <i class="bx bxs-chevron-down" />
             </div>
@@ -24,7 +24,7 @@
             class="absolute w-full z-10 flex flex-col shadow-lg border-2 border-gray3 p-2 overflow-auto bg-white h-56"
           >
             <label v-for="day in days" :key="day.index" class="cursor-pointer p-1 hover:bg-blue">
-              <input :value="day.index" type="checkbox" @change="$emit('change:form-days', Number($event.target.value))">
+              <input :value="day.index" type="checkbox" :checked="checkedDays(day.index)" @change="$emit('change:form-days', Number($event.target.value))">
               {{ day.name }}
             </label>
           </div>
@@ -73,9 +73,10 @@ export default {
   },
   computed: {
     disabledDates () {
+      const yesterday = new Date(new Date().setDate(new Date().getDate() - 1))
       const startDate = new Date(this.formStartDate)
-      const oneYearAhead = new Date(this.formStartDate).setFullYear(startDate.getFullYear() + 1)
-      const tenYearsAhead = new Date(this.formStartDate).setFullYear(startDate.getFullYear() + 10)
+      const oneYearAhead = yesterday.setFullYear(new Date().getFullYear() + 1)
+      const tenYearsAhead = yesterday.setFullYear(new Date().getFullYear() + 10)
       return {
         to: startDate,
         ranges: [{
@@ -87,7 +88,7 @@ export default {
     selectedDays () {
       const days = this.formDays
         .map(formDay => this.days.find(day => day.index === formDay))
-        .sort((a, b) => a.index - b.index)
+        .sort((a, b) => a.index === 0 ? 1 : b.index === 0 ? -1 : a.index - b.index)
         .map(formday => formday.name)
       return days.join(', ')
     },
@@ -103,6 +104,9 @@ export default {
     },
     toggleDropdown () {
       this.dropdownOpened = !this.dropdownOpened
+    },
+    checkedDays (id) {
+      return this.formDays.includes(id)
     }
   }
 }
