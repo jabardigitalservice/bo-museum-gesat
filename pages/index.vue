@@ -341,6 +341,13 @@ export default {
           center: 'title',
           right: 'resourceTimeGridDay,dayGridMonth,listWeek'
         },
+        views: {
+          day: {
+            titleFormat: {
+              year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
+            }
+          }
+        },
         dayMinWidth: 180,
         height: 'auto',
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
