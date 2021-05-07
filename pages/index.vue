@@ -534,7 +534,16 @@ export default {
       })
     },
     addReservation () {
+      let payload = {
+        ...this.form,
+        start_date: momentFormatDate(this.form.date),
+        end_date: momentFormatDate(this.form.end_date),
+        from: `${this.reservation.startTime}:00`,
+        to: `${this.reservation.endTime}:00`
+      }
+
       let reservationType = ''
+
       switch (this.form.repeat_type) {
         case 'DAILY':
           reservationType = 'daily'
@@ -542,16 +551,16 @@ export default {
         case 'WEEKLY':
           reservationType = 'weekly'
           break
+        case 'MONTHLY':
+          reservationType = 'monthly'
+          payload = {
+            ...payload,
+            ...this.reservation.monthly
+          }
+          break
         default:
           reservationType = ''
           break
-      }
-      const payload = {
-        ...this.form,
-        start_date: momentFormatDate(this.form.date),
-        end_date: momentFormatDate(this.form.end_date),
-        from: `${this.reservation.startTime}:00`,
-        to: `${this.reservation.endTime}:00`
       }
 
       const calendarApi = this.$refs.fullCalendar.getApi()
