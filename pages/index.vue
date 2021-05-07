@@ -99,15 +99,12 @@
               <option value="DAILY">
                 Perhari
               </option>
-
-              <!-- this feature will be implemented in the next sprint  -->
-
               <option value="WEEKLY">
                 Perminggu
               </option>
-              <!-- <option value="MONTHLY">
+              <option value="MONTHLY">
                 Perbulan
-              </option> -->
+              </option>
             </select>
           </div>
           <div class="col-span-2">
@@ -128,6 +125,18 @@
               @input:form-week="form.week = $event"
               @selected:form-end-date="form.end_date = $event"
               @change:form-days="onFormDaysChange"
+            />
+            <Monthly
+              v-if="form.repeat_type === 'MONTHLY'"
+              :form-start-date="form.date"
+              :form-end-date="form.end_date"
+              :form-days="reservation.monthly.days"
+              :form-month="reservation.monthly.month"
+              :form-week="reservation.monthly.week"
+              @selected:form-end-date="form.end_date = $event"
+              @change:form-days="reservation.monthly.days = [$event]"
+              @change:form-week="reservation.monthly.week = $event"
+              @change:form-month="reservation.monthly.month = $event"
             />
           </div>
         </section>
