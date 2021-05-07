@@ -413,9 +413,13 @@ export default {
     },
     formIsError () {
       let isRules = false
+      const { monthly } = this.reservation
       switch (this.form.repeat_type) {
         case 'WEEKLY':
           isRules = !this.form.week || this.form.week > 52 || this.form.week <= 0 || /[^0-9]\d*$/.test(this.form.week) || !this.form.days.length
+          break
+        case 'MONTHLY':
+          isRules = typeof monthly.month !== 'number' || !monthly.month || monthly.month >= 13
           break
         default:
           isRules = false
