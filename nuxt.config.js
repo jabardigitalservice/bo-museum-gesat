@@ -43,7 +43,8 @@ export default {
     '@nuxtjs/toast',
     'nuxt-sweetalert2',
     '@nuxtjs/auth-next',
-    '@nuxtjs/sentry'
+    '@nuxtjs/sentry',
+    '@nuxtjs/google-analytics'
   ],
 
   sentry: {
@@ -51,6 +52,17 @@ export default {
     config: {
       environment: process.env.APP_ENV || 'localhost'
     } // Additional config
+  },
+
+  // Google Analytics Config
+  googleAnalytics: {
+    id: process.env.GOOGLE_ANALYTICS_ID // Use as fallback if no runtime config is provided
+  },
+
+  publicRuntimeConfig: {
+    googleAnalytics: {
+      id: process.env.GOOGLE_ANALYTICS_ID
+    }
   },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
