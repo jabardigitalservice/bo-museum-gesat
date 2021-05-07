@@ -663,6 +663,7 @@ export default {
         this.form.date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
         this.form.end_date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
         this.form.repeat_type = 'NONE'
+        this.form.week = '1'
         this.form.days = []
         calendarApi.unselect()
       } else {
