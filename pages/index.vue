@@ -318,7 +318,12 @@ export default {
         // note: 86400000 is in ms = 1 day
           to: new Date(Date.now() - 86400000)
         },
-        isLoading: false
+        isLoading: false,
+        monthly: {
+          days: [1],
+          week: 1,
+          month: 1
+        }
       },
       calendarOptions: {
         locales: allLocales,
