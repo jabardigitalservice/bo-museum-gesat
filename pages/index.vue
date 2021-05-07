@@ -600,6 +600,7 @@ export default {
       this.reservation.expand = false
       this.reservation.isError = false
       this.reservation.isLoading = false
+      this.reservation.monthly = { days: [1], week: 1, month: 1 }
       this.form.title = null
       this.form.description = null
       this.form.holder = null
