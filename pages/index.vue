@@ -99,15 +99,12 @@
               <option value="DAILY">
                 Perhari
               </option>
-
-              <!-- this feature will be implemented in the next sprint  -->
-
               <option value="WEEKLY">
                 Perminggu
               </option>
-              <!-- <option value="MONTHLY">
+              <option value="MONTHLY">
                 Perbulan
-              </option> -->
+              </option>
             </select>
           </div>
           <div class="col-span-2">
@@ -128,6 +125,18 @@
               @input:form-week="form.week = $event"
               @selected:form-end-date="form.end_date = $event"
               @change:form-days="onFormDaysChange"
+            />
+            <Monthly
+              v-if="form.repeat_type === 'MONTHLY'"
+              :form-start-date="form.date"
+              :form-end-date="form.end_date"
+              :form-days="reservation.monthly.days"
+              :form-month="reservation.monthly.month"
+              :form-week="reservation.monthly.week"
+              @selected:form-end-date="form.end_date = $event"
+              @change:form-days="reservation.monthly.days = [$event]"
+              @change:form-week="reservation.monthly.week = $event"
+              @change:form-month="reservation.monthly.month = $event"
             />
           </div>
         </section>
@@ -318,7 +327,12 @@ export default {
         // note: 86400000 is in ms = 1 day
           to: new Date(Date.now() - 86400000)
         },
-        isLoading: false
+        isLoading: false,
+        monthly: {
+          days: [1],
+          week: 1,
+          month: 1
+        }
       },
       calendarOptions: {
         locales: allLocales,
@@ -399,9 +413,13 @@ export default {
     },
     formIsError () {
       let isRules = false
+      const { monthly } = this.reservation
       switch (this.form.repeat_type) {
         case 'WEEKLY':
           isRules = !this.form.week || this.form.week > 52 || this.form.week <= 0 || /[^0-9]\d*$/.test(this.form.week) || !this.form.days.length
+          break
+        case 'MONTHLY':
+          isRules = typeof monthly.month !== 'number' || !monthly.month || monthly.month >= 13
           break
         default:
           isRules = false
@@ -516,7 +534,16 @@ export default {
       })
     },
     addReservation () {
+      let payload = {
+        ...this.form,
+        start_date: momentFormatDate(this.form.date),
+        end_date: momentFormatDate(this.form.end_date),
+        from: `${this.reservation.startTime}:00`,
+        to: `${this.reservation.endTime}:00`
+      }
+
       let reservationType = ''
+
       switch (this.form.repeat_type) {
         case 'DAILY':
           reservationType = 'daily'
@@ -524,16 +551,16 @@ export default {
         case 'WEEKLY':
           reservationType = 'weekly'
           break
+        case 'MONTHLY':
+          reservationType = 'monthly'
+          payload = {
+            ...payload,
+            ...this.reservation.monthly
+          }
+          break
         default:
           reservationType = ''
           break
-      }
-      const payload = {
-        ...this.form,
-        start_date: momentFormatDate(this.form.date),
-        end_date: momentFormatDate(this.form.end_date),
-        from: `${this.reservation.startTime}:00`,
-        to: `${this.reservation.endTime}:00`
       }
 
       const calendarApi = this.$refs.fullCalendar.getApi()
@@ -573,6 +600,7 @@ export default {
       this.reservation.expand = false
       this.reservation.isError = false
       this.reservation.isLoading = false
+      this.reservation.monthly = { days: [1], week: 1, month: 1 }
       this.form.title = null
       this.form.description = null
       this.form.holder = null
