@@ -1,7 +1,23 @@
 <template>
   <div class="space-y-4">
     <div>
-      <label for="spaces" class="block text-sm">
+      <label class="block text-sm">
+        Berapa Minggu Sekali
+        <span class="text-red">*</span>
+      </label>
+
+      <!-- Input Weekly Number -->
+      <div>
+        <input
+          type="number"
+          class="w-full form-input bg-white rounded-md cursor-pointer"
+          :value="formWeek"
+          @input="$emit('input:form-week', $event.target.value)"
+        >
+      </div>
+    </div>
+    <div>
+      <label class="block text-sm">
         Hari
         <span class="text-red">*</span>
       </label>
@@ -13,7 +29,9 @@
         <div class="relative">
           <button class="w-full form-input bg-white rounded-md cursor-pointer" @click="toggleDropdown">
             <div class="flex justify-between text-left">
-              <p>{{ selectedDays }}</p>
+              <p>
+                <span v-for="(selectedDay, index) in selectedDays" :key="index">{{ selectedDay }}</span>
+              </p>
               <i class="bx bxs-chevron-down" />
             </div>
           </button>
@@ -21,7 +39,7 @@
           <!-- Select Options -->
           <div
             v-show="dropdownOpened"
-            class="absolute w-full z-10 flex flex-col shadow-lg border-2 border-gray3 p-2 overflow-auto bg-white h-56"
+            class="absolute flex flex-col shadow-lg border-2 border-gray3 p-2 overflow-auto bg-white h-56 w-full z-50"
           >
             <label v-for="day in days" :key="day.index" class="cursor-pointer p-1 hover:bg-blue">
               <input :value="day.index" type="checkbox" :checked="checkedDays(day.index)" @change="$emit('change:form-days', Number($event.target.value))">
@@ -49,7 +67,6 @@
 
 <script>
 import { days } from '../../assets/constant/enum'
-
 export default {
   props: {
     formDays: {
@@ -61,6 +78,10 @@ export default {
       default: null
     },
     formEndDate: {
+      type: String,
+      default: null
+    },
+    formWeek: {
       type: String,
       default: null
     }

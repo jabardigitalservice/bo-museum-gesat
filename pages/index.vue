@@ -102,10 +102,10 @@
 
               <!-- this feature will be implemented in the next sprint  -->
 
-              <!-- <option value="WEEKLY">
+              <option value="WEEKLY">
                 Perminggu
               </option>
-              <option value="MONTHLY">
+              <!-- <option value="MONTHLY">
                 Perbulan
               </option> -->
             </select>
@@ -116,6 +116,16 @@
               :form-start-date="form.date"
               :form-end-date="form.end_date"
               :form-days="form.days"
+              @selected:form-end-date="form.end_date = $event"
+              @change:form-days="onFormDaysChange"
+            />
+            <Weekly
+              v-if="form.repeat_type === 'WEEKLY'"
+              :form-start-date="form.date"
+              :form-end-date="form.end_date"
+              :form-days="form.days"
+              :form-week="form.week"
+              @input:form-week="form.week = $event"
               @selected:form-end-date="form.end_date = $event"
               @change:form-days="onFormDaysChange"
             />
@@ -293,7 +303,8 @@ export default {
         holder: null,
         repeat_type: 'NONE',
         repeat: false,
-        days: []
+        days: [],
+        week: 1
       },
       reservation: {
         startTime: null,
@@ -329,6 +340,13 @@ export default {
           left: 'prev,next today',
           center: 'title',
           right: 'resourceTimeGridDay,dayGridMonth,listWeek'
+        },
+        views: {
+          day: {
+            titleFormat: {
+              year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
+            }
+          }
         },
         dayMinWidth: 180,
         height: 'auto',
@@ -380,6 +398,15 @@ export default {
       return timeInterval.slice(startTimeIndex + 1, maxLength)
     },
     formIsError () {
+      let isRules = false
+      switch (this.form.repeat_type) {
+        case 'WEEKLY':
+          isRules = !this.form.week || this.form.week > 52 || this.form.week <= 0 || /[^0-9]\d*$/.test(this.form.week) || !this.form.days.length
+          break
+        default:
+          isRules = false
+          break
+      }
       const { isError } = this.reservation
       const isAssetEmpty = this.form.asset_ids ? this.form.asset_ids.length === 0 : true
       const isDaysEmpty = this.form.repeat_type === 'DAILY' && !this.form.days.length
@@ -391,7 +418,7 @@ export default {
         }
         return typeof value === 'undefined' || value === null
       })
-      return isError || isAssetEmpty || isDaysEmpty || isFormEmpty
+      return isError || isAssetEmpty || isDaysEmpty || isFormEmpty || isRules
     }
   },
   watch: {
@@ -493,6 +520,9 @@ export default {
       switch (this.form.repeat_type) {
         case 'DAILY':
           reservationType = 'daily'
+          break
+        case 'WEEKLY':
+          reservationType = 'weekly'
           break
         default:
           reservationType = ''
@@ -633,6 +663,7 @@ export default {
         this.form.date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
         this.form.end_date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
         this.form.repeat_type = 'NONE'
+        this.form.week = '1'
         this.form.days = []
         calendarApi.unselect()
       } else {
