@@ -275,7 +275,17 @@
         </div>
       </template>
       <template #buttons>
-        <ModalButton btn-type="delete" @btn-click="deleteData" />
+        <!-- <ModalButton btn-type="delete" @btn-click="deleteData" /> -->
+        <DropdownButton button-type="delete">
+          <template #options>
+            <button>
+              Hapus reservasi ini
+            </button>
+            <button>
+              Hapus seluruh perulangan
+            </button>
+          </template>
+        </DropdownButton>
         <ModalButton btn-type="close" @btn-click="closeModalDetail" />
       </template>
     </BaseModal>
