@@ -275,10 +275,10 @@
         </div>
       </template>
       <template #buttons>
-        <!-- <ModalButton btn-type="delete" @btn-click="deleteData" /> -->
-        <DropdownButton button-type="delete">
+        <ModalButton v-if="!isRecurring" btn-type="delete" @btn-click="deleteData" />
+        <DropdownButton v-else button-type="delete">
           <template #options>
-            <button>
+            <button @click="deleteData">
               Hapus reservasi ini
             </button>
             <button>
@@ -404,6 +404,10 @@ export default {
     }
   },
   computed: {
+    isRecurring () {
+      const { repeatType } = this.detailData.extendedProps
+      return repeatType
+    },
     selectedResources () {
       const { resourcesLists } = this.reservation
       const selectedNames = resourcesLists
@@ -656,6 +660,7 @@ export default {
           newObj.title = reservation.title
           newObj.start = reservation.start_time.slice(0, -8)
           newObj.end = reservation.end_time.slice(0, -8)
+          newObj.repeatType = reservation.repeat_type
           newObj.resourceId = reservation.asset_id
           newObj.extendedProps = {
             name: reservation.user_fullname,
