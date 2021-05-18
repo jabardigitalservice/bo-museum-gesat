@@ -92,8 +92,17 @@
               Reservasi Berulang
               <span class="text-red">*</span>
             </label>
-            <select v-model="form.repeat_type" name="repeat" class="w-full form-input bg-white rounded-md" @change="updateRepeatStatus">
-              <option v-for="type in repeatType" :key="type.value" :value="type.value">
+            <select
+              v-model="form.repeat_type"
+              name="repeat"
+              class="w-full form-input bg-white rounded-md"
+              @change="updateRepeatStatus"
+            >
+              <option
+                v-for="type in repeatType"
+                :key="type.value"
+                :value="type.value"
+              >
                 {{ type.name }}
               </option>
             </select>
