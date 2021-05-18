@@ -684,8 +684,8 @@ export default {
         this.clearFormReservation()
         this.reservation.startTime = toMoment(selectInfo.start, selectInfo.view.calendar).format('HH:mm')
         this.reservation.endTime = toMoment(selectInfo.end, selectInfo.view.calendar).format('HH:mm')
-        this.form.asset_id = selectInfo.resource.id
-        this.form.asset_ids = [Number(selectInfo.resource.id)]
+        this.form.asset_id = selectInfo.resource ? selectInfo.resource.id : null
+        this.form.asset_ids = selectInfo.resource ? [Number(selectInfo.resource.id)] : []
         this.form.start_time = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD HH:mm')
         this.form.end_time = toMoment(selectInfo.end, selectInfo.view.calendar).format('YYYY-MM-DD HH:mm')
         this.form.date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
