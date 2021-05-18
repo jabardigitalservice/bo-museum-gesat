@@ -93,17 +93,8 @@
               <span class="text-red">*</span>
             </label>
             <select v-model="form.repeat_type" name="repeat" class="w-full form-input bg-white rounded-md" @change="updateRepeatStatus">
-              <option value="NONE">
-                Tidak
-              </option>
-              <option value="DAILY">
-                Perhari
-              </option>
-              <option value="WEEKLY">
-                Perminggu
-              </option>
-              <option value="MONTHLY">
-                Perbulan
+              <option v-for="type in repeatType" :key="type.value" :value="type.value">
+                {{ type.name }}
               </option>
             </select>
           </div>
@@ -291,6 +282,7 @@ import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import { toMoment } from '@fullcalendar/moment'
 import listPlugin from '@fullcalendar/list'
 import allLocales from '@fullcalendar/core/locales-all'
+import { repeatType } from '../assets/constant/enum'
 import { momentFormatDateId, momentFormatTimeISO, generateTimes, momentFormatDate } from '~/utils'
 
 export default {
@@ -390,7 +382,8 @@ export default {
         extendedProps: {}
       },
       clickInfo: {},
-      momentFormatDateId
+      momentFormatDateId,
+      repeatType
     }
   },
   computed: {
