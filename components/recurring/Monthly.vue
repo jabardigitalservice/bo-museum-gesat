@@ -88,22 +88,11 @@
 </template>
 
 <script>
-import { days } from '../../assets/constant/enum'
+import recurringMixins from './mixins/recurringMixins'
 
 export default {
+  mixins: [recurringMixins],
   props: {
-    formStartDate: {
-      type: String,
-      default: null
-    },
-    formEndDate: {
-      type: String,
-      default: null
-    },
-    formDays: {
-      type: Array,
-      default: null
-    },
     formWeek: {
       type: Number,
       default: null
@@ -111,31 +100,6 @@ export default {
     formMonth: {
       type: Number,
       default: null
-    }
-  },
-  data () {
-    return {
-      days
-    }
-  },
-  computed: {
-    disabledDates () {
-      const yesterday = new Date(new Date().setDate(new Date().getDate() - 1))
-      const startDate = new Date(this.formStartDate)
-      const oneYearAhead = yesterday.setFullYear(new Date().getFullYear() + 1)
-      const tenYearsAhead = yesterday.setFullYear(new Date().getFullYear() + 10)
-      return {
-        to: startDate,
-        ranges: [{
-          from: oneYearAhead,
-          to: tenYearsAhead
-        }]
-      }
-    },
-    endDate () {
-      const startDate = this.disabledDates.to
-      const endDate = this.formEndDate
-      return endDate < startDate.toISOString() ? startDate : endDate
     }
   },
   methods: {
