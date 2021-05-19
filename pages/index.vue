@@ -99,11 +99,11 @@
               @change="updateRepeatStatus"
             >
               <option
-                v-for="type in repeatType"
-                :key="type.value"
-                :value="type.value"
+                v-for="(name, value, index) in repeatType"
+                :key="index"
+                :value="value"
               >
-                {{ type.name }}
+                {{ name }}
               </option>
             </select>
           </div>
