@@ -204,21 +204,9 @@ export const days = [
   }
 ]
 
-export const repeatType = [
-  {
-    value: 'NONE',
-    name: 'Tidak'
-  },
-  {
-    value: 'DAILY',
-    name: 'Perhari'
-  },
-  {
-    value: 'WEEKLY',
-    name: 'Perminggu'
-  },
-  {
-    value: 'MONTHLY',
-    name: 'Perbulan'
-  }
-]
+export const repeatType = {
+  NONE: 'Tidak',
+  DAILY: 'Perhari',
+  WEEKLY: 'Perminggu',
+  MONTHLY: 'Perbulan'
+}
