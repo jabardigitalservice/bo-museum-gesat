@@ -281,7 +281,7 @@
             <button @click="deleteData">
               Hapus reservasi ini
             </button>
-            <button>
+            <button @click="deleteAllData">
               Hapus seluruh perulangan
             </button>
           </template>
@@ -662,6 +662,7 @@ export default {
           newObj.end = reservation.end_time.slice(0, -8)
           newObj.repeatType = reservation.repeat_type
           newObj.resourceId = reservation.asset_id
+          newObj.recurringId = reservation.recurring_id
           newObj.extendedProps = {
             name: reservation.user_fullname,
             resourceName: reservation.asset_name,
@@ -727,6 +728,34 @@ export default {
       }).then((isConfirm) => {
         if (isConfirm.value) {
           this.$axios.delete(`/reservation/${this.detailData.id}`).then(() => {
+            this.$toast.success('Berhasil dihapus.', {
+              iconPack: 'fontawesome',
+              duration: 5000
+            })
+            calendarApi.refetchEvents()
+          }).catch((e) => {
+            if (e.response.data?.code === 403) {
+              this.$toast.error('Anda tidak ada akses untuk menghapus data ini.', {
+                iconPack: 'fontawesome',
+                duration: 5000
+              })
+            }
+          })
+          this.$modal.hide('detail')
+        }
+      })
+    },
+    deleteAllData () {
+      const calendarApi = this.$refs.fullCalendar.getApi()
+      this.$swal.fire({
+        title: 'Anda yakin menghapus seluruh perulangan reservasi ini?',
+        showCancelButton: true,
+        type: 'warning',
+        dangerMode: true
+      }).then((isConfirm) => {
+        if (isConfirm.value) {
+          const { recurringId } = this.detailData.extendedProps
+          this.$axios.delete(`/reservation/recurring/${recurringId}`).then(() => {
             this.$toast.success('Berhasil dihapus.', {
               iconPack: 'fontawesome',
               duration: 5000
