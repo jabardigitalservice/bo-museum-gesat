@@ -226,6 +226,7 @@
             btn-type="update"
             :disabled="formIsError"
             :loading="reservation.isLoading"
+            @btn-click="handleUpdate"
           />
         </template>
         <template v-else>
@@ -532,6 +533,7 @@ export default {
       return '-'
     },
     setEditInitialValues () {
+      this.clearFormReservation()
       this.reservation.isEdit = true
       const { detailData } = this
       // Set form initial data
@@ -548,27 +550,44 @@ export default {
       this.$modal.hide('detail')
       this.$modal.show('add')
     },
-    handleUpdate () {
+    async handleUpdate () {
+      this.reservation.isLoading = true
       const calendarApi = this.$refs.fullCalendar.getApi()
-      this.$toast.info('Sedang diproses', {
-        iconPack: 'fontawesome',
-        duration: 5000
-      })
-      this.$axios.put(`/reservation/${this.form.id}`, this.form).then((res) => {
-        this.$toast.success('Berhasil diubah.', {
+
+      if (this.reservation.isEdit) {
+        this.form.start_time = `${momentFormatDate(this.form.date)} ${this.reservation.startTime}`
+        this.form.end_time = `${momentFormatDate(this.form.date)} ${this.reservation.endTime}`
+      }
+
+      try {
+        this.$toast.info('Sedang diproses', {
           iconPack: 'fontawesome',
           duration: 5000
         })
-        calendarApi.refetchEvents()
-      }).catch((e) => {
-        if (e.response.data?.code === 403) {
-          this.$toast.error('Anda tidak ada akses untuk mengubah data ini.', {
+        const response = await this.$axios.put(`/reservation/${this.form.id}`, this.form)
+        console.log(response)
+        if (response) {
+          this.$toast.success('Berhasil diubah.', {
             iconPack: 'fontawesome',
             duration: 5000
           })
-          calendarApi.refetchEvents()
         }
-      })
+      } catch (e) {
+        if (e.response.status === 403) {
+          return this.showErrorToast('Anda tidak ada akses untuk mengubah data ini.')
+        }
+        if (e.response.status === 422) {
+          const { errors } = e.response.data
+          if ('asset_id' in errors) {
+            return this.showErrorToast(errors.asset_id.join(', '))
+          }
+          return this.showErrorToast('Mohon maaf, terjadi kesalahan.')
+        }
+      } finally {
+        this.$modal.hide('add')
+        this.clearFormReservation()
+        calendarApi.refetchEvents()
+      }
     },
     addReservation () {
       let payload = {
