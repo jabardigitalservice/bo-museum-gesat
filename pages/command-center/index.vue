@@ -83,7 +83,12 @@
           <tbody v-else class="tbody">
             <tr>
               <td colspan="6" class="w-full p-4 text-center text-gray3">
-                Data tidak tersedia
+                <div class="text-md">
+                  <div v-if="loading" class="div-spinner">
+                    <div class="spinner" />
+                  </div>
+                  {{ spinnerLabel }}
+                </div>
               </td>
             </tr>
           </tbody>
@@ -304,7 +309,8 @@ export default {
         capacityShift: null,
         statusShift: null
       },
-      submitForm: 'store'
+      submitForm: 'store',
+      loading: false
     }
   },
   computed: {
@@ -351,20 +357,26 @@ export default {
   methods: {
     async getDataShift () {
       try {
+        this.loading = true
         const res = await this.$axios.$get('/command-center-shift', { params: this.params })
         this.dataShift = res.data ?? []
         this.metaShift = res.meta ?? {}
+        this.loading = false
       } catch (error) {
         this.errors = error
+        this.loading = false
       }
     },
     async getDisabledDateData () {
       try {
+        this.loading = true
         const res = await this.$axios.$get('/close-days', { params: this.params })
         this.dataDisabledDate = res.data ?? []
         this.meta = res.meta ?? {}
+        this.loading = false
       } catch (error) {
         this.errors = error
+        this.loading = false
       }
     },
     verifiedData () {
@@ -611,3 +623,14 @@ export default {
   }
 }
 </script>
+<style scoped>
+.div-spinner {
+  @apply grid justify-items-center;
+}
+
+.spinner {
+  @apply w-5 h-5 rounded-full border-2 border-transparent animate-spin;
+  border-top-color: #219653;
+  border-right-color: #219653;
+}
+</style>

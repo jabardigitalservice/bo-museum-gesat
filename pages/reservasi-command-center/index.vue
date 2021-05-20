@@ -96,8 +96,13 @@
           </tbody>
           <tbody v-else class="tbody">
             <tr>
-              <td colspan="6" class="w-full p-4 text-center text-gray2">
-                Data tidak tersedia
+              <td colspan="6" class="w-full p-4 text-center text-gray3">
+                <div class="text-md">
+                  <div v-if="loading" class="div-spinner">
+                    <div class="spinner" />
+                  </div>
+                  {{ spinnerLabel }}
+                </div>
               </td>
             </tr>
           </tbody>
@@ -387,6 +392,7 @@ export default {
       },
       isHasParams: false,
       generateTimes,
+      loading: false,
       rangeTimes: [],
       admin
     }
@@ -394,6 +400,9 @@ export default {
   computed: {
     isAdmin () {
       return admin(this.$auth)
+    },
+    spinnerLabel () {
+      return (this.loading === true ? '' : 'Data tidak tersedia')
     }
   },
   watch: {
@@ -432,11 +441,14 @@ export default {
     },
     async getDataReservation () {
       try {
+        this.loading = true
         const response = await this.$axios.get('/command-center-reservation', { params: this.params })
         this.reservations = response ? response.data.data : []
         this.meta = response ? response.data.meta : {}
+        this.loading = false
       } catch (e) {
         this.errors = e
+        this.loading = false
       }
     },
     async refreshTable () {
@@ -561,3 +573,14 @@ export default {
   }
 }
 </script>
+<style scoped>
+.div-spinner {
+  @apply grid justify-items-center;
+}
+
+.spinner {
+  @apply w-5 h-5 rounded-full border-2 border-transparent animate-spin;
+  border-top-color: #219653;
+  border-right-color: #219653;
+}
+</style>
