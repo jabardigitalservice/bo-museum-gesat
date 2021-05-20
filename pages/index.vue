@@ -336,6 +336,7 @@ export default {
       },
       calendarOptions: {
         locales: allLocales,
+        firstDay: 0,
         locale: 'id',
         timeZone: 'local',
         eventTimeFormat: {
