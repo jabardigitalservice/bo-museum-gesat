@@ -11,7 +11,7 @@
     <!-- Modal Add Reservation  -->
     <BaseModal
       modal-name="add"
-      modal-title="Tambah Reservasi Baru"
+      :modal-title="reservation.isEdit ? 'Edit Reservasi' : 'Tambah Reservasi Baru'"
       overflow
       :loading="reservation.isLoading"
     >
@@ -86,7 +86,7 @@
         </section>
 
         <!-- Repeat Booking -->
-        <section class="grid grid-cols-3 gap-4 mb-6">
+        <section v-if="!reservation.isEdit" class="grid grid-cols-3 gap-4 mb-6">
           <div class="col-span-1">
             <label for="repeat" class="block text-sm">
               Reservasi Berulang
@@ -142,7 +142,7 @@
         </section>
 
         <!-- Spaces -->
-        <section class="mb-4">
+        <section v-if="!reservation.isEdit" class="mb-4">
           <label for="spaces" class="block text-sm">
             Ruangan/Aset
             <span class="text-red">*</span>
@@ -221,12 +221,21 @@
           :disabled="reservation.isLoading"
           @btn-click="closeFormReservation"
         />
-        <ModalButton
-          btn-type="submit"
-          :disabled="formIsError"
-          :loading="reservation.isLoading"
-          @btn-click="addReservation"
-        />
+        <template v-if="reservation.isEdit">
+          <ModalButton
+            btn-type="update"
+            :disabled="formIsError"
+            :loading="reservation.isLoading"
+          />
+        </template>
+        <template v-else>
+          <ModalButton
+            btn-type="submit"
+            :disabled="formIsError"
+            :loading="reservation.isLoading"
+            @btn-click="addReservation"
+          />
+        </template>
       </template>
     </BaseModal>
 
@@ -523,6 +532,7 @@ export default {
       return '-'
     },
     setEditInitialValues () {
+      this.reservation.isEdit = true
       const { detailData } = this
       // Set form initial data
       this.form.id = detailData.id
@@ -534,6 +544,9 @@ export default {
       this.form.end_date = momentFormatDate(detailData.endStr)
       this.reservation.startTime = momentFormatTimeISO(detailData.start)
       this.reservation.endTime = momentFormatTimeISO(detailData.end)
+
+      this.$modal.hide('detail')
+      this.$modal.show('add')
     },
     handleUpdate () {
       const calendarApi = this.$refs.fullCalendar.getApi()
