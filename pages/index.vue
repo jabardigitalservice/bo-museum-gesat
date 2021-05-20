@@ -286,7 +286,7 @@
             </button>
           </template>
         </DropdownButton>
-        <ModalButton btn-type="close" @btn-click="closeModalDetail" />
+        <ModalButton btn-type="edit" :loading="reservation.isLoading"/>
       </template>
     </BaseModal>
   </div>
@@ -332,6 +332,7 @@ export default {
         expand: false,
         resourcesLists: null,
         isError: false,
+        isEdit: false,
         disabledDates: {
         // disable datepicker from unlimited past to yesterday
         // note: 86400000 is in ms = 1 day
@@ -610,6 +611,7 @@ export default {
       this.reservation.expand = false
       this.reservation.isError = false
       this.reservation.isLoading = false
+      this.reservation.isEdit = false
       this.reservation.monthly = { days: [1], week: 1, month: 1 }
       this.form.title = null
       this.form.description = null
