@@ -565,7 +565,6 @@ export default {
           duration: 5000
         })
         const response = await this.$axios.put(`/reservation/${this.form.id}`, this.form)
-        console.log(response)
         if (response) {
           this.$toast.success('Berhasil diubah.', {
             iconPack: 'fontawesome',
