@@ -286,7 +286,7 @@
             </button>
           </template>
         </DropdownButton>
-        <ModalButton btn-type="edit" :loading="reservation.isLoading"/>
+        <ModalButton btn-type="edit" :loading="reservation.isLoading" @btn-click="setEditInitialValues" />
       </template>
     </BaseModal>
   </div>
@@ -521,6 +521,19 @@ export default {
         return `${dateString}, pukul ${startTimeString}-${endTimeString}`
       }
       return '-'
+    },
+    setEditInitialValues () {
+      const { detailData } = this
+      // Set form initial data
+      this.form.id = detailData.id
+      this.form.title = detailData.title
+      this.form.description = detailData.extendedProps.catatan
+      this.form.asset_id = detailData._def.resourceIds[0]
+      this.form.asset_ids = detailData._def.resourceIds
+      this.form.date = momentFormatDate(detailData.startStr)
+      this.form.end_date = momentFormatDate(detailData.endStr)
+      this.reservation.startTime = momentFormatTimeISO(detailData.start)
+      this.reservation.endTime = momentFormatTimeISO(detailData.end)
     },
     handleUpdate () {
       const calendarApi = this.$refs.fullCalendar.getApi()
