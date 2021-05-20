@@ -56,7 +56,7 @@
           id="monthly-month"
           type="number"
           min="1"
-          max="12"
+          max="3"
           :value="formMonth"
           class="form form-input md:col-span-2 sm:col-span-1"
           @change="$emit('change:form-month', Number($event.target.value))"
@@ -64,7 +64,7 @@
         <p class="block text-sm col-span-1 text-">
           Bulan Sekali
           <span class="text-red">
-            (Max 12)
+            (Max 3)
           </span>
         </p>
       </div>
