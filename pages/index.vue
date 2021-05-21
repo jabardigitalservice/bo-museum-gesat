@@ -11,7 +11,7 @@
     <!-- Modal Add Reservation  -->
     <BaseModal
       modal-name="add"
-      modal-title="Tambah Reservasi Baru"
+      :modal-title="reservation.isEdit ? 'Edit Reservasi' : 'Tambah Reservasi Baru'"
       overflow
       :loading="reservation.isLoading"
     >
@@ -86,7 +86,7 @@
         </section>
 
         <!-- Repeat Booking -->
-        <section class="grid grid-cols-3 gap-4 mb-6">
+        <section v-if="!reservation.isEdit" class="grid grid-cols-3 gap-4 mb-6">
           <div class="col-span-1">
             <label for="repeat" class="block text-sm">
               Reservasi Berulang
@@ -142,7 +142,7 @@
         </section>
 
         <!-- Spaces -->
-        <section class="mb-4">
+        <section v-if="!reservation.isEdit" class="mb-4">
           <label for="spaces" class="block text-sm">
             Ruangan/Aset
             <span class="text-red">*</span>
@@ -221,12 +221,22 @@
           :disabled="reservation.isLoading"
           @btn-click="closeFormReservation"
         />
-        <ModalButton
-          btn-type="submit"
-          :disabled="formIsError"
-          :loading="reservation.isLoading"
-          @btn-click="addReservation"
-        />
+        <template v-if="reservation.isEdit">
+          <ModalButton
+            btn-type="update"
+            :disabled="formIsError"
+            :loading="reservation.isLoading"
+            @btn-click="handleUpdate"
+          />
+        </template>
+        <template v-else>
+          <ModalButton
+            btn-type="submit"
+            :disabled="formIsError"
+            :loading="reservation.isLoading"
+            @btn-click="addReservation"
+          />
+        </template>
       </template>
     </BaseModal>
 
@@ -286,7 +296,7 @@
             </button>
           </template>
         </DropdownButton>
-        <ModalButton btn-type="close" @btn-click="closeModalDetail" />
+        <ModalButton btn-type="edit" :loading="reservation.isLoading" @btn-click="setEditInitialValues" />
       </template>
     </BaseModal>
   </div>
@@ -333,6 +343,7 @@ export default {
         expand: false,
         resourcesLists: null,
         isError: false,
+        isEdit: false,
         disabledDates: {
         // disable datepicker from unlimited past to yesterday
         // note: 86400000 is in ms = 1 day
@@ -527,27 +538,61 @@ export default {
       }
       return '-'
     },
-    handleUpdate () {
+    setEditInitialValues () {
+      this.clearFormReservation()
+      this.reservation.isEdit = true
+      const { detailData } = this
+      // Set form initial data
+      this.form.id = detailData.id
+      this.form.title = detailData.title
+      this.form.description = detailData.extendedProps.catatan
+      this.form.asset_id = detailData._def.resourceIds[0]
+      this.form.asset_ids = detailData._def.resourceIds
+      this.form.date = momentFormatDate(detailData.startStr)
+      this.form.end_date = momentFormatDate(detailData.endStr)
+      this.reservation.startTime = momentFormatTimeISO(detailData.start)
+      this.reservation.endTime = momentFormatTimeISO(detailData.end)
+
+      this.$modal.hide('detail')
+      this.$modal.show('add')
+    },
+    async handleUpdate () {
+      this.reservation.isLoading = true
       const calendarApi = this.$refs.fullCalendar.getApi()
-      this.$toast.info('Sedang diproses', {
-        iconPack: 'fontawesome',
-        duration: 5000
-      })
-      this.$axios.put(`/reservation/${this.form.id}`, this.form).then((res) => {
-        this.$toast.success('Berhasil diubah.', {
+
+      if (this.reservation.isEdit) {
+        this.form.start_time = `${momentFormatDate(this.form.date)} ${this.reservation.startTime}`
+        this.form.end_time = `${momentFormatDate(this.form.date)} ${this.reservation.endTime}`
+      }
+
+      try {
+        this.$toast.info('Sedang diproses', {
           iconPack: 'fontawesome',
           duration: 5000
         })
-        calendarApi.refetchEvents()
-      }).catch((e) => {
-        if (e.response.data?.code === 403) {
-          this.$toast.error('Anda tidak ada akses untuk mengubah data ini.', {
+        const response = await this.$axios.put(`/reservation/${this.form.id}`, this.form)
+        if (response) {
+          this.$toast.success('Berhasil diubah.', {
             iconPack: 'fontawesome',
             duration: 5000
           })
-          calendarApi.refetchEvents()
         }
-      })
+      } catch (e) {
+        if (e.response.status === 403) {
+          return this.showErrorToast('Anda tidak ada akses untuk mengubah data ini.')
+        }
+        if (e.response.status === 422) {
+          const { errors } = e.response.data
+          if ('asset_id' in errors) {
+            return this.showErrorToast(errors.asset_id.join(', '))
+          }
+          return this.showErrorToast('Mohon maaf, terjadi kesalahan.')
+        }
+      } finally {
+        this.$modal.hide('add')
+        this.clearFormReservation()
+        calendarApi.refetchEvents()
+      }
     },
     addReservation () {
       let payload = {
@@ -616,6 +661,7 @@ export default {
       this.reservation.expand = false
       this.reservation.isError = false
       this.reservation.isLoading = false
+      this.reservation.isEdit = false
       this.reservation.monthly = { days: [1], week: 1, month: 1 }
       this.form.title = null
       this.form.description = null
