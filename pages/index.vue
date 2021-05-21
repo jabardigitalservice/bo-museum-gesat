@@ -742,6 +742,7 @@ export default {
       })
     },
     handleDateSelect (selectInfo) {
+      if (selectInfo.view.type === 'dayGridMonth') { return }
       const calendarApi = selectInfo.view.calendar
       if (toMoment(new Date(), selectInfo.view.calendar).format() < selectInfo.startStr) {
         this.$modal.show('add')
