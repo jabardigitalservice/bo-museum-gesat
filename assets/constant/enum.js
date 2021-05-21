@@ -203,3 +203,10 @@ export const days = [
     name: 'Minggu'
   }
 ]
+
+export const repeatType = {
+  NONE: 'Tidak',
+  DAILY: 'Perhari',
+  WEEKLY: 'Perminggu',
+  MONTHLY: 'Perbulan'
+}
