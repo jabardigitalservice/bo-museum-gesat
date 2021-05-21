@@ -87,7 +87,9 @@
                   <div v-if="loading" class="div-spinner">
                     <div class="spinner" />
                   </div>
-                  {{ spinnerLabel }}
+                  <div v-else>
+                    Data tidak tersedia
+                  </div>
                 </div>
               </td>
             </tr>
@@ -202,7 +204,12 @@
             <tr>
               <td colspan="6" class="w-full p-4 text-center text-gray3">
                 <div class="text-md">
-                  Data tidak tersedia
+                  <div v-if="loading" class="div-spinner">
+                    <div class="spinner" />
+                  </div>
+                  <div v-else>
+                    Data tidak tersedia
+                  </div>
                 </div>
               </td>
             </tr>

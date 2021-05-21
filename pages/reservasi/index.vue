@@ -131,7 +131,9 @@
                   <div v-if="loading" class="div-spinner">
                     <div class="spinner" />
                   </div>
-                  {{ spinnerLabel }}
+                  <div v-else>
+                    Data tidak tersedia
+                  </div>
                 </div>
               </td>
             </tr>
@@ -420,9 +422,6 @@ export default {
     }
   },
   computed: {
-    spinnerLabel () {
-      return (this.loading === true ? '' : 'Data tidak tersedia')
-    },
     isAdmin () {
       return admin(this.$auth)
     },

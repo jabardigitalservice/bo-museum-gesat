@@ -100,7 +100,7 @@
           <tbody v-else class="tbody">
             <tr>
               <td colspan="7" class="w-full p-4 text-center text-gray3">
-                <div v-if="!dataResource.length">
+                <div v-if="loading">
                   <div class="label-spinner">
                     <div class="spinner" />
                   </div>
@@ -263,7 +263,8 @@ export default {
       optionsOrderByIdn,
       optionsSortResource,
       optionsResourceType,
-      submitForm: 'store'
+      submitForm: 'store',
+      loading: false
     }
   },
   computed: {
@@ -414,8 +415,10 @@ export default {
     fetchResource () {
       this.$modal.hide('sort')
       this.$modal.hide('filter')
+      this.loading = true
       this.$axios.get('/asset', { params: this.params }).then((response) => {
         this.$store.commit('resource/SET_RESOURCE', response.data)
+        this.loading = false
       })
       this.checkParams()
     },
