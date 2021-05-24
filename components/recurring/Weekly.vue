@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-4">
     <div>
-      <label for="monthly-month" class="block text-sm">
+      <label class="block text-sm">
         Pengulangan Tiap
         <span class="text-red">*</span>
       </label>
