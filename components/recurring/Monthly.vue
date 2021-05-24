@@ -61,7 +61,7 @@
           class="form form-input md:col-span-2 sm:col-span-1"
           @change="$emit('change:form-month', Number($event.target.value))"
         >
-        <p class="block text-sm col-span-1 text-">
+        <p class="block text-sm col-span-1">
           Bulan Sekali
           <span class="text-red">
             (Max 3)

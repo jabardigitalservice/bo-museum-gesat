@@ -2,18 +2,22 @@
   <div class="space-y-4">
     <div>
       <label class="block text-sm">
-        Berapa Minggu Sekali
+        Pengulangan Tiap
         <span class="text-red">*</span>
       </label>
-
-      <!-- Input Weekly Number -->
-      <div>
+      <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
         <input
           type="number"
           class="w-full form-input bg-white rounded-md cursor-pointer"
           :value="formWeek"
           @input="$emit('input:form-week', $event.target.value)"
         >
+        <p class="block text-sm col-span-1">
+          Minggu Sekali
+          <span class="text-red">
+            (Max 12)
+          </span>
+        </p>
       </div>
     </div>
     <div>
