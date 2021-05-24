@@ -12,7 +12,7 @@
           :value="formWeek"
           @input="$emit('input:form-week', $event.target.value)"
         >
-        <p class="block text-sm col-span-1 text-">
+        <p class="block text-sm col-span-1">
           Minggu Sekali
           <span class="text-red">
             (Max 12)
