@@ -2,18 +2,22 @@
   <div class="space-y-4">
     <div>
       <label class="block text-sm">
-        Berapa Minggu Sekali
+        Pengulangan Tiap
         <span class="text-red">*</span>
       </label>
-
-      <!-- Input Weekly Number -->
-      <div>
+      <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
         <input
           type="number"
           class="w-full form-input bg-white rounded-md cursor-pointer"
           :value="formWeek"
           @input="$emit('input:form-week', $event.target.value)"
         >
+        <p class="block text-sm col-span-1">
+          Minggu Sekali
+          <span class="text-red">
+            (Max 12)
+          </span>
+        </p>
       </div>
     </div>
     <div>
@@ -66,21 +70,11 @@
 </template>
 
 <script>
-import { days } from '../../assets/constant/enum'
+import recurringMixins from './mixins/recurringMixins'
+
 export default {
+  mixins: [recurringMixins],
   props: {
-    formDays: {
-      type: Array,
-      default: () => ([])
-    },
-    formStartDate: {
-      type: String,
-      default: null
-    },
-    formEndDate: {
-      type: String,
-      default: null
-    },
     formWeek: {
       type: String,
       default: null
@@ -88,35 +82,7 @@ export default {
   },
   data () {
     return {
-      dropdownOpened: false,
-      days
-    }
-  },
-  computed: {
-    disabledDates () {
-      const yesterday = new Date(new Date().setDate(new Date().getDate() - 1))
-      const startDate = new Date(this.formStartDate)
-      const oneYearAhead = yesterday.setFullYear(new Date().getFullYear() + 1)
-      const tenYearsAhead = yesterday.setFullYear(new Date().getFullYear() + 10)
-      return {
-        to: startDate,
-        ranges: [{
-          from: oneYearAhead,
-          to: tenYearsAhead
-        }]
-      }
-    },
-    selectedDays () {
-      const days = this.formDays
-        .map(formDay => this.days.find(day => day.index === formDay))
-        .sort((a, b) => a.index === 0 ? 1 : b.index === 0 ? -1 : a.index - b.index)
-        .map(formday => formday.name)
-      return days.join(', ')
-    },
-    endDate () {
-      const startDate = this.disabledDates.to
-      const endDate = this.formEndDate
-      return endDate < startDate.toISOString() ? startDate : endDate
+      dropdownOpened: false
     }
   },
   methods: {

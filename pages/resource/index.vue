@@ -100,7 +100,14 @@
           <tbody v-else class="tbody">
             <tr>
               <td colspan="7" class="w-full p-4 text-center text-gray3">
-                Data tidak tersedia
+                <div v-if="loading">
+                  <div class="label-spinner">
+                    <div class="spinner" />
+                  </div>
+                </div>
+                <div v-else>
+                  Data tidak tersedia
+                </div>
               </td>
             </tr>
           </tbody>
@@ -256,7 +263,8 @@ export default {
       optionsOrderByIdn,
       optionsSortResource,
       optionsResourceType,
-      submitForm: 'store'
+      submitForm: 'store',
+      loading: false
     }
   },
   computed: {
@@ -407,8 +415,10 @@ export default {
     fetchResource () {
       this.$modal.hide('sort')
       this.$modal.hide('filter')
+      this.loading = true
       this.$axios.get('/asset', { params: this.params }).then((response) => {
         this.$store.commit('resource/SET_RESOURCE', response.data)
+        this.loading = false
       })
       this.checkParams()
     },
@@ -452,3 +462,14 @@ export default {
   }
 }
 </script>
+<style scoped>
+.label-spinner {
+  @apply grid justify-items-center;
+}
+
+.spinner {
+  @apply w-5 h-5 rounded-full border-2 border-transparent animate-spin;
+  border-top-color: #219653;
+  border-right-color: #219653;
+}
+</style>

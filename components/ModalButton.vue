@@ -60,6 +60,11 @@ export default {
         this.buttonLabel = 'Hapus'
         break
 
+      case 'edit':
+        this.buttonStyle = 'bg-yellow'
+        this.buttonLabel = 'Edit'
+        break
+
       case 'clear':
         this.buttonStyle = 'bg-yellow'
         this.buttonLabel = 'Bersihkan'

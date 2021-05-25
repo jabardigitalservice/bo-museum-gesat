@@ -127,7 +127,14 @@
           <tbody v-else class="tbody">
             <tr>
               <td colspan="6" class="w-full p-4 text-center text-gray3">
-                Data tidak tersedia
+                <div class="text-md">
+                  <div v-if="loading" class="div-spinner">
+                    <div class="spinner" />
+                  </div>
+                  <div v-else>
+                    Data tidak tersedia
+                  </div>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -405,6 +412,7 @@ export default {
         perPage: null
       },
       isHasParams: false,
+      loading: false,
       generateTimes,
       momentFormatDate,
       momentFormatDateId,
@@ -541,10 +549,13 @@ export default {
     },
     async getAssetList () {
       try {
+        this.loading = true
         const response = await this.$axios.get('/asset/list')
         this.dataAsset = response ? this.sortResources(response.data.data) : []
+        this.loading = false
       } catch (e) {
         this.errors = e
+        this.loading = false
       }
     },
     async getDataReservation () {
@@ -709,5 +720,15 @@ export default {
 
 .btn-primary:focus {
   @apply outline-none;
+}
+
+.div-spinner {
+  @apply grid justify-items-center;
+}
+
+.spinner {
+  @apply w-5 h-5 rounded-full border-2 border-transparent animate-spin;
+  border-top-color: #219653;
+  border-right-color: #219653;
 }
 </style>

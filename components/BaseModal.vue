@@ -3,7 +3,7 @@
     :name="modalName"
     :adaptive="true"
     height="auto"
-    :max-height="800"
+    :scrollable="true"
     styles="overflow: visible"
     :click-to-close="!loading"
   >
@@ -58,4 +58,7 @@ export default {
 </script>
 
 <style>
+.vm--container .vm--modal {
+  height: auto !important;
+}
 </style>

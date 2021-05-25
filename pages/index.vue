@@ -11,7 +11,7 @@
     <!-- Modal Add Reservation  -->
     <BaseModal
       modal-name="add"
-      modal-title="Tambah Reservasi Baru"
+      :modal-title="reservation.isEdit ? 'Edit Reservasi' : 'Tambah Reservasi Baru'"
       overflow
       :loading="reservation.isLoading"
     >
@@ -86,28 +86,25 @@
         </section>
 
         <!-- Repeat Booking -->
-        <section class="grid grid-cols-3 gap-4 mb-6">
+        <section v-if="!reservation.isEdit" class="grid grid-cols-3 gap-4 mb-6">
           <div class="col-span-1">
             <label for="repeat" class="block text-sm">
               Reservasi Berulang
               <span class="text-red">*</span>
             </label>
-            <select v-model="form.repeat_type" name="repeat" class="w-full form-input bg-white rounded-md" @change="updateRepeatStatus">
-              <option value="NONE">
-                Tidak
+            <select
+              v-model="form.repeat_type"
+              name="repeat"
+              class="w-full form-input bg-white rounded-md"
+              @change="updateRepeatStatus"
+            >
+              <option
+                v-for="(name, value, index) in repeatType"
+                :key="index"
+                :value="value"
+              >
+                {{ name }}
               </option>
-              <option value="DAILY">
-                Perhari
-              </option>
-
-              <!-- this feature will be implemented in the next sprint  -->
-
-              <option value="WEEKLY">
-                Perminggu
-              </option>
-              <!-- <option value="MONTHLY">
-                Perbulan
-              </option> -->
             </select>
           </div>
           <div class="col-span-2">
@@ -129,11 +126,23 @@
               @selected:form-end-date="form.end_date = $event"
               @change:form-days="onFormDaysChange"
             />
+            <Monthly
+              v-if="form.repeat_type === 'MONTHLY'"
+              :form-start-date="form.date"
+              :form-end-date="form.end_date"
+              :form-days="reservation.monthly.days"
+              :form-month="reservation.monthly.month"
+              :form-week="reservation.monthly.week"
+              @selected:form-end-date="form.end_date = $event"
+              @change:form-days="reservation.monthly.days = [$event]"
+              @change:form-week="reservation.monthly.week = $event"
+              @change:form-month="reservation.monthly.month = $event"
+            />
           </div>
         </section>
 
         <!-- Spaces -->
-        <section class="mb-4">
+        <section v-if="!reservation.isEdit" class="mb-4">
           <label for="spaces" class="block text-sm">
             Ruangan/Aset
             <span class="text-red">*</span>
@@ -212,12 +221,22 @@
           :disabled="reservation.isLoading"
           @btn-click="closeFormReservation"
         />
-        <ModalButton
-          btn-type="submit"
-          :disabled="formIsError"
-          :loading="reservation.isLoading"
-          @btn-click="addReservation"
-        />
+        <template v-if="reservation.isEdit">
+          <ModalButton
+            btn-type="update"
+            :disabled="formIsError"
+            :loading="reservation.isLoading"
+            @btn-click="handleUpdate"
+          />
+        </template>
+        <template v-else>
+          <ModalButton
+            btn-type="submit"
+            :disabled="formIsError"
+            :loading="reservation.isLoading"
+            @btn-click="addReservation"
+          />
+        </template>
       </template>
     </BaseModal>
 
@@ -266,8 +285,18 @@
         </div>
       </template>
       <template #buttons>
-        <ModalButton btn-type="delete" @btn-click="deleteData" />
-        <ModalButton btn-type="close" @btn-click="closeModalDetail" />
+        <ModalButton v-if="!isRecurring" btn-type="delete" @btn-click="deleteData" />
+        <DropdownButton v-else button-type="delete">
+          <template #options>
+            <button @click="deleteData">
+              Hapus reservasi ini
+            </button>
+            <button @click="deleteAllData">
+              Hapus seluruh perulangan
+            </button>
+          </template>
+        </DropdownButton>
+        <ModalButton btn-type="edit" :loading="reservation.isLoading" @btn-click="setEditInitialValues" />
       </template>
     </BaseModal>
   </div>
@@ -282,6 +311,7 @@ import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import { toMoment } from '@fullcalendar/moment'
 import listPlugin from '@fullcalendar/list'
 import allLocales from '@fullcalendar/core/locales-all'
+import { repeatType } from '../assets/constant/enum'
 import { momentFormatDateId, momentFormatTimeISO, generateTimes, momentFormatDate } from '~/utils'
 
 export default {
@@ -313,15 +343,22 @@ export default {
         expand: false,
         resourcesLists: null,
         isError: false,
+        isEdit: false,
         disabledDates: {
         // disable datepicker from unlimited past to yesterday
         // note: 86400000 is in ms = 1 day
           to: new Date(Date.now() - 86400000)
         },
-        isLoading: false
+        isLoading: false,
+        monthly: {
+          days: [1],
+          week: 1,
+          month: 1
+        }
       },
       calendarOptions: {
         locales: allLocales,
+        firstDay: 0,
         locale: 'id',
         timeZone: 'local',
         eventTimeFormat: {
@@ -376,10 +413,15 @@ export default {
         extendedProps: {}
       },
       clickInfo: {},
-      momentFormatDateId
+      momentFormatDateId,
+      repeatType
     }
   },
   computed: {
+    isRecurring () {
+      const { repeatType } = this.detailData.extendedProps
+      return repeatType
+    },
     selectedResources () {
       const { resourcesLists } = this.reservation
       const selectedNames = resourcesLists
@@ -399,9 +441,13 @@ export default {
     },
     formIsError () {
       let isRules = false
+      const { monthly } = this.reservation
       switch (this.form.repeat_type) {
         case 'WEEKLY':
-          isRules = !this.form.week || this.form.week > 52 || this.form.week <= 0 || /[^0-9]\d*$/.test(this.form.week) || !this.form.days.length
+          isRules = !this.form.week || this.form.week > 12 || this.form.week <= 0 || /[^0-9]\d*$/.test(this.form.week) || !this.form.days.length
+          break
+        case 'MONTHLY':
+          isRules = typeof monthly.month !== 'number' || !monthly.month || monthly.month >= 4 || monthly.month <= 0 || !Number.isInteger(monthly.month)
           break
         default:
           isRules = false
@@ -493,30 +539,73 @@ export default {
       }
       return '-'
     },
-    handleUpdate () {
+    setEditInitialValues () {
+      this.clearFormReservation()
+      this.reservation.isEdit = true
+      const { detailData } = this
+      // Set form initial data
+      this.form.id = detailData.id
+      this.form.title = detailData.title
+      this.form.description = detailData.extendedProps.catatan
+      this.form.asset_id = detailData._def.resourceIds[0]
+      this.form.asset_ids = detailData._def.resourceIds
+      this.form.date = momentFormatDate(detailData.startStr)
+      this.form.end_date = momentFormatDate(detailData.endStr)
+      this.reservation.startTime = momentFormatTimeISO(detailData.start)
+      this.reservation.endTime = momentFormatTimeISO(detailData.end)
+
+      this.$modal.hide('detail')
+      this.$modal.show('add')
+    },
+    async handleUpdate () {
+      this.reservation.isLoading = true
       const calendarApi = this.$refs.fullCalendar.getApi()
-      this.$toast.info('Sedang diproses', {
-        iconPack: 'fontawesome',
-        duration: 5000
-      })
-      this.$axios.put(`/reservation/${this.form.id}`, this.form).then((res) => {
-        this.$toast.success('Berhasil diubah.', {
+
+      if (this.reservation.isEdit) {
+        this.form.start_time = `${momentFormatDate(this.form.date)} ${this.reservation.startTime}`
+        this.form.end_time = `${momentFormatDate(this.form.date)} ${this.reservation.endTime}`
+      }
+
+      try {
+        this.$toast.info('Sedang diproses', {
           iconPack: 'fontawesome',
           duration: 5000
         })
-        calendarApi.refetchEvents()
-      }).catch((e) => {
-        if (e.response.data?.code === 403) {
-          this.$toast.error('Anda tidak ada akses untuk mengubah data ini.', {
+        const response = await this.$axios.put(`/reservation/${this.form.id}`, this.form)
+        if (response) {
+          this.$toast.success('Berhasil diubah.', {
             iconPack: 'fontawesome',
             duration: 5000
           })
-          calendarApi.refetchEvents()
         }
-      })
+      } catch (e) {
+        if (e.response.status === 403) {
+          return this.showErrorToast('Anda tidak ada akses untuk mengubah data ini.')
+        }
+        if (e.response.status === 422) {
+          const { errors } = e.response.data
+          if ('asset_id' in errors) {
+            return this.showErrorToast(errors.asset_id.join(', '))
+          }
+          return this.showErrorToast('Mohon maaf, terjadi kesalahan.')
+        }
+      } finally {
+        this.$modal.hide('add')
+        this.clearFormReservation()
+        calendarApi.refetchEvents()
+      }
     },
     addReservation () {
+      let payload = {
+        ...this.form,
+        start_date: momentFormatDate(this.form.date),
+        end_date: momentFormatDate(this.form.end_date),
+        from: `${this.reservation.startTime}:00`,
+        to: `${this.reservation.endTime}:00`
+      }
+
       let reservationType = ''
+
       switch (this.form.repeat_type) {
         case 'DAILY':
           reservationType = 'daily'
@@ -524,16 +613,16 @@ export default {
         case 'WEEKLY':
           reservationType = 'weekly'
           break
+        case 'MONTHLY':
+          reservationType = 'monthly'
+          payload = {
+            ...payload,
+            ...this.reservation.monthly
+          }
+          break
         default:
           reservationType = ''
           break
-      }
-      const payload = {
-        ...this.form,
-        start_date: momentFormatDate(this.form.date),
-        end_date: momentFormatDate(this.form.end_date),
-        from: `${this.reservation.startTime}:00`,
-        to: `${this.reservation.endTime}:00`
       }
 
       const calendarApi = this.$refs.fullCalendar.getApi()
@@ -573,6 +662,8 @@ export default {
       this.reservation.expand = false
       this.reservation.isError = false
       this.reservation.isLoading = false
+      this.reservation.isEdit = false
+      this.reservation.monthly = { days: [1], week: 1, month: 1 }
       this.form.title = null
       this.form.description = null
       this.form.holder = null
@@ -618,7 +709,9 @@ export default {
           newObj.title = reservation.title
           newObj.start = reservation.start_time.slice(0, -8)
           newObj.end = reservation.end_time.slice(0, -8)
+          newObj.repeatType = reservation.repeat_type
           newObj.resourceId = reservation.asset_id
+          newObj.recurringId = reservation.recurring_id
           newObj.extendedProps = {
             name: reservation.user_fullname,
             resourceName: reservation.asset_name,
@@ -650,14 +743,15 @@ export default {
       })
     },
     handleDateSelect (selectInfo) {
+      if (selectInfo.view.type === 'dayGridMonth') { return }
       const calendarApi = selectInfo.view.calendar
       if (toMoment(new Date(), selectInfo.view.calendar).format() < selectInfo.startStr) {
         this.$modal.show('add')
         this.clearFormReservation()
         this.reservation.startTime = toMoment(selectInfo.start, selectInfo.view.calendar).format('HH:mm')
         this.reservation.endTime = toMoment(selectInfo.end, selectInfo.view.calendar).format('HH:mm')
-        this.form.asset_id = selectInfo.resource.id
-        this.form.asset_ids = [Number(selectInfo.resource.id)]
+        this.form.asset_id = selectInfo.resource ? selectInfo.resource.id : null
+        this.form.asset_ids = selectInfo.resource ? [Number(selectInfo.resource.id)] : []
         this.form.start_time = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD HH:mm')
         this.form.end_time = toMoment(selectInfo.end, selectInfo.view.calendar).format('YYYY-MM-DD HH:mm')
         this.form.date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
@@ -684,6 +778,34 @@ export default {
       }).then((isConfirm) => {
         if (isConfirm.value) {
           this.$axios.delete(`/reservation/${this.detailData.id}`).then(() => {
+            this.$toast.success('Berhasil dihapus.', {
+              iconPack: 'fontawesome',
+              duration: 5000
+            })
+            calendarApi.refetchEvents()
+          }).catch((e) => {
+            if (e.response.data?.code === 403) {
+              this.$toast.error('Anda tidak ada akses untuk menghapus data ini.', {
+                iconPack: 'fontawesome',
+                duration: 5000
+              })
+            }
+          })
+          this.$modal.hide('detail')
+        }
+      })
+    },
+    deleteAllData () {
+      const calendarApi = this.$refs.fullCalendar.getApi()
+      this.$swal.fire({
+        title: 'Anda yakin menghapus seluruh perulangan reservasi ini?',
+        showCancelButton: true,
+        type: 'warning',
+        dangerMode: true
+      }).then((isConfirm) => {
+        if (isConfirm.value) {
+          const { recurringId } = this.detailData.extendedProps
+          this.$axios.delete(`/reservation/recurring/${recurringId}`).then(() => {
             this.$toast.success('Berhasil dihapus.', {
               iconPack: 'fontawesome',
               duration: 5000
