@@ -200,12 +200,10 @@
 
         <!-- Holder Mail -->
 
-        <!-- this feature will be implemented in the next sprint -->
-
-        <!-- <section class="mb-4">
+        <section class="mb-4">
           <label for="holder-email" class="block text-sm">Tambahkan Email Penanggung Jawab</label>
           <input v-model="form.holder" name="holder-email" type="email" class="w-full form-input bg-white rounded-md">
-        </section> -->
+        </section>
 
         <!-- Notes/Description -->
         <section>
@@ -551,6 +549,7 @@ export default {
       this.form.asset_ids = detailData._def.resourceIds
       this.form.date = momentFormatDate(detailData.startStr)
       this.form.end_date = momentFormatDate(detailData.endStr)
+      this.form.holder = detailData.extendedProps.holder
       this.reservation.startTime = momentFormatTimeISO(detailData.start)
       this.reservation.endTime = momentFormatTimeISO(detailData.end)
 
@@ -712,6 +711,7 @@ export default {
           newObj.repeatType = reservation.repeat_type
           newObj.resourceId = reservation.asset_id
           newObj.recurringId = reservation.recurring_id
+          newObj.holder = reservation.holder
           newObj.extendedProps = {
             name: reservation.user_fullname,
             resourceName: reservation.asset_name,
