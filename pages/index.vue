@@ -454,6 +454,8 @@ export default {
       const { isError } = this.reservation
       const isAssetEmpty = this.form.asset_ids ? this.form.asset_ids.length === 0 : true
       const isDaysEmpty = this.form.repeat_type === 'DAILY' && !this.form.days.length
+      const mailFormat = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+      const isEmail = this.form.holder ? this.form.holder.match(mailFormat) : true
       const isFormEmpty = [
         this.form.title
       ].some((value) => {
@@ -462,12 +464,17 @@ export default {
         }
         return typeof value === 'undefined' || value === null
       })
-      return isError || isAssetEmpty || isDaysEmpty || isFormEmpty || isRules
+      return isError || isAssetEmpty || isDaysEmpty || isFormEmpty || isRules || !isEmail
     }
   },
   watch: {
     'form.date' () {
       this.form.date = momentFormatDate(this.form.date)
+    },
+    'form.holder' () {
+      if (this.form.holder === '') {
+        this.form.holder = null
+      }
     }
   },
   methods: {
