@@ -692,6 +692,7 @@ export default {
         this.form.id = draggedEvent.id
         this.form.title = draggedEvent.title
         this.form.description = draggedEvent.extendedProps.catatan
+        this.form.holder = draggedEvent.extendedProps.holder
         this.form.asset_id = dropInfo.resource.id
         this.form.start_time = toMoment(dropInfo.start, draggedEvent._context.calendarApi).format('YYYY-MM-DD HH:mm')
         this.form.end_time = toMoment(dropInfo.end, draggedEvent._context.calendarApi).format('YYYY-MM-DD HH:mm')
