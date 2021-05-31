@@ -14,7 +14,7 @@
           <button class="w-full form-input bg-white rounded-md cursor-pointer" @click="toggleDropdown">
             <div class="flex justify-between text-left">
               <p>{{ selectedDays }}</p>
-              <i class="bx bxs-chevron-down" />
+              <i class="bx bxs-chevron-down" aria-hidden="true" />
             </div>
           </button>
 

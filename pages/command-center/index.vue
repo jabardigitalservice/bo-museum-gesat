@@ -10,7 +10,7 @@
         <div class="w-full lg:w-1/2 my-1">
           <div class="w-2/3 lg:w-1/2">
             <button v-if="isAdmin" class="btn bg-primary" @click="showModalAdd">
-              <i class="bx bx-plus bx-sm" />
+              <i class="bx bx-plus bx-sm" aria-hidden="true" />
               <span>Tambah Tanggal Tutup</span>
             </button>
           </div>
@@ -21,13 +21,13 @@
         >
           <div class="w-1/2 lg:w-1/4 my-1 pl-1">
             <button class="btn bg-yellow">
-              <i class="bx bx-sort-up bx-sm" />
+              <i class="bx bx-sort-up bx-sm" aria-hidden="true" />
               <span>Urutkan</span>
             </button>
           </div>
           <div class="w-1/2 lg:w-1/4 my-1 lg:pl-1">
             <button class="btn bg-blue">
-              <i class="bx bx-filter bx-sm" />
+              <i class="bx bx-filter bx-sm" aria-hidden="true" />
               <span>Filter</span>
             </button>
           </div>
@@ -40,7 +40,7 @@
                 type="text"
                 placeholder="Search"
               >
-              <i class="text-gray4 bx bx-search bx-sm cursor-pointer" />
+              <i class="text-gray4 bx bx-search bx-sm cursor-pointer" aria-hidden="true" />
             </div>
           </div>
         </div>
@@ -75,8 +75,8 @@
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium"
               >
-                <i title="Edit Tanggal" class="bx bx-edit bx-sm cursor-pointer" @click="editDate(data)" />
-                <i title="Hapus Tanggal" class="bx bx-trash bx-sm cursor-pointer text-red" @click="deleteCloseDate(data)" />
+                <em title="Edit Tanggal" class="bx bx-edit bx-sm cursor-pointer" @click="editDate(data)" />
+                <em title="Hapus Tanggal" class="bx bx-trash bx-sm cursor-pointer text-red" @click="deleteCloseDate(data)" />
               </td>
             </tr>
           </tbody>
@@ -144,7 +144,7 @@
         <div class="w-full lg:w-1/2 my-1">
           <div class="w-2/3 lg:w-1/2">
             <button v-if="isAdmin" class="btn bg-primary" @click="showModalAddShift">
-              <i class="bx bx-plus bx-sm" />
+              <i class="bx bx-plus bx-sm" aria-hidden="true" />
               <span>Tambah Shift</span>
             </button>
           </div>
@@ -195,8 +195,8 @@
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium"
               >
-                <i class="bx bx-edit bx-sm cursor-pointer" title="Ubah waktu kunjungan" @click="editShift(shift)" />
-                <i class="bx bx-trash bx-sm cursor-pointer text-red" title="Hapus waktu kunjungan" @click="deleteShift(shift)" />
+                <em class="bx bx-edit bx-sm cursor-pointer" title="Ubah waktu kunjungan" @click="editShift(shift)" />
+                <em class="bx bx-trash bx-sm cursor-pointer text-red" title="Hapus waktu kunjungan" @click="deleteShift(shift)" />
               </td>
             </tr>
           </tbody>

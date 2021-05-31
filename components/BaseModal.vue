@@ -17,7 +17,7 @@
           {{ modalTitle }}
         </h2>
         <button title="Tutup" @click="!loading && $modal.hide(modalName)">
-          <i class="text-gray2 bx bx-x bx-sm cursor-pointer" />
+          <i class="text-gray2 bx bx-x bx-sm cursor-pointer" aria-hidden="true" />
         </button>
       </section>
 

@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white flex justify-between md:justify-end items-center p-4">
     <div class="md:hidden" @click="openSidebar">
-      <i class="bx bx-menu bx-md cursor-pointer gray1" />
+      <i class="bx bx-menu bx-md cursor-pointer gray1" aria-hidden="true" />
     </div>
   </div>
 </template>
