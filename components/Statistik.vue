@@ -13,7 +13,7 @@
                 {{ card.title }}
               </div>
               <div class="text-4xl font-bold flex items-center">
-                <i :class="['mr-2 bx bx-md text-white', card.icon]" />
+                <i :class="['mr-2 bx bx-md text-white', card.icon]" aria-hidden="true" />
                 {{ card.value }}
               </div>
             </div>

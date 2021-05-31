@@ -2,7 +2,7 @@
   <div class="w-full relative">
     <button v-on-clickaway="closeDropdown" type="button" class="buttonClass" :class="buttonColor" @click="toggleDropdown">
       {{ buttonLabel }}
-      <i class="text-white bx bx-chevron-down bx-sm cursor-pointer" />
+      <i class="text-white bx bx-chevron-down bx-sm cursor-pointer" aria-hidden="true" />
     </button>
     <div v-if="dropdownOpened" class="absolute flex flex-col py-4 px-4 gap-4 rounded-md w-full" :class="buttonColor" style="top: 70px;">
       <div class="w-full flex flex-col gap-4 text-sm items-start text-left text-white font-medium">

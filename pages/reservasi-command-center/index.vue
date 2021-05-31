@@ -10,15 +10,15 @@
         <div class="w-full flex flex-wrap-reverse lg:flex-wrap flex-row-reverse">
           <div class="grid w-full sm:w-auto grid-cols-2 sm:grid-cols-4 gap-2">
             <button class="btn bg-blue px-2" @click="showSearchModal">
-              <i class="text-white bx bx-search bx-sm cursor-pointer" />
+              <i class="text-white bx bx-search bx-sm cursor-pointer" aria-hidden="true" />
               <span>Search</span>
             </button>
             <button class="btn bg-blue px-2" @click="showModalFilter">
-              <i class="bx bx-filter bx-sm" />
+              <i class="bx bx-filter bx-sm" aria-hidden="true" />
               <span>Filter</span>
             </button>
             <button class="btn bg-yellow px-2" @click="showModalSort">
-              <i class="bx bx-sort-up bx-sm" />
+              <i class="bx bx-sort-up bx-sm" aria-hidden="true" />
               <span>Urutkan</span>
             </button>
             <button class="btn" :class="isHasParams ? 'bg-red border border-red' : 'bg-white border border-grayText'" @click="initParams">
@@ -73,18 +73,18 @@
                 class="px-6 py-4 whitespace-nowrap"
               >
                 <div class="flex gap-2">
-                  <i
+                  <em
                     class="bx bx-info-circle bx-sm cursor-pointer text-blue"
                     title="Klik untuk melihat detail reservasi"
                     @click="showModalDetail(reservation)"
                   />
-                  <i
+                  <em
                     v-show="isAdmin && reservation.approval_status === 'NOT_YET_APPROVED'"
                     class="bx bx-calendar-check bx-sm cursor-pointer text-primary"
                     title="Setujui reservasi"
                     @click="verifikasiData('approve', reservation.id)"
                   />
-                  <i
+                  <em
                     v-show="isAdmin && reservation.approval_status === 'NOT_YET_APPROVED'"
                     class="bx bx-calendar-x bx-sm cursor-pointer text-red"
                     title="Tolak reservasi"

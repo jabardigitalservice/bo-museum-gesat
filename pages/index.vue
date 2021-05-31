@@ -78,7 +78,7 @@
           v-if="reservation.isError"
           class="w-full p-4 bg-red mb-6 flex gap-4 place-items-center"
         >
-          <i class="bx bx-error-circle bx-sm text-white" />
+          <i class="bx bx-error-circle bx-sm text-white" aria-hidden="true" />
           <p class="text-white text-sm">
             Reservasi Anda untuk tanggal <b>{{ momentFormatDateId(form.date) }}</b> tidak dapat dibuat,
             karena telah melewati waktu saat ini.
