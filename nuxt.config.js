@@ -51,7 +51,17 @@ export default {
     dsn: process.env.SENTRY_LARAVEL_DSN, // project's DSN here
     config: {
       environment: process.env.APP_ENV || 'localhost'
-    } // Additional config
+    }, // Additional config
+    tracesSampleRate: process.env.SENTRY_TRACES_SAMPLE_RATE,
+    vueOptions: {
+      tracing: true,
+      tracingOptions: {
+        hooks: ['mount', 'update'],
+        timeout: 2000,
+        trackComponents: true
+      }
+    },
+    browserOptions: {}
   },
 
   // Google Analytics Config
