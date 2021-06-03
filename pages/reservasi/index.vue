@@ -297,6 +297,14 @@
         </div>
         <div class="md:grid md:grid-cols-5 text-sm mb-4">
           <div class="md:col-span-2 text-blue">
+            Email Penanggung Jawab
+          </div>
+          <div class="md:col-span-3">
+            {{ detailData.holder || '-' }}
+          </div>
+        </div>
+        <div class="md:grid md:grid-cols-5 text-sm mb-4">
+          <div class="md:col-span-2 text-blue">
             Catatan/Deskripsi Kegiatan
           </div>
           <div class="md:col-span-3">
