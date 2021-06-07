@@ -462,8 +462,8 @@ export default {
       const { isError } = this.reservation
       const isAssetEmpty = this.form.asset_ids ? this.form.asset_ids.length === 0 : true
       const isDaysEmpty = this.form.repeat_type === 'DAILY' && !this.form.days.length
-      // regex to check email pattern like xxxx@xxxx
-      const mailFormat = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+      // regex to check email pattern like xxxx@xxxx.xxx or xxxx@xxxx.xx.xx
+      const mailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
       const isEmail = this.form.holder ? this.form.holder.match(mailFormat) : true
       const isFormEmpty = [
         this.form.title
