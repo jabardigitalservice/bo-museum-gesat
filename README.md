@@ -12,7 +12,7 @@
 git clone https://github.com/jabardigitalservice/reservasi-frontend.git
 
 # Using SSH
-git clone git@github.com:jabardigitalservice/groupware.git
+git clone git@github.com:jabardigitalservice/reservasi-frontend.git
 ```
 
 2. Create `.env` file and set environment values (check `.env.example` file) 
