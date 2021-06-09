@@ -2,7 +2,7 @@
   <div class="px-4 pb-20">
     <div class="flex flex-col">
       <!-- TITLE -->
-      <h1 class="text-4xl font-normal text-gray1">
+      <h1 id="list-reservasi" class="text-4xl font-normal text-gray1">
         List Reservasi
       </h1>
       <!-- FILTER -->
@@ -31,7 +31,7 @@
       </div>
       <!-- TABLE -->
       <div class="align-middle inline-block min-w-full overflow-x-auto">
-        <table class="w-full">
+        <table class="w-full" aria-describedby="list-reservasi">
           <thead class="bg-primary">
             <tr>
               <th v-for="header in headers" :key="header" scope="col" class="thead">
