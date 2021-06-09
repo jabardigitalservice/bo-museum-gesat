@@ -80,7 +80,7 @@
         >
           <i class="bx bx-error-circle bx-sm text-white" aria-hidden="true" />
           <p class="text-white text-sm">
-            Reservasi Anda untuk tanggal <b>{{ momentFormatDateId(form.date) }}</b> tidak dapat dibuat,
+            Reservasi Anda untuk tanggal <strong>{{ momentFormatDateId(form.date) }}</strong> tidak dapat dibuat,
             karena telah melewati waktu saat ini.
           </p>
         </section>
