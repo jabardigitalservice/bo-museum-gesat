@@ -420,7 +420,12 @@ export default {
       },
       clickInfo: {},
       momentFormatDateId,
-      repeatType
+      repeatType,
+      errorMessage: 'Mohon maaf, terjadi kesalahan.',
+      dateFormat: {
+        withTime: 'YYYY-MM-DD HH:mm',
+        withoutTime: 'YYYY-MM-DD'
+      }
     }
   },
   computed: {
@@ -600,7 +605,7 @@ export default {
           if ('asset_id' in errors) {
             return this.showErrorToast(errors.asset_id.join(', '))
           }
-          return this.showErrorToast('Mohon maaf, terjadi kesalahan.')
+          return this.showErrorToast(this.errorMessage)
         }
       } finally {
         this.$modal.hide('add')
@@ -662,9 +667,9 @@ export default {
           if ('days' in errors) {
             return this.showErrorToast(errors.days.join(', '))
           }
-          return this.showErrorToast('Mohon maaf, terjadi kesalahan.')
+          return this.showErrorToast(this.errorMessage)
         }
-        return this.showErrorToast('Mohon maaf, terjadi kesalahan.')
+        return this.showErrorToast(this.errorMessage)
       })
     },
     closeFormReservation () {
@@ -702,9 +707,9 @@ export default {
         this.form.description = draggedEvent.extendedProps.catatan
         this.form.holder = draggedEvent.extendedProps.holder
         this.form.asset_id = dropInfo.resource.id
-        this.form.start_time = toMoment(dropInfo.start, draggedEvent._context.calendarApi).format('YYYY-MM-DD HH:mm')
-        this.form.end_time = toMoment(dropInfo.end, draggedEvent._context.calendarApi).format('YYYY-MM-DD HH:mm')
-        this.form.date = toMoment(dropInfo.start, draggedEvent._context.calendarApi).format('YYYY-MM-DD')
+        this.form.start_time = toMoment(dropInfo.start, draggedEvent._context.calendarApi).format(this.dateFormat.withTime)
+        this.form.end_time = toMoment(dropInfo.end, draggedEvent._context.calendarApi).format(this.dateFormat.withTime)
+        this.form.date = toMoment(dropInfo.start, draggedEvent._context.calendarApi).format(this.dateFormat.withoutTime)
         return true
       }
     },
@@ -767,10 +772,10 @@ export default {
         this.reservation.endTime = toMoment(selectInfo.end, selectInfo.view.calendar).format('HH:mm')
         this.form.asset_id = selectInfo.resource ? selectInfo.resource.id : null
         this.form.asset_ids = selectInfo.resource ? [Number(selectInfo.resource.id)] : []
-        this.form.start_time = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD HH:mm')
-        this.form.end_time = toMoment(selectInfo.end, selectInfo.view.calendar).format('YYYY-MM-DD HH:mm')
-        this.form.date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
-        this.form.end_date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
+        this.form.start_time = toMoment(selectInfo.start, selectInfo.view.calendar).format(this.dateFormat.withTime)
+        this.form.end_time = toMoment(selectInfo.end, selectInfo.view.calendar).format(this.dateFormat.withTime)
+        this.form.date = toMoment(selectInfo.start, selectInfo.view.calendar).format(this.dateFormat.withoutTime)
+        this.form.end_date = toMoment(selectInfo.start, selectInfo.view.calendar).format(this.dateFormat.withoutTime)
         this.form.repeat_type = 'NONE'
         this.form.week = '1'
         this.form.days = []

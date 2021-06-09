@@ -1,3 +1,10 @@
+const icon = {
+  home: 'bx-home',
+  calendar: 'bx-calendar',
+  cabinet: 'bx-cabinet',
+  logOut: 'bx-log-out'
+}
+
 export const statusReservation = [{
   key: 'NOT_YET_APPROVED',
   value: 'Sedang diproses'
@@ -77,7 +84,7 @@ export const cardsDashboard = [
     title: 'Reservasi Dibuat',
     value: 0,
     bgColor: 'bg-blue',
-    icon: 'bx-calendar'
+    icon: icon.calendar
   }
 ]
 
@@ -86,7 +93,7 @@ export const parentMenus = [
     id: 1,
     path: '#',
     label: 'Reservasi Aset',
-    iconClass: 'bx-home',
+    iconClass: icon.home,
     role: [
       'employee_reservasi',
       'admin_reservasi'
@@ -96,7 +103,7 @@ export const parentMenus = [
     id: 2,
     path: '#',
     label: 'Reservasi Command Center',
-    iconClass: 'bx-home',
+    iconClass: icon.home,
     role: [
       'admin_reservasi'
     ]
@@ -108,7 +115,7 @@ export const menus = [
     parent: 1,
     path: '/',
     label: 'Kalender Reservasi',
-    iconClass: 'bx-calendar',
+    iconClass: icon.calendar,
     role: [
       'employee_reservasi',
       'admin_reservasi'
@@ -118,7 +125,7 @@ export const menus = [
     parent: 1,
     path: '/reservasi',
     label: 'List Reservasi',
-    iconClass: 'bx-calendar',
+    iconClass: icon.calendar,
     role: [
       'employee_reservasi',
       'admin_reservasi'
@@ -128,7 +135,7 @@ export const menus = [
     parent: 2,
     path: '/reservasi-command-center',
     label: 'List Reservasi',
-    iconClass: 'bx-calendar',
+    iconClass: icon.calendar,
     role: [
       'admin_reservasi'
     ]
@@ -137,7 +144,7 @@ export const menus = [
     parent: 1,
     path: '/resource',
     label: 'Ruangan/Aset',
-    iconClass: 'bx-cabinet',
+    iconClass: icon.cabinet,
     role: [
       'admin_reservasi'
     ]
@@ -146,7 +153,7 @@ export const menus = [
     parent: 2,
     path: '/command-center',
     label: 'Pengaturan Command Center',
-    iconClass: 'bx-cabinet',
+    iconClass: icon.cabinet,
     role: [
       'admin_reservasi'
     ]
@@ -155,7 +162,7 @@ export const menus = [
     parent: 0,
     path: '/logout',
     label: 'Logout',
-    iconClass: 'bx-log-out',
+    iconClass: icon.logOut,
     role: [
       'employee_reservasi',
       'admin_reservasi'
