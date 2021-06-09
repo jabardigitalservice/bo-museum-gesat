@@ -2,7 +2,7 @@
   <div class="w-full flex flex-row lg:flex-row-reverse items-center mt-3">
     <div class="w-full flex flex-row justify-end items-center">
       <button class="pagination__btn" @click="prevPagination">
-        <i class="bx bx-left-arrow-alt bx-sm" />
+        <i class="bx bx-left-arrow-alt bx-sm" aria-hidden="true" />
       </button>
       <button
         v-for="x in lengthPage"
@@ -16,7 +16,7 @@
         {{ x + stepNumber }}
       </button>
       <button class="pagination__btn" @click="nextPagination">
-        <i class="bx bx-right-arrow-alt bx-sm" />
+        <i class="bx bx-right-arrow-alt bx-sm" aria-hidden="true" />
       </button>
     </div>
   </div>

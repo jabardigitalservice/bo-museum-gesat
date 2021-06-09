@@ -36,7 +36,7 @@
               <p>
                 <span v-for="(selectedDay, index) in selectedDays" :key="index">{{ selectedDay }}</span>
               </p>
-              <i class="bx bxs-chevron-down" />
+              <i class="bx bxs-chevron-down" aria-hidden="true" />
             </div>
           </button>
 

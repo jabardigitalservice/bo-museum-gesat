@@ -78,7 +78,7 @@
           v-if="reservation.isError"
           class="w-full p-4 bg-red mb-6 flex gap-4 place-items-center"
         >
-          <i class="bx bx-error-circle bx-sm text-white" />
+          <i class="bx bx-error-circle bx-sm text-white" aria-hidden="true" />
           <p class="text-white text-sm">
             Reservasi Anda untuk tanggal <b>{{ momentFormatDateId(form.date) }}</b> tidak dapat dibuat,
             karena telah melewati waktu saat ini.
@@ -200,12 +200,10 @@
 
         <!-- Holder Mail -->
 
-        <!-- this feature will be implemented in the next sprint -->
-
-        <!-- <section class="mb-4">
+        <section class="mb-4">
           <label for="holder-email" class="block text-sm">Tambahkan Email Penanggung Jawab</label>
           <input v-model="form.holder" name="holder-email" type="email" class="w-full form-input bg-white rounded-md">
-        </section> -->
+        </section>
 
         <!-- Notes/Description -->
         <section>
@@ -273,6 +271,14 @@
           </div>
           <div class="md:col-span-3">
             <div>{{ detailData.start && detailData.end ? getDisplayDateTimeManually(detailData.start, detailData.startStr, detailData.endStr) : '-' }}</div>
+          </div>
+        </div>
+        <div class="md:grid md:grid-cols-5 text-sm mb-4">
+          <div class="md:col-span-2 text-blue">
+            Email Penanggung Jawab
+          </div>
+          <div class="md:col-span-3">
+            {{ detailData.extendedProps.holder || '-' }}
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm">
@@ -456,6 +462,9 @@ export default {
       const { isError } = this.reservation
       const isAssetEmpty = this.form.asset_ids ? this.form.asset_ids.length === 0 : true
       const isDaysEmpty = this.form.repeat_type === 'DAILY' && !this.form.days.length
+      // regex to check email pattern like xxxx@xxxx.xxx or xxxx@xxxx.xx.xx
+      const mailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+      const isEmail = this.form.holder ? this.form.holder.match(mailFormat) : true
       const isFormEmpty = [
         this.form.title
       ].some((value) => {
@@ -464,12 +473,15 @@ export default {
         }
         return typeof value === 'undefined' || value === null
       })
-      return isError || isAssetEmpty || isDaysEmpty || isFormEmpty || isRules
+      return isError || isAssetEmpty || isDaysEmpty || isFormEmpty || isRules || !isEmail
     }
   },
   watch: {
     'form.date' () {
       this.form.date = momentFormatDate(this.form.date)
+    },
+    'form.holder' () {
+      if (this.form.holder === '') { this.form.holder = null }
     }
   },
   methods: {
@@ -551,6 +563,7 @@ export default {
       this.form.asset_ids = detailData._def.resourceIds
       this.form.date = momentFormatDate(detailData.startStr)
       this.form.end_date = momentFormatDate(detailData.endStr)
+      this.form.holder = detailData.extendedProps.holder
       this.reservation.startTime = momentFormatTimeISO(detailData.start)
       this.reservation.endTime = momentFormatTimeISO(detailData.end)
 
@@ -687,6 +700,7 @@ export default {
         this.form.id = draggedEvent.id
         this.form.title = draggedEvent.title
         this.form.description = draggedEvent.extendedProps.catatan
+        this.form.holder = draggedEvent.extendedProps.holder
         this.form.asset_id = dropInfo.resource.id
         this.form.start_time = toMoment(dropInfo.start, draggedEvent._context.calendarApi).format('YYYY-MM-DD HH:mm')
         this.form.end_time = toMoment(dropInfo.end, draggedEvent._context.calendarApi).format('YYYY-MM-DD HH:mm')
@@ -712,6 +726,7 @@ export default {
           newObj.repeatType = reservation.repeat_type
           newObj.resourceId = reservation.asset_id
           newObj.recurringId = reservation.recurring_id
+          newObj.holder = reservation.holder
           newObj.extendedProps = {
             name: reservation.user_fullname,
             resourceName: reservation.asset_name,

@@ -11,7 +11,7 @@
         <div v-if="false" class="w-full lg:w-1/3 my-1">
           <div class="w-1/2 lg:w-1/3">
             <button v-if="!isAdmin" class="btn bg-primary" @click="showModalAdd">
-              <i class="bx bx-plus bx-sm" />
+              <i class="bx bx-plus bx-sm" aria-hidden="true" />
               <span>Tambah</span>
             </button>
           </div>
@@ -21,20 +21,20 @@
             <div class="md:col-span-2 w-full">
               <div class="w-full px-4 py-2 bg-white border-solid border border-gray4 rounded flex justify-between items-center">
                 <input v-model="params.search" class="w-full focus:outline-none" type="text" placeholder="Cari">
-                <i class="text-gray4 bx bx-search bx-sm cursor-pointer" @click="onSearch" />
+                <em title="Cari" class="text-gray4 bx bx-search bx-sm cursor-pointer" @click="onSearch" />
               </div>
             </div>
             <div class="md:col-span-3 w-full">
               <div class="md:grid md:grid-cols-3 flex item-center">
                 <div class="md:col-span-1 ml-2">
                   <button class="btn bg-blue px-2" @click="showModalFilter">
-                    <i class="bx bx-filter bx-sm" />
+                    <i class="bx bx-filter bx-sm" aria-hidden="true" />
                     <span>Filter</span>
                   </button>
                 </div>
                 <div class="md:col-span-1 ml-2">
                   <button class="btn bg-yellow px-2" @click="showModalSort">
-                    <i class="bx bx-sort-up bx-sm" />
+                    <i class="bx bx-sort-up bx-sm" aria-hidden="true" />
                     <span>Urutkan</span>
                   </button>
                 </div>
@@ -98,24 +98,24 @@
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium"
               >
-                <i
+                <em
                   class="bx bx-info-circle bx-sm cursor-pointer text-blue"
                   title="Klik untuk melihat detail reservasi"
                   @click="showModalDetail(data)"
                 />
-                <i
+                <em
                   v-if="!isAdmin && data.approval_status === 'NOT_YET_APPROVED'"
                   class="bx bx-trash bx-sm cursor-pointer text-red"
                   title="Klik untuk menghapus reservasi"
                   @click="deleteData(data.id)"
                 />
-                <i
+                <em
                   v-if="isAdmin && data.approval_status === 'NOT_YET_APPROVED'"
                   class="bx bx-calendar-check bx-sm cursor-pointer text-primary"
                   title="Setujui reservasi"
                   @click="verifikasiData('approve', data.id)"
                 />
-                <i
+                <em
                   v-if="isAdmin && data.approval_status === 'NOT_YET_APPROVED'"
                   class="bx bx-calendar-x bx-sm cursor-pointer text-red"
                   title="Tolak reservasi"
@@ -293,6 +293,14 @@
           </div>
           <div class="md:col-span-3">
             <div>{{ detailData.date && detailData.start_time && detailData.end_time ? getDisplayDateTimeManually(detailData.date, detailData.start_time, detailData.end_time) : '-' }}</div>
+          </div>
+        </div>
+        <div class="md:grid md:grid-cols-5 text-sm mb-4">
+          <div class="md:col-span-2 text-blue">
+            Email Penanggung Jawab
+          </div>
+          <div class="md:col-span-3">
+            {{ detailData.holder || '-' }}
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm mb-4">
@@ -583,8 +591,8 @@ export default {
       } = await swal.fire({
         title: 'Hapus Data?',
         showCancelButton: true,
-        confirmButtonText: '<i class="bx bx-sm bx-check" /> OK',
-        cancelButtonText: '<i class="bx bx-sm bx-close" /> Cancel',
+        confirmButtonText: '<i class="bx bx-sm bx-check" aria-hidden="true" /> OK',
+        cancelButtonText: '<i class="bx bx-sm bx-close" aria-hidden="true" /> Cancel',
         type: 'warning',
         reverseButtons: true
       })
@@ -610,8 +618,8 @@ export default {
       } = await swal.fire({
         title: approval === 'approve' ? 'Setujui Reservasi?' : 'Tolak Reservasi?',
         showCancelButton: true,
-        confirmButtonText: '<i class="bx bx-sm bx-check" /> OK',
-        cancelButtonText: '<i class="bx bx-sm bx-close" /> Cancel',
+        confirmButtonText: '<i class="bx bx-sm bx-check" aria-hidden="true" /> OK',
+        cancelButtonText: '<i class="bx bx-sm bx-close" aria-hidden="true" /> Cancel',
         type: approval === 'approve' ? 'success' : 'error',
         input: 'text',
         reverseButtons: true
