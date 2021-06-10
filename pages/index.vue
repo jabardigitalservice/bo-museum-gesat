@@ -291,18 +291,23 @@
         </div>
       </template>
       <template #buttons>
-        <ModalButton v-if="!isRecurring" btn-type="delete" @btn-click="deleteData" />
-        <DropdownButton v-else button-type="delete">
-          <template #options>
-            <button @click="deleteData">
-              Hapus reservasi ini
-            </button>
-            <button @click="deleteAllData">
-              Hapus seluruh perulangan
-            </button>
-          </template>
-        </DropdownButton>
-        <ModalButton btn-type="edit" :loading="reservation.isLoading" @btn-click="setEditInitialValues" />
+        <template v-if="detailData.extendedProps.name === $auth.user.name || isAdminRole">
+          <ModalButton v-if="!isRecurring" btn-type="delete" @btn-click="deleteData" />
+          <DropdownButton v-else button-type="delete">
+            <template #options>
+              <button @click="deleteData">
+                Hapus reservasi ini
+              </button>
+              <button @click="deleteAllData">
+                Hapus seluruh perulangan
+              </button>
+            </template>
+          </DropdownButton>
+          <ModalButton btn-type="edit" :loading="reservation.isLoading" @btn-click="setEditInitialValues" />
+        </template>
+        <template v-else>
+          <ModalButton btn-type="close" @btn-click="$modal.hide('detail')" />
+        </template>
       </template>
     </BaseModal>
   </div>
@@ -318,7 +323,7 @@ import { toMoment } from '@fullcalendar/moment'
 import listPlugin from '@fullcalendar/list'
 import allLocales from '@fullcalendar/core/locales-all'
 import { repeatType } from '../assets/constant/enum'
-import { momentFormatDateId, momentFormatTimeISO, generateTimes, momentFormatDate } from '~/utils'
+import { momentFormatDateId, momentFormatTimeISO, generateTimes, momentFormatDate, isAdmin } from '~/utils'
 
 export default {
   layout: 'admin',
@@ -424,6 +429,9 @@ export default {
     }
   },
   computed: {
+    isAdminRole () {
+      return isAdmin(this.$auth)
+    },
     isRecurring () {
       const { repeatType } = this.detailData.extendedProps
       return repeatType
