@@ -801,7 +801,7 @@ export default {
             calendarApi.refetchEvents()
           }).catch((e) => {
             if (e.response?.data?.code === 403) {
-              return this.showErrorToast('Anda tidak ada akses untuk mengubah data ini.')
+              return this.showErrorToast('Anda tidak ada akses untuk menghapus data ini.')
             }
             this.showErrorToast('Mohon maaf, terjadi kesalahan.')
           })
@@ -827,7 +827,7 @@ export default {
             calendarApi.refetchEvents()
           }).catch((e) => {
             if (e.response?.data?.code === 403) {
-              return this.showErrorToast('Anda tidak ada akses untuk mengubah data ini.')
+              return this.showErrorToast('Anda tidak ada akses untuk menghapus data ini.')
             }
             this.showErrorToast('Mohon maaf, terjadi kesalahan.')
           })
