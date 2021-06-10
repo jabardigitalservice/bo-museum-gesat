@@ -2,7 +2,7 @@
   <div class="px-4 pb-20">
     <div class="flex flex-col">
       <!-- title -->
-      <h1 class="text-4xl font-normal text-gray1">
+      <h1 id="ruangan-aset" class="text-4xl font-normal text-gray1">
         Ruangan/Aset
       </h1>
       <!-- filter and add button -->
@@ -51,7 +51,7 @@
       </div>
       <!-- table -->
       <div class="align-middle inline-block min-w-full  overflow-x-auto">
-        <table class="w-full">
+        <table class="w-full" aria-describedby="ruangan-aset">
           <thead class="bg-primary">
             <tr>
               <th v-for="header in dataHeader" :key="header" scope="col" class="thead">

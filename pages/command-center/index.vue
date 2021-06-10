@@ -2,7 +2,7 @@
   <div class="px-4 pb-20">
     <div class="flex flex-col">
       <!-- title -->
-      <h1 class="text-4xl font-normal text-gray1">
+      <h1 id="waktu-tutup" class="text-4xl font-normal text-gray1">
         Pengaturan Waktu Tutup
       </h1>
       <!-- filter and add button -->
@@ -47,7 +47,7 @@
       </div>
       <!-- table -->
       <div class="align-middle inline-block min-w-full overflow-x-auto">
-        <table class="w-full">
+        <table class="w-full" aria-describedby="waktu-tutup">
           <thead class="bg-primary">
             <tr>
               <th
@@ -136,7 +136,7 @@
         </template>
       </BaseModal>
       <!-- title -->
-      <h1 class="text-4xl font-normal text-gray1">
+      <h1 id="waktu-kunjungan" class="text-4xl font-normal text-gray1">
         Pengaturan Waktu Kunjungan
       </h1>
       <!-- Filter, Add, List Shift -->
@@ -152,7 +152,7 @@
       </div>
       <!-- table -->
       <div class="align-middle inline-block min-w-full overflow-x-auto">
-        <table class="w-full">
+        <table class="w-full" aria-describedby="waktu-kunjungan">
           <thead class="bg-primary">
             <tr>
               <th

@@ -212,7 +212,7 @@ export default {}
 @keyframes dash {
   0%,
   30% {
-    fill: 4b4b62;
+    fill: #4b4b62;
     stroke-dashoffset: 0;
   }
   80%,
