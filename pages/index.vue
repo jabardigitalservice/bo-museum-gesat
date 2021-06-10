@@ -426,7 +426,7 @@ export default {
   computed: {
     isRecurring () {
       const { repeatType, recurringId } = this.detailData.extendedProps
-      return repeatType && recurringId
+      return !!repeatType && !!recurringId
     },
     selectedResources () {
       const { resourcesLists } = this.reservation
