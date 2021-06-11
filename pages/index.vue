@@ -592,16 +592,17 @@ export default {
           })
         }
       } catch (e) {
-        if (e.response.status === 403) {
+        if (e.response?.status === 403) {
           return this.showErrorToast('Anda tidak ada akses untuk mengubah data ini.')
         }
-        if (e.response.status === 422) {
+        if (e.response?.status === 422) {
           const { errors } = e.response.data
           if ('asset_id' in errors) {
             return this.showErrorToast(errors.asset_id.join(', '))
           }
           return this.showErrorToast('Mohon maaf, terjadi kesalahan.')
         }
+        this.showErrorToast('Mohon maaf, terjadi kesalahan.')
       } finally {
         this.$modal.hide('add')
         this.clearFormReservation()
@@ -651,10 +652,10 @@ export default {
       }).catch((e) => {
         this.reservation.isLoading = false
         this.$modal.hide('add')
-        if (e.response.status === 403) {
+        if (e.response?.status === 403) {
           return this.showErrorToast('Anda tidak ada akses untuk menambah data ini.')
         }
-        if (e.response.status === 422) {
+        if (e.response?.status === 422) {
           const { errors } = e.response.data
           if ('asset_ids' in errors) {
             return this.showErrorToast(errors.asset_ids.join(', '))
@@ -664,7 +665,7 @@ export default {
           }
           return this.showErrorToast('Mohon maaf, terjadi kesalahan.')
         }
-        return this.showErrorToast('Mohon maaf, terjadi kesalahan.')
+        this.showErrorToast('Mohon maaf, terjadi kesalahan.')
       })
     },
     closeFormReservation () {
@@ -799,12 +800,10 @@ export default {
             })
             calendarApi.refetchEvents()
           }).catch((e) => {
-            if (e.response.data?.code === 403) {
-              this.$toast.error('Anda tidak ada akses untuk menghapus data ini.', {
-                iconPack: 'fontawesome',
-                duration: 5000
-              })
+            if (e.response?.data?.code === 403) {
+              return this.showErrorToast('Anda tidak ada akses untuk menghapus data ini.')
             }
+            this.showErrorToast('Mohon maaf, terjadi kesalahan.')
           })
           this.$modal.hide('detail')
         }
@@ -827,12 +826,10 @@ export default {
             })
             calendarApi.refetchEvents()
           }).catch((e) => {
-            if (e.response.data?.code === 403) {
-              this.$toast.error('Anda tidak ada akses untuk menghapus data ini.', {
-                iconPack: 'fontawesome',
-                duration: 5000
-              })
+            if (e.response?.data?.code === 403) {
+              return this.showErrorToast('Anda tidak ada akses untuk menghapus data ini.')
             }
+            this.showErrorToast('Mohon maaf, terjadi kesalahan.')
           })
           this.$modal.hide('detail')
         }
