@@ -438,8 +438,8 @@ export default {
       return isAdmin(this.$auth)
     },
     isRecurring () {
-      const { repeatType } = this.detailData.extendedProps
-      return repeatType
+      const { repeatType, recurringId } = this.detailData.extendedProps
+      return !!repeatType && !!recurringId
     },
     selectedResources () {
       const { resourcesLists } = this.reservation
