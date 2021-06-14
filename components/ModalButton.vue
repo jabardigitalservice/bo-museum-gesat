@@ -34,6 +34,11 @@ export default {
   },
   data () {
     return {
+      background: {
+        primary: 'bg-primary',
+        red: 'bg-red',
+        yellow: 'bg-yellow'
+      },
       buttonStyle: 'bg-primary',
       buttonLabel: 'default button'
     }
@@ -41,37 +46,37 @@ export default {
   created () {
     switch (this.btnType) {
       case 'submit':
-        this.buttonStyle = 'bg-primary'
+        this.buttonStyle = this.background.primary
         this.buttonLabel = 'Simpan'
         break
 
       case 'set':
-        this.buttonStyle = 'bg-primary'
+        this.buttonStyle = this.background.primary
         this.buttonLabel = 'Terapkan'
         break
 
       case 'update':
-        this.buttonStyle = 'bg-primary'
+        this.buttonStyle = this.background.primary
         this.buttonLabel = 'Perbarui'
         break
 
       case 'delete':
-        this.buttonStyle = 'bg-red'
+        this.buttonStyle = this.background.red
         this.buttonLabel = 'Hapus'
         break
 
       case 'edit':
-        this.buttonStyle = 'bg-yellow'
+        this.buttonStyle = this.background.yellow
         this.buttonLabel = 'Edit'
         break
 
       case 'clear':
-        this.buttonStyle = 'bg-yellow'
+        this.buttonStyle = this.background.yellow
         this.buttonLabel = 'Bersihkan'
         break
 
       default:
-        this.buttonStyle = 'bg-yellow'
+        this.buttonStyle = this.background.yellow
         this.buttonLabel = 'Tutup'
         break
     }

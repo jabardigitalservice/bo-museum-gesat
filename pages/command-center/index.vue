@@ -317,7 +317,8 @@ export default {
         statusShift: null
       },
       submitForm: 'store',
-      loading: false
+      loading: false,
+      errorMessage: 'Gagal menambahkan data'
     }
   },
   computed: {
@@ -437,7 +438,7 @@ export default {
             duration: 5000
           })
         }
-        this.$toast.error('Gagal menambahkan data', {
+        this.$toast.error(this.errorMessage, {
           iconPack: 'fontawesome',
           duration: 5000
         })
@@ -464,7 +465,7 @@ export default {
             duration: 5000
           })
         }
-        this.$toast.error('Gagal menambahkan data', {
+        this.$toast.error(this.errorMessage, {
           iconPack: 'fontawesome',
           duration: 5000
         })
@@ -578,7 +579,7 @@ export default {
         this.refreshTableShift()
         this.resetValue()
       } catch (err) {
-        this.$toast.error('Gagal menambahkan data', {
+        this.$toast.error(this.errorMessage, {
           iconPack: 'fontawesome',
           duration: 5000
         })
