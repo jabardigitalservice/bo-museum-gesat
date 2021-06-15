@@ -80,7 +80,7 @@
         >
           <i class="bx bx-error-circle bx-sm text-white" aria-hidden="true" />
           <p class="text-white text-sm">
-            Reservasi Anda untuk tanggal <b>{{ momentFormatDateId(form.date) }}</b> tidak dapat dibuat,
+            Reservasi Anda untuk tanggal <strong>{{ momentFormatDateId(form.date) }}</strong> tidak dapat dibuat,
             karena telah melewati waktu saat ini.
           </p>
         </section>
@@ -291,18 +291,23 @@
         </div>
       </template>
       <template #buttons>
-        <ModalButton v-if="!isRecurring" btn-type="delete" @btn-click="deleteData" />
-        <DropdownButton v-else button-type="delete">
-          <template #options>
-            <button @click="deleteData">
-              Hapus reservasi ini
-            </button>
-            <button @click="deleteAllData">
-              Hapus seluruh perulangan
-            </button>
-          </template>
-        </DropdownButton>
-        <ModalButton btn-type="edit" :loading="reservation.isLoading" @btn-click="setEditInitialValues" />
+        <template v-if="detailData.extendedProps.name === $auth.user.name || isAdminRole">
+          <ModalButton v-if="!isRecurring" btn-type="delete" @btn-click="deleteData" />
+          <DropdownButton v-else button-type="delete">
+            <template #options>
+              <button @click="deleteData">
+                Hapus reservasi ini
+              </button>
+              <button @click="deleteAllData">
+                Hapus seluruh perulangan
+              </button>
+            </template>
+          </DropdownButton>
+          <ModalButton btn-type="edit" :loading="reservation.isLoading" @btn-click="setEditInitialValues" />
+        </template>
+        <template v-else>
+          <ModalButton btn-type="close" @btn-click="$modal.hide('detail')" />
+        </template>
       </template>
     </BaseModal>
   </div>
@@ -318,7 +323,7 @@ import { toMoment } from '@fullcalendar/moment'
 import listPlugin from '@fullcalendar/list'
 import allLocales from '@fullcalendar/core/locales-all'
 import { repeatType } from '../assets/constant/enum'
-import { momentFormatDateId, momentFormatTimeISO, generateTimes, momentFormatDate } from '~/utils'
+import { momentFormatDateId, momentFormatTimeISO, generateTimes, momentFormatDate, isAdmin } from '~/utils'
 
 export default {
   layout: 'admin',
@@ -420,13 +425,21 @@ export default {
       },
       clickInfo: {},
       momentFormatDateId,
-      repeatType
+      repeatType,
+      errorMessage: 'Mohon maaf, terjadi kesalahan.',
+      dateFormat: {
+        withTime: 'YYYY-MM-DD HH:mm',
+        withoutTime: 'YYYY-MM-DD'
+      }
     }
   },
   computed: {
+    isAdminRole () {
+      return isAdmin(this.$auth)
+    },
     isRecurring () {
-      const { repeatType } = this.detailData.extendedProps
-      return repeatType
+      const { repeatType, recurringId } = this.detailData.extendedProps
+      return !!repeatType && !!recurringId
     },
     selectedResources () {
       const { resourcesLists } = this.reservation
@@ -592,16 +605,17 @@ export default {
           })
         }
       } catch (e) {
-        if (e.response.status === 403) {
+        if (e.response?.status === 403) {
           return this.showErrorToast('Anda tidak ada akses untuk mengubah data ini.')
         }
-        if (e.response.status === 422) {
+        if (e.response?.status === 422) {
           const { errors } = e.response.data
           if ('asset_id' in errors) {
             return this.showErrorToast(errors.asset_id.join(', '))
           }
-          return this.showErrorToast('Mohon maaf, terjadi kesalahan.')
+          return this.showErrorToast(this.errorMessage)
         }
+        this.showErrorToast('Mohon maaf, terjadi kesalahan.')
       } finally {
         this.$modal.hide('add')
         this.clearFormReservation()
@@ -651,10 +665,10 @@ export default {
       }).catch((e) => {
         this.reservation.isLoading = false
         this.$modal.hide('add')
-        if (e.response.status === 403) {
+        if (e.response?.status === 403) {
           return this.showErrorToast('Anda tidak ada akses untuk menambah data ini.')
         }
-        if (e.response.status === 422) {
+        if (e.response?.status === 422) {
           const { errors } = e.response.data
           if ('asset_ids' in errors) {
             return this.showErrorToast(errors.asset_ids.join(', '))
@@ -662,9 +676,9 @@ export default {
           if ('days' in errors) {
             return this.showErrorToast(errors.days.join(', '))
           }
-          return this.showErrorToast('Mohon maaf, terjadi kesalahan.')
+          return this.showErrorToast(this.errorMessage)
         }
-        return this.showErrorToast('Mohon maaf, terjadi kesalahan.')
+        this.showErrorToast(this.errorMessage)
       })
     },
     closeFormReservation () {
@@ -702,9 +716,9 @@ export default {
         this.form.description = draggedEvent.extendedProps.catatan
         this.form.holder = draggedEvent.extendedProps.holder
         this.form.asset_id = dropInfo.resource.id
-        this.form.start_time = toMoment(dropInfo.start, draggedEvent._context.calendarApi).format('YYYY-MM-DD HH:mm')
-        this.form.end_time = toMoment(dropInfo.end, draggedEvent._context.calendarApi).format('YYYY-MM-DD HH:mm')
-        this.form.date = toMoment(dropInfo.start, draggedEvent._context.calendarApi).format('YYYY-MM-DD')
+        this.form.start_time = toMoment(dropInfo.start, draggedEvent._context.calendarApi).format(this.dateFormat.withTime)
+        this.form.end_time = toMoment(dropInfo.end, draggedEvent._context.calendarApi).format(this.dateFormat.withTime)
+        this.form.date = toMoment(dropInfo.start, draggedEvent._context.calendarApi).format(this.dateFormat.withoutTime)
         return true
       }
     },
@@ -767,10 +781,10 @@ export default {
         this.reservation.endTime = toMoment(selectInfo.end, selectInfo.view.calendar).format('HH:mm')
         this.form.asset_id = selectInfo.resource ? selectInfo.resource.id : null
         this.form.asset_ids = selectInfo.resource ? [Number(selectInfo.resource.id)] : []
-        this.form.start_time = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD HH:mm')
-        this.form.end_time = toMoment(selectInfo.end, selectInfo.view.calendar).format('YYYY-MM-DD HH:mm')
-        this.form.date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
-        this.form.end_date = toMoment(selectInfo.start, selectInfo.view.calendar).format('YYYY-MM-DD')
+        this.form.start_time = toMoment(selectInfo.start, selectInfo.view.calendar).format(this.dateFormat.withTime)
+        this.form.end_time = toMoment(selectInfo.end, selectInfo.view.calendar).format(this.dateFormat.withTime)
+        this.form.date = toMoment(selectInfo.start, selectInfo.view.calendar).format(this.dateFormat.withoutTime)
+        this.form.end_date = toMoment(selectInfo.start, selectInfo.view.calendar).format(this.dateFormat.withoutTime)
         this.form.repeat_type = 'NONE'
         this.form.week = '1'
         this.form.days = []
@@ -799,12 +813,10 @@ export default {
             })
             calendarApi.refetchEvents()
           }).catch((e) => {
-            if (e.response.data?.code === 403) {
-              this.$toast.error('Anda tidak ada akses untuk menghapus data ini.', {
-                iconPack: 'fontawesome',
-                duration: 5000
-              })
+            if (e.response?.data?.code === 403) {
+              return this.showErrorToast('Anda tidak ada akses untuk menghapus data ini.')
             }
+            this.showErrorToast('Mohon maaf, terjadi kesalahan.')
           })
           this.$modal.hide('detail')
         }
@@ -827,12 +839,10 @@ export default {
             })
             calendarApi.refetchEvents()
           }).catch((e) => {
-            if (e.response.data?.code === 403) {
-              this.$toast.error('Anda tidak ada akses untuk menghapus data ini.', {
-                iconPack: 'fontawesome',
-                duration: 5000
-              })
+            if (e.response?.data?.code === 403) {
+              return this.showErrorToast('Anda tidak ada akses untuk menghapus data ini.')
             }
+            this.showErrorToast('Mohon maaf, terjadi kesalahan.')
           })
           this.$modal.hide('detail')
         }
