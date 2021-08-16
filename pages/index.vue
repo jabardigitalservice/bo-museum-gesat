@@ -323,12 +323,18 @@ import { toMoment } from '@fullcalendar/moment'
 import listPlugin from '@fullcalendar/list'
 import allLocales from '@fullcalendar/core/locales-all'
 import { repeatType } from '../assets/constant/enum'
+import Daily from '~/components/recurring/Daily'
+import Monthly from '~/components/recurring/Monthly'
+import Weekly from '~/components/recurring/Weekly'
 import { momentFormatDateId, momentFormatTimeISO, generateTimes, momentFormatDate, isAdmin } from '~/utils'
 
 export default {
   layout: 'admin',
   components: {
-    FullCalendar
+    FullCalendar,
+    Daily,
+    Monthly,
+    Weekly
   },
   data () {
     return {
