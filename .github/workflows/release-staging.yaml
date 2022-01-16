@@ -45,3 +45,14 @@ jobs:
       with:
         push: true
         tags: ${{ secrets.DOCKER_IMAGENAME }}:staging-${{ steps.vars.outputs.sha_short }}
+        build-args: |
+          API_URL="${{ secrets.API_URL_STAGING }}"
+          APP_NAME="Digiteam Reservasi"
+          APP_ENV="staging"
+          KEYCLOAK_AUTHSERVERURL="${{ secrets.KEYCLOAK_AUTHSERVERURL }}"
+          KEYCLOAK_REALM="${{ secrets.KEYCLOAK_REALM }}"
+          KEYCLOAK_CLIENTID="${{ secrets.KEYCLOAK_CLIENTID }}"
+          KEYCLOAK_REDIRECTLOGOUTURI="${{ secrets.KEYCLOAK_CLIENTID }}"
+          SENTRY_TRACES_SAMPLE_RATE="1"
+          SENTRY_LARAVEL_DSN="${{ secrets.SENTRY_LARAVEL_DSN }}"
+          GOOGLE_ANALYTICS_ID="${{ secrets.GOOGLE_ANALYTICS_ID }}"
