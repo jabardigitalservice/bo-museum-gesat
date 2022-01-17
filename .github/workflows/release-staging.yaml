@@ -1,0 +1,58 @@
+name: Release to Staging
+on:
+  push:
+    branches:
+      - development
+  workflow_dispatch:
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    # Setup gcloud CLI
+    - name: Authenticate to Google Cloud
+      id: auth
+      uses: google-github-actions/auth@v0
+      with:
+        credentials_json: ${{ secrets.GCLOUD_SA_CREDENTIALS }}
+
+    # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
+    - uses: google-github-actions/setup-gcloud@v0
+      name: 'Set up Cloud SDK'
+
+    # Configure Docker with Credentials
+    - name: Configure Docker
+      run: |
+        gcloud auth configure-docker asia-southeast2-docker.pkg.dev
+
+    # Build the Docker image
+    - name: Set version tag
+      id: vars
+      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
+    - name: Build and push
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: ${{ secrets.DOCKER_IMAGENAME }}:staging-${{ steps.vars.outputs.sha_short }}
+        build-args: |
+          API_URL=${{ secrets.API_URL_STAGING }}
+          APP_NAME="Digiteam Reservasi"
+          APP_ENV=staging
+          KEYCLOAK_AUTHSERVERURL=${{ secrets.KEYCLOAK_AUTHSERVERURL }}
+          KEYCLOAK_REALM=${{ secrets.KEYCLOAK_REALM }}
+          KEYCLOAK_CLIENTID=${{ secrets.KEYCLOAK_CLIENTID_STAGING }}
+          KEYCLOAK_REDIRECTLOGOUTURI=${{ secrets.KEYCLOAK_REDIRECTLOGOUTURI_STAGING }}
+          SENTRY_TRACES_SAMPLE_RATE=1
+          SENTRY_LARAVEL_DSN=${{ secrets.SENTRY_LARAVEL_DSN }}
+          GOOGLE_ANALYTICS_ID=${{ secrets.GOOGLE_ANALYTICS_ID }}
