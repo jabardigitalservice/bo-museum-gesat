@@ -24,7 +24,7 @@ export default {
     { src: '@/plugins/vClickOutside', ssr: false },
     { src: '@/plugins/vModal', ssr: false },
     { src: '@/plugins/vue-datepicker', ssr: false },
-    { src: '@/plugins/jabar-design-system.js'}
+    { src: '@/plugins/jabar-design-system.js' }
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
