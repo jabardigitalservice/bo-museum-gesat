@@ -23,7 +23,8 @@ export default {
   plugins: [
     { src: '@/plugins/vClickOutside', ssr: false },
     { src: '@/plugins/vModal', ssr: false },
-    { src: '@/plugins/vue-datepicker', ssr: false }
+    { src: '@/plugins/vue-datepicker', ssr: false },
+    { src: '@/plugins/jabar-design-system.js'}
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -121,6 +122,9 @@ export default {
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
+	transpile: [
+		'@jabardigitalservice/jds-design-system'
+	  ],
     extend (config, ctx) {
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({

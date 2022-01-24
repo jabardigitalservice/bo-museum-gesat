@@ -4,6 +4,7 @@
       <h1 class="text-4xl font-normal text-gray1">
         Kalender Reservasi
       </h1>
+
       <div>
         <FullCalendar ref="fullCalendar" :options="calendarOptions" />
       </div>
