@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex justify-center">
-      <img width="48" height="48" src="~/assets/icon/icon-digiteam.svg" alt="digiteam">
+      <img width="48" height="48" src="~assets/icon/icon-digiteam.svg" alt="digiteam">
       <h1 class="text-primary text-2xl leading-14 self-center font-bold font-sans">
         JDS Reservasi
       </h1>
