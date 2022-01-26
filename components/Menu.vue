@@ -82,10 +82,10 @@ export default {
       return list
     },
     initialUserName () {
-      return this.$auth.user && this.$auth.user.name ? this.$auth.user.name.charAt(0) : null
+      return this.$auth.user?.name?.charAt(0) || null
     },
     fullUserName () {
-      return this.$auth.user && this.$auth.user.name ? this.$auth.user.name : null
+      return this.$auth.user?.name || null
     }
   },
   methods: {
