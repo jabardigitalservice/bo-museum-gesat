@@ -6,15 +6,11 @@
         JDS Reservasi
       </h1>
     </div>
-    <div class="flex justify-center">
-      <div class="mt-6 w-16 h-16 bg-primary rounded-full">
-        <h1 class="mt-1 text-white text-4xl font-bold font-sans text-center">
-          {{ this.$auth.user && this.$auth.user.name ? this.$auth.user.name.charAt(0) : null }}
-        </h1>
-      </div>
+    <div class="mt-6 mx-24 py-1 w-16 h-16 bg-primary rounded-full text-white text-4xl font-bold font-sans text-center">
+      {{ initialUserName }}
     </div>
     <div class="flex justify-center mt-3">
-      <span class="font-medium text-primary pr-4 text-center">{{ this.$auth.user && this.$auth.user.name ? this.$auth.user.name : null }}</span>
+      <span class="font-medium text-primary pr-4 text-center">{{ fullUserName }}</span>
     </div>
     <div class="mt-8 font-sans">
       <ul>
@@ -84,6 +80,12 @@ export default {
         }
       })
       return list
+    },
+    initialUserName () {
+      return this.$auth.user && this.$auth.user.name ? this.$auth.user.name.charAt(0) : null
+    },
+    fullUserName () {
+      return this.$auth.user && this.$auth.user.name ? this.$auth.user.name : null
     }
   },
   methods: {
