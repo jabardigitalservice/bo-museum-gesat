@@ -1,6 +1,6 @@
 <template>
   <transition name="slide">
-    <div v-if="isActiveSidebar" v-click-outside="closeSidebar" class="w-64 fixed z-20 h-screen py-4 bg-primary sidebar">
+    <div v-if="isActiveSidebar" v-click-outside="closeSidebar" class="w-64 fixed z-20 h-screen py-4 bg-white sidebar">
       <Menu />
     </div>
   </transition>

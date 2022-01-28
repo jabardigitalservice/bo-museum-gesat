@@ -1,5 +1,10 @@
 module.exports = {
   theme: {
+    fontFamily: {
+      sans: ['Lato', 'sans-serif'],
+      serif: ['Lora', 'serif'],
+      roboto: ['Roboto', 'serif']
+    },
     colors: {
       // Build your palette here
       transparent: 'transparent',
@@ -7,6 +12,7 @@ module.exports = {
       primary: '#219653',
       red: '#EB5757',
       blue: '#2F80ED',
+      blue2: '#FAFCFF',
       yellow: '#F2C94C',
       white: '#FFFFFF',
       black: '#000000',

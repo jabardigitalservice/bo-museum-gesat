@@ -2,9 +2,9 @@
   <div class="px-4 pb-20">
     <div class="flex flex-col">
       <!-- title -->
-      <h1 id="list-reservasi" class="text-4xl font-normal text-gray1">
+      <Title id="list-reservasi">
         List Reservasi
-      </h1>
+      </Title>
       <Statistik />
       <!-- filter and add button -->
       <div class="w-full flex flex-wrap my-3 ">
