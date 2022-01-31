@@ -3,7 +3,7 @@
     <div>
       <label for="spaces" class="block text-sm">
         Hari
-        <span class="text-red">*</span>
+        <span class="text-red-800">*</span>
       </label>
 
       <!-- Multiple Select Dropdown -->
@@ -34,7 +34,7 @@
     <div>
       <label class="block text-sm">
         Tanggal Berakhir
-        <span class="text-red">*</span>
+        <span class="text-red-800">*</span>
       </label>
       <date-picker
         :value="endDate"

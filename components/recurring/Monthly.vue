@@ -4,7 +4,7 @@
     <section class="mb-4">
       <label for="monthly-day" class="block text-sm">
         Hari
-        <span class="text-red">*</span>
+        <span class="text-red-800">*</span>
       </label>
       <select
         id="monthly-day"
@@ -22,7 +22,7 @@
     <section class="mb-4">
       <label for="monthly-week" class="block text-sm">
         Minggu Ke-
-        <span class="text-red">*</span>
+        <span class="text-red-800">*</span>
       </label>
       <select
         id="monthly-week"
@@ -49,7 +49,7 @@
     <section class="mb-4">
       <label for="monthly-month" class="block text-sm">
         Pengulangan Tiap
-        <span class="text-red">*</span>
+        <span class="text-red-800">*</span>
       </label>
       <div class="grid md:grid-cols-3 sm:grid-cols-1 gap-4">
         <input
@@ -63,7 +63,7 @@
         >
         <p class="block text-sm col-span-1">
           Bulan Sekali
-          <span class="text-red">
+          <span class="text-red-800">
             (Max 3)
           </span>
         </p>
@@ -74,7 +74,7 @@
     <section>
       <label class="block text-sm">
         Tanggal Berakhir
-        <span class="text-red">*</span>
+        <span class="text-red-800">*</span>
       </label>
       <date-picker
         :value="endDate"

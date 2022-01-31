@@ -3,7 +3,7 @@
     <div>
       <label class="block text-sm">
         Pengulangan Tiap
-        <span class="text-red">*</span>
+        <span class="text-red-800">*</span>
       </label>
       <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
         <input
@@ -14,7 +14,7 @@
         >
         <p class="block text-sm col-span-1">
           Minggu Sekali
-          <span class="text-red">
+          <span class="text-red-800">
             (Max 12)
           </span>
         </p>
@@ -23,7 +23,7 @@
     <div>
       <label class="block text-sm">
         Hari
-        <span class="text-red">*</span>
+        <span class="text-red-800">*</span>
       </label>
 
       <!-- Multiple Select Dropdown -->
@@ -43,9 +43,9 @@
           <!-- Select Options -->
           <div
             v-show="dropdownOpened"
-            class="absolute flex flex-col shadow-lg border-2 border-gray3 p-2 overflow-auto bg-white h-56 w-full z-50"
+            class="absolute flex flex-col shadow-lg border-2 border-gray-500 p-2 overflow-auto bg-white h-56 w-full z-50"
           >
-            <label v-for="day in days" :key="day.index" class="cursor-pointer p-1 hover:bg-blue">
+            <label v-for="day in days" :key="day.index" class="cursor-pointer p-1 hover:bg-blue-400">
               <input :value="day.index" type="checkbox" :checked="checkedDays(day.index)" @change="$emit('change:form-days', Number($event.target.value))">
               {{ day.name }}
             </label>
@@ -56,7 +56,7 @@
     <div>
       <label class="block text-sm">
         Tanggal Berakhir
-        <span class="text-red">*</span>
+        <span class="text-red-800">*</span>
       </label>
       <date-picker
         :value="endDate"
