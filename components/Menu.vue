@@ -93,16 +93,16 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="postcss" scoped>
 span {
   margin-left: 20px;
 }
 a.nuxt-link-exact-active {
-  @apply bg-gray6;
+  @apply bg-gray-200;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
 }
 .submenu {
-  @apply w-full flex items-center pl-10 pr-2 py-2 text-sm font-medium text-primary rounded-md;
+  @apply w-full flex items-center pl-10 pr-2 py-2 text-sm font-medium text-green-700 rounded-md;
 }
 </style>

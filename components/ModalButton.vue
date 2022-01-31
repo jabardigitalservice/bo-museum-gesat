@@ -84,7 +84,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="postcss">
 .btn-style {
   @apply w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm text-white font-medium;
 }

@@ -110,7 +110,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="postcss" scoped>
 .form {
   @apply w-full bg-white rounded-md;
 }
