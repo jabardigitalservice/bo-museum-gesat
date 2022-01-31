@@ -10,7 +10,7 @@
       <div class="w-full flex flex-wrap my-3 ">
         <div v-if="false" class="w-full lg:w-1/3 my-1">
           <div class="w-1/2 lg:w-1/3">
-            <button v-if="!isAdmin" class="btn bg-primary" @click="showModalAdd">
+            <button v-if="!isAdmin" class="btn bg-green-700" @click="showModalAdd">
               <i class="bx bx-plus bx-sm" aria-hidden="true" />
               <span>Tambah</span>
             </button>
@@ -19,28 +19,28 @@
         <div class="w-full flex flex-wrap-reverse lg:flex-wrap flex-row-reverse">
           <div class="md:grid md:grid-cols-5 flex item-center">
             <div class="md:col-span-2 w-full">
-              <div class="w-full px-4 py-2 bg-white border-solid border border-gray4 rounded flex justify-between items-center">
+              <div class="w-full px-4 py-2 bg-white border-solid border border-gray-400 rounded flex justify-between items-center">
                 <input v-model="params.search" class="w-full focus:outline-none" type="text" placeholder="Cari">
-                <em title="Cari" class="text-gray4 bx bx-search bx-sm cursor-pointer" @click="onSearch" />
+                <em title="Cari" class="text-gray-500 bx bx-search bx-sm cursor-pointer" @click="onSearch" />
               </div>
             </div>
             <div class="md:col-span-3 w-full">
               <div class="md:grid md:grid-cols-3 flex item-center">
                 <div class="md:col-span-1 ml-2">
-                  <button class="btn bg-blue px-2" @click="showModalFilter">
+                  <button class="btn bg-blue-400 px-2" @click="showModalFilter">
                     <i class="bx bx-filter bx-sm" aria-hidden="true" />
                     <span>Filter</span>
                   </button>
                 </div>
                 <div class="md:col-span-1 ml-2">
-                  <button class="btn bg-yellow px-2" @click="showModalSort">
+                  <button class="btn bg-yellow-500 px-2" @click="showModalSort">
                     <i class="bx bx-sort-up bx-sm" aria-hidden="true" />
                     <span>Urutkan</span>
                   </button>
                 </div>
                 <div class="md:col-span-1 ml-2">
-                  <button class="btn" :class="isHasParams ? 'bg-red border border-red' : 'bg-white border border-grayText'" @click="initParams">
-                    <span class="hover:text-black" :class="isHasParams ? 'text-white' : 'text-grayText'">
+                  <button class="btn" :class="isHasParams ? 'bg-red-800 border border-red-800' : 'bg-white border border-gray-200'" @click="initParams">
+                    <span class="hover:text-black" :class="isHasParams ? 'text-white' : 'text-gray-500'">
                       Reset
                     </span>
                   </button>
@@ -53,7 +53,7 @@
       <!-- table -->
       <div class="align-middle inline-block min-w-full  overflow-x-auto">
         <table class="w-full" aria-describedby="list-reservasi">
-          <thead class="bg-primary">
+          <thead class="bg-green-700">
             <tr>
               <th v-for="x in dataHeader" :key="x" scope="col" class="thead">
                 {{ x }}
@@ -80,7 +80,7 @@
               <td v-if="false" class="px-6 py-4 whitespace-nowrap">
                 <span
                   class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-white"
-                  :class="data.approval_status === 'NOT_YET_APPROVED' ? 'bg-yellow' : data.approval_status === 'ALREADY_APPROVED' ? 'bg-primary' : 'bg-red'"
+                  :class="data.approval_status === 'NOT_YET_APPROVED' ? 'bg-yellow-500' : data.approval_status === 'ALREADY_APPROVED' ? 'bg-green-700' : 'bg-red-800'"
                 >
                   {{ data.approval_status ? findStatus(data.approval_status) : '' }}
                 </span>
@@ -99,25 +99,25 @@
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium"
               >
                 <em
-                  class="bx bx-info-circle bx-sm cursor-pointer text-blue"
+                  class="bx bx-info-circle bx-sm cursor-pointer text-blue-400"
                   title="Klik untuk melihat detail reservasi"
                   @click="showModalDetail(data)"
                 />
                 <em
                   v-if="!isAdmin && data.approval_status === 'NOT_YET_APPROVED'"
-                  class="bx bx-trash bx-sm cursor-pointer text-red"
+                  class="bx bx-trash bx-sm cursor-pointer text-red-700"
                   title="Klik untuk menghapus reservasi"
                   @click="deleteData(data.id)"
                 />
                 <em
                   v-if="isAdmin && data.approval_status === 'NOT_YET_APPROVED'"
-                  class="bx bx-calendar-check bx-sm cursor-pointer text-primary"
+                  class="bx bx-calendar-check bx-sm cursor-pointer text-green-700"
                   title="Setujui reservasi"
                   @click="verifikasiData('approve', data.id)"
                 />
                 <em
                   v-if="isAdmin && data.approval_status === 'NOT_YET_APPROVED'"
-                  class="bx bx-calendar-x bx-sm cursor-pointer text-red"
+                  class="bx bx-calendar-x bx-sm cursor-pointer text-red-700"
                   title="Tolak reservasi"
                   @click="verifikasiData('reject', data.id)"
                 />
@@ -126,7 +126,7 @@
           </tbody>
           <tbody v-else class="tbody">
             <tr>
-              <td colspan="6" class="w-full p-4 text-center text-gray3">
+              <td colspan="6" class="w-full p-4 text-center text-gray-500">
                 <div class="text-md">
                   <div v-if="loading" class="div-spinner">
                     <div class="spinner" />
@@ -194,14 +194,14 @@
       <template #buttons>
         <button
           type="button"
-          class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+          class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow-500 text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
           @click="clearFilter"
         >
           Bersihkan
         </button>
         <button
           type="button"
-          :class="checkformIsEmpty ? 'btn-disable' : 'btn-primary'"
+          :class="checkformIsEmpty ? 'btn-disable' : 'btn-green-700'"
           :disabled="checkformIsEmpty"
           @click="onFilter"
         >
@@ -244,14 +244,14 @@
       <template #buttons>
         <button
           type="button"
-          class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+          class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow-500 text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
           @click="clearSortby"
         >
           Bersihkan
         </button>
         <button
           type="button"
-          :class="checkSortIsEmpty ? 'btn-disable' : 'btn-primary'"
+          :class="checkSortIsEmpty ? 'btn-disable' : 'btn-green-700'"
           :disabled="checkSortIsEmpty"
           @click="onSorting"
         >
@@ -264,7 +264,7 @@
     <BaseModal modal-name="detail" modal-title="Detail Reservasi">
       <template #body>
         <div v-if="isAdmin" class="md:grid md:grid-cols-5 text-sm mb-4">
-          <div class="md:col-span-2 text-blue">
+          <div class="md:col-span-2 text-blue-400">
             Nama
           </div>
           <div class="md:col-span-3">
@@ -272,7 +272,7 @@
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm mb-4">
-          <div class="md:col-span-2 text-blue">
+          <div class="md:col-span-2 text-blue-400">
             Judul Kegiatan
           </div>
           <div class="md:col-span-3">
@@ -280,7 +280,7 @@
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm mb-4">
-          <div class="md:col-span-2 text-blue">
+          <div class="md:col-span-2 text-blue-400">
             Ruangan/Aset
           </div>
           <div class="md:col-span-3">
@@ -288,7 +288,7 @@
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm mb-4">
-          <div class="md:col-span-2 text-blue">
+          <div class="md:col-span-2 text-blue-400">
             Tanggal dan Waktu Kegiatan
           </div>
           <div class="md:col-span-3">
@@ -296,7 +296,7 @@
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm mb-4">
-          <div class="md:col-span-2 text-blue">
+          <div class="md:col-span-2 text-blue-400">
             Email Penanggung Jawab
           </div>
           <div class="md:col-span-3">
@@ -304,7 +304,7 @@
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm mb-4">
-          <div class="md:col-span-2 text-blue">
+          <div class="md:col-span-2 text-blue-400">
             Catatan/Deskripsi Kegiatan
           </div>
           <div class="md:col-span-3">
@@ -312,7 +312,7 @@
           </div>
         </div>
         <div v-if="false" class="md:grid md:grid-cols-5 text-sm mb-4">
-          <div class="md:col-span-2 text-blue">
+          <div class="md:col-span-2 text-blue-400">
             Status
           </div>
           <div class="md:col-span-3">
@@ -320,7 +320,7 @@
           </div>
         </div>
         <div v-if="false" class="md:grid md:grid-cols-5 text-sm mb-4">
-          <div class="md:col-span-2 text-blue">
+          <div class="md:col-span-2 text-blue-400">
             Catatan Admin FO
           </div>
           <div class="md:col-span-3">
@@ -328,7 +328,7 @@
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm mb-4">
-          <div class="md:col-span-2 text-blue">
+          <div class="md:col-span-2 text-blue-400">
             Tanggal Reservasi Dibuat
           </div>
           <div class="md:col-span-3">
@@ -336,7 +336,7 @@
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm mb-4">
-          <div class="md:col-span-2 text-blue">
+          <div class="md:col-span-2 text-blue-400">
             Tanggal Pembaruan
           </div>
           <div class="md:col-span-3">
@@ -344,7 +344,7 @@
           </div>
         </div>
         <div v-if="false" class="md:grid md:grid-cols-5 text-sm">
-          <div class="md:col-span-2 text-blue">
+          <div class="md:col-span-2 text-blue-400">
             Tanggal Verifikasi Admin
           </div>
           <div class="md:col-span-3">
@@ -355,7 +355,7 @@
       <template #buttons>
         <button
           type="button"
-          class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+          class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow-500 text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
           @click="closeModalDetail"
         >
           Tutup
@@ -713,9 +713,9 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="postcss" scoped>
 .btn-disable {
-  @apply w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium text-white bg-gray4;
+  @apply w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium text-white bg-gray-400;
 }
 
 .btn-disable:focus {
@@ -723,7 +723,7 @@ export default {
 }
 
 .btn-primary {
-  @apply w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white;
+  @apply w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-green-700 text-white;
 }
 
 .btn-primary:focus {
