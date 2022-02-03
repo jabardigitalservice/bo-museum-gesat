@@ -11,7 +11,7 @@
 }
 
 .btn{
-  @apply w-full px-2 text-base font-medium text-white rounded py-2 flex items-center justify-center;
+  @apply w-full text-base font-sans font-medium text-white flex items-center;
 }
 
 .btn:focus{
@@ -44,4 +44,11 @@
 
 tr:nth-child(2n+2){
   @apply bg-gray-200;
+}
+
+.reservation__filter .jds-popover__content {
+  z-index: 10 !important;
+}
+.jds-data-table__column-wrapper {
+  text-align: left !important;
 }

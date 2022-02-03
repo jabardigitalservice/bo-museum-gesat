@@ -6,25 +6,25 @@ const icon = {
 }
 
 export const statusReservation = [{
-  key: 'NOT_YET_APPROVED',
-  value: 'Sedang diproses'
+  value: 'NOT_YET_APPROVED',
+  label: 'Sedang diproses'
 }, {
-  key: 'ALREADY_APPROVED',
-  value: 'Diterima'
+  value: 'ALREADY_APPROVED',
+  label: 'Diterima'
 }, {
-  key: 'REJECTED',
-  value: 'Ditolak'
+  value: 'REJECTED',
+  label: 'Ditolak'
 }]
 
 export const optionsSortBy = [{
-  key: 'title',
-  value: 'Judul Kegiatan'
+  value: 'title',
+  label: 'Judul Kegiatan'
 }, {
-  key: 'created_at',
-  value: 'Tanggal Reservasi Dibuat'
+  value: 'created_at',
+  label: 'Tanggal Reservasi Dibuat'
 }, {
-  key: 'reservation_time',
-  value: 'Tanggal dan Waktu Kegiatan'
+  value: 'reservation_time',
+  label: 'Tanggal Kegiatan'
 }]
 
 export const optionsOrderBy = [{
@@ -36,11 +36,11 @@ export const optionsOrderBy = [{
 }]
 
 export const optionsOrderByIdn = [{
-  key: 'asc',
-  value: 'A-Z / Terlama'
+  value: 'asc',
+  label: 'A-Z / Terlama'
 }, {
-  key: 'desc',
-  value: 'Z-A / Terbaru'
+  value: 'desc',
+  label: 'Z-A / Terbaru'
 }]
 
 export const optionsStatusResource = [

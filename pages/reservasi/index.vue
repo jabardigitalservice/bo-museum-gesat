@@ -7,141 +7,114 @@
       </Title>
       <Statistik />
       <!-- filter and add button -->
-      <div class="w-full flex flex-wrap my-3 ">
-        <div v-if="false" class="w-full lg:w-1/3 my-1">
-          <div class="w-1/2 lg:w-1/3">
-            <button v-if="!isAdmin" class="btn bg-green-700" @click="showModalAdd">
-              <i class="bx bx-plus bx-sm" aria-hidden="true" />
-              <span>Tambah</span>
-            </button>
+      <div class="w-full my-3">
+        <div class="w-full grid grid-cols-1 gap-y-2 lg:grid-cols-2 gap-x-2">
+          <div class="w-full">
+            <jds-search
+              v-model="params.search"
+              icon
+              :button="false"
+              placeholder="Cari Judul Kegiatan"
+              @submit="onSearch"
+            />
           </div>
-        </div>
-        <div class="w-full flex flex-wrap-reverse lg:flex-wrap flex-row-reverse">
-          <div class="md:grid md:grid-cols-5 flex item-center">
-            <div class="md:col-span-2 w-full">
-              <div class="w-full px-4 py-2 bg-white border-solid border border-gray-400 rounded flex justify-between items-center">
-                <input v-model="params.search" class="w-full focus:outline-none" type="text" placeholder="Cari">
-                <em title="Cari" class="text-gray-500 bx bx-search bx-sm cursor-pointer" @click="onSearch" />
+          <div class="w-full">
+            <div class="w-full flex flex-wrap justify-between xl:justify-start gap-x-2">
+              <div class="">
+                <BaseButton @click="showModalFilter">
+                  <template #icon>
+                    <div class="btn">
+                      <span class="pr-4">
+                        Filter
+                      </span>
+                      <jds-icon size="sm" name="filter-outline" />
+                    </div>
+                  </template>
+                </BaseButton>
               </div>
-            </div>
-            <div class="md:col-span-3 w-full">
-              <div class="md:grid md:grid-cols-3 flex item-center">
-                <div class="md:col-span-1 ml-2">
-                  <button class="btn bg-blue-400 px-2" @click="showModalFilter">
-                    <i class="bx bx-filter bx-sm" aria-hidden="true" />
-                    <span>Filter</span>
-                  </button>
-                </div>
-                <div class="md:col-span-1 ml-2">
-                  <button class="btn bg-yellow-500 px-2" @click="showModalSort">
-                    <i class="bx bx-sort-up bx-sm" aria-hidden="true" />
-                    <span>Urutkan</span>
-                  </button>
-                </div>
-                <div class="md:col-span-1 ml-2">
-                  <button class="btn" :class="isHasParams ? 'bg-red-800 border border-red-800' : 'bg-white border border-gray-200'" @click="initParams">
-                    <span class="hover:text-black" :class="isHasParams ? 'text-white' : 'text-gray-500'">
-                      Reset
-                    </span>
-                  </button>
-                </div>
+              <div class="">
+                <BaseButton @click="showModalSort">
+                  <template #icon>
+                    <div class="btn">
+                      <span class="pr-4">
+                        Urutkan
+                      </span>
+                      <jds-icon size="sm" name="sort-alphabet-asc" />
+                    </div>
+                  </template>
+                </BaseButton>
+              </div>
+              <div class="">
+                <BaseButton :variant="isHasParams ? 'danger' : 'secondary'" @click="initParams">
+                  <template #icon>
+                    <div class="btn">
+                      <span :class="isHasParams ? 'text-white' : 'text-green-700' ">
+                        Reset
+                      </span>
+                    </div>
+                  </template>
+                </BaseButton>
               </div>
             </div>
           </div>
         </div>
       </div>
       <!-- table -->
-      <div class="align-middle inline-block min-w-full  overflow-x-auto">
-        <table class="w-full" aria-describedby="list-reservasi">
-          <thead class="bg-green-700">
-            <tr>
-              <th v-for="x in dataHeader" :key="x" scope="col" class="thead">
-                {{ x }}
-              </th>
-            </tr>
-          </thead>
-          <tbody v-if="dataReservasi.length > 0" class="tbody">
-            <tr v-for="(data, i) in dataReservasi" :key="i">
-              <td style="min-width:256px" class="px-6 py-4 whitespace-nowrap">
-                <div class="text-md">
-                  {{ data.user_fullname }}
-                </div>
-              </td>
-              <td style="min-width:200px" class="px-6 py-4 whitespace-nowrap">
-                <div class="text-md">
-                  {{ data.title }}
-                </div>
-              </td>
-              <td style="min-width:280px" class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm">
-                  {{ data.date && data.start_time && data.end_time ? getDisplayDateTimeManually(data.date, data.start_time, data.end_time) : '' }}
-                </div>
-              </td>
-              <td v-if="false" class="px-6 py-4 whitespace-nowrap">
-                <span
-                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-white"
-                  :class="data.approval_status === 'NOT_YET_APPROVED' ? 'bg-yellow-500' : data.approval_status === 'ALREADY_APPROVED' ? 'bg-green-700' : 'bg-red-800'"
-                >
-                  {{ data.approval_status ? findStatus(data.approval_status) : '' }}
-                </span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <span>
-                  {{ data.description }}
-                </span>
-              </td>
-              <td style="min-width:256px" class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm">
-                  {{ data.created_at ? getDisplayDateTime(data.created_at) : '' }}
-                </div>
-              </td>
-              <td
-                class="px-6 py-4 whitespace-nowrap text-sm font-medium"
-              >
-                <em
-                  class="bx bx-info-circle bx-sm cursor-pointer text-blue-400"
-                  title="Klik untuk melihat detail reservasi"
-                  @click="showModalDetail(data)"
-                />
-                <em
-                  v-if="!isAdmin && data.approval_status === 'NOT_YET_APPROVED'"
-                  class="bx bx-trash bx-sm cursor-pointer text-red-700"
-                  title="Klik untuk menghapus reservasi"
-                  @click="deleteData(data.id)"
-                />
-                <em
-                  v-if="isAdmin && data.approval_status === 'NOT_YET_APPROVED'"
-                  class="bx bx-calendar-check bx-sm cursor-pointer text-green-700"
-                  title="Setujui reservasi"
-                  @click="verifikasiData('approve', data.id)"
-                />
-                <em
-                  v-if="isAdmin && data.approval_status === 'NOT_YET_APPROVED'"
-                  class="bx bx-calendar-x bx-sm cursor-pointer text-red-700"
-                  title="Tolak reservasi"
-                  @click="verifikasiData('reject', data.id)"
-                />
-              </td>
-            </tr>
-          </tbody>
-          <tbody v-else class="tbody">
-            <tr>
-              <td colspan="6" class="w-full p-4 text-center text-gray-500">
-                <div class="text-md">
-                  <div v-if="loading" class="div-spinner">
-                    <div class="spinner" />
-                  </div>
-                  <div v-else>
-                    Data tidak tersedia
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div>
+        <jds-data-table
+          :headers="dataHeader"
+          :items="dataReservasi"
+          :pagination="dataPagination"
+          :loading="loading"
+          @next-page="nextPage"
+          @previous-page="previousPage"
+          @page-change="pageChange"
+          @per-page-change="perPageChange"
+        >
+          <!-- eslint-disable-next-line vue/valid-v-slot -->
+          <template #item.date="{item}">
+            <p>{{ momentFormatDateId(item.date) }}</p>
+          </template>
+          <!-- eslint-disable-next-line vue/valid-v-slot -->
+          <template #item.start_time="{item}">
+            <p>{{ momentFormatTime(item.start_time) }}</p>
+          </template>
+          <!-- eslint-disable-next-line vue/valid-v-slot -->
+          <template #item.end_time="{item}">
+            <p>{{ momentFormatTime(item.end_time) }}</p>
+          </template>
+          <!-- eslint-disable-next-line vue/valid-v-slot -->
+          <template #item.created_at="{item}">
+            <p>{{ momentFormatTimeToTz(item.created_at) }}</p>
+          </template>
+          <!-- eslint-disable-next-line vue/valid-v-slot -->
+          <template #item.action="{item}">
+            <em
+              class="bx bx-info-circle bx-sm cursor-pointer text-blue-400"
+              title="Klik untuk melihat detail reservasi"
+              @click="showModalDetail(item)"
+            />
+            <em
+              v-if="!isAdmin && item.approval_status === 'NOT_YET_APPROVED'"
+              class="bx bx-trash bx-sm cursor-pointer text-red-700"
+              title="Klik untuk menghapus reservasi"
+              @click="deleteData(item.id)"
+            />
+            <em
+              v-if="isAdmin && item.approval_status === 'NOT_YET_APPROVED'"
+              class="bx bx-calendar-check bx-sm cursor-pointer text-green-700"
+              title="Setujui reservasi"
+              @click="verifikasiData('approve', item.id)"
+            />
+            <em
+              v-if="isAdmin && item.approval_status === 'NOT_YET_APPROVED'"
+              class="bx bx-calendar-x bx-sm cursor-pointer text-red-700"
+              title="Tolak reservasi"
+              @click="verifikasiData('reject', item.id)"
+            />
+          </template>
+        </jds-data-table>
       </div>
-      <!-- pagination -->
-      <Pagination :active-pagination="activeData" :length-data="meta.last_page" @update="changeActivePagination" />
     </div>
     <!-- modal filter -->
     <BaseModal
@@ -167,19 +140,17 @@
           </div>
         </div>
         <div v-if="false" class="mb-4">
-          <label class="block text-sm">
-            Status
-          </label>
-          <div class="mt-1">
-            <select v-model="params.approval_status" name="approval_status" required class="form-input">
-              <option v-for="item in statusReservation" :key="item.key" :value="item.key">
-                {{ item.value }}
-              </option>
-            </select>
-          </div>
+          <jds-select
+            v-model="params.approval_status"
+            name="approval_status"
+            :options="statusReservation"
+            options-header="Urutan"
+            label="Ruangan/Aset"
+            placeholder="Pilih Ruangan/Aset"
+          />
         </div>
         <div v-if="isAdmin">
-          <label for="asset_id" class="block text-sm">
+          <!-- <label for="asset_id" class="block text-sm">
             Ruangan/Aset
           </label>
           <div class="mt-1">
@@ -188,25 +159,33 @@
                 {{ item.name }}
               </option>
             </select>
-          </div>
+          </div> -->
+          <jds-select
+            v-model="params.asset_id"
+            name="asset_id"
+            :options="dataAsset"
+            options-header="Urutan"
+            label="Ruangan/Aset"
+            placeholder="Pilih Ruangan/Aset"
+          />
         </div>
       </template>
       <template #buttons>
-        <button
+        <BaseButton
           type="button"
-          class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow-500 text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+          variant="danger"
+          label="Bersihkan"
+          class="w-full py-2 px-4 shadow-sm text-sm font-medium"
           @click="clearFilter"
-        >
-          Bersihkan
-        </button>
-        <button
+        />
+        <BaseButton
           type="button"
-          :class="checkformIsEmpty ? 'btn-disable' : 'btn-green-700'"
+          label="Terapkan"
+          :variant="checkformIsEmpty ? 'secondary' : 'primary'"
+          class="w-full py-2 px-4 shadow-sm text-sm font-medium"
           :disabled="checkformIsEmpty"
           @click="onFilter"
-        >
-          Terapkan
-        </button>
+        />
       </template>
     </BaseModal>
 
@@ -216,54 +195,54 @@
       modal-title="Urutkan Data Reservasi"
     >
       <template #body>
-        <div class="mb-4">
-          <label for="title" class="block text-sm">
-            Urutkan Berdasarkan
-          </label>
-          <div class="mt-1">
-            <select v-model="params.sortBy" name="approval_status" required class="form-input">
-              <option v-for="item in optionsSortBy" :key="item.key" :value="item.key">
-                {{ item.value }}
-              </option>
-            </select>
+        <div class="reservation__filter">
+          <div class="mb-4">
+            <jds-select
+              v-model="params.sortBy"
+              name="approval_status"
+              :options="optionsSortBy"
+              options-header="Urutan"
+              label="Urutan Berdasarkan"
+              placeholder="Pilih urutan"
+              class=""
+            />
           </div>
-        </div>
-        <div>
-          <label for="password" class="block text-sm">
-            Urutkan dari
-          </label>
-          <div class="mt-1">
-            <select v-model="params.orderBy" name="approval_status" required class="form-input">
-              <option v-for="item in optionsOrderByIdn" :key="item.key" :value="item.key">
-                {{ item.value }}
-              </option>
-            </select>
+          <div>
+            <jds-select
+              v-model="params.orderBy"
+              name="approval_status"
+              :options="optionsOrderByIdn"
+              options-header="Urutan"
+              label="Urutan dari"
+              placeholder="Pilih urutan"
+              class=""
+            />
           </div>
         </div>
       </template>
       <template #buttons>
-        <button
+        <BaseButton
           type="button"
-          class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow-500 text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+          variant="danger"
+          label="Bersihkan"
+          class="w-full flex justify-center py-2 px-4"
           @click="clearSortby"
-        >
-          Bersihkan
-        </button>
-        <button
+        />
+        <BaseButton
           type="button"
-          :class="checkSortIsEmpty ? 'btn-disable' : 'btn-green-700'"
+          :variant="checkSortIsEmpty ? 'secondary' : 'primary'"
+          label="Terapkan"
           :disabled="checkSortIsEmpty"
+          class="w-full flex justify-center py-2 px-4"
           @click="onSorting"
-        >
-          Terapkan
-        </button>
+        />
       </template>
     </BaseModal>
 
     <!-- modal detail reservasi  -->
     <BaseModal modal-name="detail" modal-title="Detail Reservasi">
       <template #body>
-        <div v-if="isAdmin" class="md:grid md:grid-cols-5 text-sm mb-4">
+        <div v-if="isAdmin" class="md:(grid grid-cols-5) text-sm mb-4">
           <div class="md:col-span-2 text-blue-400">
             Nama
           </div>
@@ -271,7 +250,7 @@
             {{ detailData.user_fullname || '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm mb-4">
+        <div class="md:(grid grid-cols-5) text-sm mb-4">
           <div class="md:col-span-2 text-blue-400">
             Judul Kegiatan
           </div>
@@ -287,7 +266,7 @@
             {{ detailData.asset_name || '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm mb-4">
+        <div class="md:(grid grid-cols-5)text-sm mb-4">
           <div class="md:col-span-2 text-blue-400">
             Tanggal dan Waktu Kegiatan
           </div>
@@ -295,7 +274,7 @@
             <div>{{ detailData.date && detailData.start_time && detailData.end_time ? getDisplayDateTimeManually(detailData.date, detailData.start_time, detailData.end_time) : '-' }}</div>
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm mb-4">
+        <div class="md:(grid grid-cols-5) text-sm mb-4">
           <div class="md:col-span-2 text-blue-400">
             Email Penanggung Jawab
           </div>
@@ -303,7 +282,7 @@
             {{ detailData.holder || '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm mb-4">
+        <div class="md:(grid grid-cols-5) text-sm mb-4">
           <div class="md:col-span-2 text-blue-400">
             Catatan/Deskripsi Kegiatan
           </div>
@@ -311,7 +290,7 @@
             {{ detailData.description || '-' }}
           </div>
         </div>
-        <div v-if="false" class="md:grid md:grid-cols-5 text-sm mb-4">
+        <div v-if="false" class="md:(grid grid-cols-5) text-sm mb-4">
           <div class="md:col-span-2 text-blue-400">
             Status
           </div>
@@ -319,7 +298,7 @@
             {{ detailData.approval_status ? findStatus(detailData.approval_status) : '-' }}
           </div>
         </div>
-        <div v-if="false" class="md:grid md:grid-cols-5 text-sm mb-4">
+        <div v-if="false" class="md:(grid grid-cols-5) text-sm mb-4">
           <div class="md:col-span-2 text-blue-400">
             Catatan Admin FO
           </div>
@@ -327,7 +306,7 @@
             {{ detailData.note || '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm mb-4">
+        <div class="md:(grid grid-cols-5) text-sm mb-4">
           <div class="md:col-span-2 text-blue-400">
             Tanggal Reservasi Dibuat
           </div>
@@ -335,7 +314,7 @@
             {{ detailData.created_at ? getDisplayDateTime(detailData.created_at) : '-' }}
           </div>
         </div>
-        <div class="md:grid md:grid-cols-5 text-sm mb-4">
+        <div class="md:(grid grid-cols-5) text-sm mb-4">
           <div class="md:col-span-2 text-blue-400">
             Tanggal Pembaruan
           </div>
@@ -343,7 +322,7 @@
             {{ detailData.updated_at ? getDisplayDateTime(detailData.updated_at) : '-' }}
           </div>
         </div>
-        <div v-if="false" class="md:grid md:grid-cols-5 text-sm">
+        <div v-if="false" class="md:(grid grid-cols-5) text-sm">
           <div class="md:col-span-2 text-blue-400">
             Tanggal Verifikasi Admin
           </div>
@@ -353,20 +332,19 @@
         </div>
       </template>
       <template #buttons>
-        <button
+        <jds-button
           type="button"
-          class="w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-yellow-500 text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+          variant="secondary"
+          label="Tutup"
+          class="w-full flex justify-center py-2 px-4 mt-6"
           @click="closeModalDetail"
-        >
-          Tutup
-        </button>
+        />
       </template>
     </BaseModal>
   </div>
 </template>
 
 <script>
-import Pagination from '~/components/Pagination.vue'
 import { statusReservation, optionsSortBy, optionsOrderByIdn } from '~/assets/constant/enum'
 import {
   generateTimes,
@@ -377,23 +355,51 @@ import {
   isAdmin as admin
 } from '~/utils'
 export default {
-  components: {
-    Pagination
-  },
   layout: 'admin',
   data () {
     return {
       errors: null,
-      activeData: 1,
       meta: {},
       dataUser: {},
+      dataPagination: {
+        currentPage: 1,
+        itemsPerPage: 10,
+        itemsPerPageOptions: [10, 20, 30, 40, 50],
+        totalRows: 0
+      },
       dataHeader: [
-        'Nama',
-        'Judul Kegiatan',
-        'Tanggal dan Waktu Kegiatan',
-        'Catatan/Deskripsi Kegiatan',
-        'Tanggal Reservasi Dibuat',
-        'Aksi'
+        {
+          key: 'user_fullname',
+          text: 'Nama'
+        },
+        {
+          key: 'title',
+          text: 'Judul Kegiatan'
+        },
+        {
+          key: 'date',
+          text: 'Tanggal Kegiatan'
+        },
+        {
+          key: 'start_time',
+          text: 'Waktu Mulai'
+        },
+        {
+          key: 'end_time',
+          text: 'Waktu Akhir'
+        },
+        {
+          key: 'note',
+          text: 'Catatan/Deskripsi Kegiatan Akhir'
+        },
+        {
+          key: 'created_at',
+          text: 'Tanggal Reservasi Dibuat'
+        },
+        {
+          key: 'action',
+          text: 'Aksi'
+        }
       ],
       disabledDates: {
         // disable datepicker from unlimited past to yesterday
@@ -409,12 +415,12 @@ export default {
       dataAsset: [],
       detailData: {},
       params: {
-        search: null,
+        search: '',
         asset_id: null,
         approval_status: null,
         start_date: null,
         end_date: null,
-        sortBy: null,
+        sortBy: '',
         orderBy: null,
         page: null,
         perPage: null
@@ -450,10 +456,6 @@ export default {
     }
   },
   watch: {
-    activeData (val) {
-      this.params.page = val
-      this.getDataReservation()
-    },
     'form.date' () {
       this.form.date = momentFormatDate(this.form.date)
       if (this.form.asset_id) {
@@ -483,6 +485,22 @@ export default {
     this.getAssetList()
   },
   methods: {
+    nextPage (value) {
+      this.params.page = value
+      this.getDataReservation()
+    },
+    previousPage (value) {
+      this.params.page = value
+      this.getDataReservation()
+    },
+    pageChange (value) {
+      this.params.page = value
+      this.getDataReservation()
+    },
+    perPageChange (value) {
+      this.params.perPage = value
+      this.getDataReservation()
+    },
     formIsEmptyAdmin () {
       const isFormEmpty = [
         this.params.start_date,
@@ -509,12 +527,12 @@ export default {
       return isFormEmpty
     },
     initParams () {
-      this.params.search = null
+      this.params.search = ''
       this.params.asset_id = null
       this.params.approval_status = null
       this.params.start_date = null
       this.params.end_date = null
-      this.params.sortBy = null
+      this.params.sortBy = ''
       this.params.orderBy = null
       this.params.page = null
       this.params.perPage = null
@@ -559,7 +577,14 @@ export default {
       try {
         this.loading = true
         const response = await this.$axios.get('/asset/list')
-        this.dataAsset = response ? this.sortResources(response.data.data) : []
+        const dataAssetResource = response ? this.sortResources(response.data.data) : []
+        for (const asset of dataAssetResource) {
+          const dataAsset = {
+            value: asset.id,
+            label: asset.name
+          }
+          this.dataAsset.push(dataAsset)
+        }
         this.loading = false
       } catch (e) {
         this.errors = e
@@ -568,11 +593,15 @@ export default {
     },
     async getDataReservation () {
       try {
+        this.loading = true
         const response = await this.$axios.get('/reservation', { params: this.params })
         this.dataReservasi = response ? response.data.data : []
         this.meta = response ? response.data.meta : {}
+        this.dataPagination.totalRows = this.meta.total
       } catch (e) {
         this.errors = e
+      } finally {
+        this.loading = false
       }
     },
     async getVerifiedReservation () {
@@ -666,11 +695,6 @@ export default {
     onSorting () {
       this.checkParams()
       this.$modal.hide('sort')
-      this.refreshTable()
-    },
-    changeActivePagination (val) {
-      this.activeData = val
-      this.params.page = val
       this.refreshTable()
     },
     showModalFilter () {
