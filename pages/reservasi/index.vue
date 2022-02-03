@@ -20,7 +20,7 @@
           </div>
           <div class="w-full">
             <div class="w-full flex flex-wrap justify-between xl:justify-start gap-x-2">
-              <div class="">
+              <div>
                 <BaseButton @click="showModalFilter">
                   <template #icon>
                     <div class="btn">
@@ -32,7 +32,7 @@
                   </template>
                 </BaseButton>
               </div>
-              <div class="">
+              <div>
                 <BaseButton @click="showModalSort">
                   <template #icon>
                     <div class="btn">
@@ -44,7 +44,7 @@
                   </template>
                 </BaseButton>
               </div>
-              <div class="">
+              <div>
                 <BaseButton :variant="isHasParams ? 'danger' : 'secondary'" @click="initParams">
                   <template #icon>
                     <div class="btn">
@@ -150,16 +150,6 @@
           />
         </div>
         <div v-if="isAdmin">
-          <!-- <label for="asset_id" class="block text-sm">
-            Ruangan/Aset
-          </label>
-          <div class="mt-1">
-            <select v-model="params.asset_id" name="asset_id" required class="form-input">
-              <option v-for="item in dataAsset" :key="item.id" :value="item.id">
-                {{ item.name }}
-              </option>
-            </select>
-          </div> -->
           <jds-select
             v-model="params.asset_id"
             name="asset_id"
@@ -204,7 +194,6 @@
               options-header="Urutan"
               label="Urutan Berdasarkan"
               placeholder="Pilih urutan"
-              class=""
             />
           </div>
           <div>
@@ -215,7 +204,6 @@
               options-header="Urutan"
               label="Urutan dari"
               placeholder="Pilih urutan"
-              class=""
             />
           </div>
         </div>
