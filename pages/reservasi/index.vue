@@ -60,7 +60,7 @@
         </div>
       </div>
       <!-- table -->
-      <div>
+      <div class="overflow-x-auto">
         <jds-data-table
           :headers="dataHeader"
           :items="dataReservasi"
