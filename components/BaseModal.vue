@@ -13,7 +13,7 @@
     >
       <!-- Modal Header -->
       <section class="flex flex-row justify-between align-middle mb-4">
-        <h2 class="window-header uppercase">
+        <h2 class="window-header uppercase w-full text-center">
           {{ modalTitle }}
         </h2>
         <button title="Tutup" @click="!loading && $modal.hide(modalName)">

@@ -2,7 +2,7 @@
   <button
     class="btn-style"
     :disabled="disabled || loading"
-    :class="disabled ? 'bg-gray4' : buttonStyle"
+    :class="disabled ? 'bg-gray-400' : buttonStyle"
     @click="$emit('btn-click')"
   >
     <slot name="label">
@@ -84,7 +84,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="postcss">
 .btn-style {
   @apply w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm text-white font-medium;
 }

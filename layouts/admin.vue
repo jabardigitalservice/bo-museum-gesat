@@ -1,11 +1,11 @@
 <template>
-  <div class="flex w-screen h-screen bg-blue2">
+  <div class="flex w-screen h-screen bg-blue-50">
     <SidebarDesktop />
     <SidebarMobile />
     <div class="w-full overflow-x-auto">
       <Nuxt />
     </div>
-    <div v-if="isActiveSidebar" class="fixed z-10 w-screen h-screen bg-gray1 opacity-50" />
+    <div v-if="isActiveSidebar" class="fixed z-10 w-screen h-screen bg-gray-600 opacity-50" />
   </div>
 </template>
 <script>

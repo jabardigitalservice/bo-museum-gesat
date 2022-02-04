@@ -2,15 +2,15 @@
   <div>
     <div class="flex justify-center">
       <img width="48" height="48" src="~assets/icon/icon-digiteam.svg" alt="digiteam">
-      <h1 class="text-primary text-2xl leading-14 self-center font-bold font-sans">
+      <h1 class="text-green-700 text-2xl leading-14 self-center font-bold font-sans">
         JDS Reservasi
       </h1>
     </div>
-    <div class="mt-6 mx-24 py-1 w-16 h-16 bg-primary rounded-full text-white text-4xl font-bold font-sans text-center">
+    <div class="mt-6 mx-24 py-1 w-16 h-16 bg-green-700 rounded-full text-white text-4xl font-bold font-sans text-center">
       {{ initialUserName }}
     </div>
     <div class="flex justify-center mt-3">
-      <span class="font-medium text-primary pr-4 text-center">{{ fullUserName }}</span>
+      <span class="font-medium text-green-700 pr-4 text-center">{{ fullUserName }}</span>
     </div>
     <div class="mt-8 font-sans">
       <ul>
@@ -19,14 +19,14 @@
             <div class="flex-grow flex flex-col">
               <nav class="flex-1 px-2 space-y-1" aria-label="Sidebar">
                 <div class="space-y-1">
-                  <div class="text-primary group w-full flex items-center pl-7 pr-2 py-2 text-sm font-medium" :aria-controls="parent.id" aria-expanded="false">
+                  <div class="text-green-700 group w-full flex items-center pl-7 pr-2 py-2 text-sm font-medium" :aria-controls="parent.id" aria-expanded="false">
                     <jds-icon name="home-outline" />
                     <strong class="ml-1">{{ parent.label }}</strong>
                   </div>
                   <div v-for="menu in menus" :id="parent.id" :key="menu.path" class="space-y-1">
                     <div v-if="parent.id == menu.parent">
-                      <NuxtLink :to="menu.path" class="group submenu hover:text-gray hover:bg-gray-500">
-                        <i :class="['bx bx-sm text-primary', menu.iconClass]" aria-hidden="true" />
+                      <NuxtLink :to="menu.path" class="group submenu hover:text-gray-200 hover:bg-gray-300">
+                        <i :class="['bx bx-sm text-green-700', menu.iconClass]" aria-hidden="true" />
                         <div class="ml-1">
                           {{ menu.label }}
                         </div>
@@ -41,7 +41,7 @@
         <li v-for="menu in menus" :key="menu.path" class="pl-6">
           <div v-if="menu.parent == 0">
             <div class="space-y-1 pt-4">
-              <NuxtLink :to="menu.path" class="text-primary group w-full flex items-center pl-7 pr-2 py-2 text-sm font-medium">
+              <NuxtLink :to="menu.path" class="text-green-700 group w-full flex items-center pl-7 pr-2 py-2 text-sm font-medium">
                 <jds-icon name="door-exit" rotate="180" />
                 <strong class="ml-1">{{ menu.label }}</strong>
               </NuxtLink>
@@ -93,16 +93,16 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="postcss" scoped>
 span {
   margin-left: 20px;
 }
 a.nuxt-link-exact-active {
-  @apply bg-gray6;
+  @apply bg-gray-200;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
 }
 .submenu {
-  @apply w-full flex items-center pl-10 pr-2 py-2 text-sm font-medium text-primary rounded-md;
+  @apply w-full flex items-center pl-10 pr-2 py-2 text-sm font-medium text-green-700 rounded-md;
 }
 </style>
