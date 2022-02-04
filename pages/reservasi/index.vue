@@ -352,7 +352,7 @@ export default {
       dataPagination: {
         currentPage: 1,
         itemsPerPage: 10,
-        itemsPerPageOptions: [10, 50],
+        itemsPerPageOptions: [10, 50, 100],
         totalRows: 0
       },
       dataHeader: [
@@ -584,6 +584,7 @@ export default {
         const response = await this.$axios.get('/reservation', { params: this.params })
         this.dataReservasi = response ? response.data.data : []
         this.meta = response ? response.data.meta : {}
+        console.log(this.meta.per_page)
         this.dataPagination.totalRows = this.meta.total
       } catch (e) {
         this.errors = e
