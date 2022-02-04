@@ -352,7 +352,7 @@ export default {
       dataPagination: {
         currentPage: 1,
         itemsPerPage: 10,
-        itemsPerPageOptions: [10, 20, 30, 40, 50],
+        itemsPerPageOptions: [10, 50],
         totalRows: 0
       },
       dataHeader: [
@@ -487,7 +487,6 @@ export default {
     },
     perPageChange (value) {
       this.params.perPage = value
-      this.getDataReservation()
     },
     formIsEmptyAdmin () {
       const isFormEmpty = [
