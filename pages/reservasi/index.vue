@@ -584,7 +584,6 @@ export default {
         const response = await this.$axios.get('/reservation', { params: this.params })
         this.dataReservasi = response ? response.data.data : []
         this.meta = response ? response.data.meta : {}
-        console.log(this.meta.per_page)
         this.dataPagination.totalRows = this.meta.total
       } catch (e) {
         this.errors = e
