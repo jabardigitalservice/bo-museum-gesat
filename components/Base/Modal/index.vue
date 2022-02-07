@@ -27,7 +27,7 @@
       </section>
 
       <!-- Modal Footer/Buttons -->
-      <section class="flex gap-2 justify-between">
+      <section class="flex flex-row justify-center gap-2">
         <slot name="buttons" />
       </section>
     </div>
