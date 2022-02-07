@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .form-input {
-  @apply w-full block rounded-r-md transition duration-150 ease-in-out leading-5 border border-gray-300 p-2;
+  @apply w-full block rounded-r-md transition duration-150 ease-in-out leading-5 border border-gray-500 p-2;
 }
 
 .thead{
@@ -46,9 +46,18 @@ tr:nth-child(2n+2){
   @apply bg-gray-200;
 }
 
-.reservation__filter .jds-popover__content {
+/* Override design system style*/
+
+.reservation__filter .jds-popover__content,
+.asset__description .jds-popover__content {
   z-index: 10 !important;
 }
+
 .jds-data-table__column-wrapper {
   text-align: left !important;
+}
+
+.asset__description .jds-text-area__input-wrapper {
+  border: 1px solid gray !important;
+  border-radius: 5px !important;
 }

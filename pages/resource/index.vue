@@ -2,17 +2,23 @@
   <div class="px-4 pb-20">
     <div class="flex flex-col">
       <!-- title -->
-      <h1 id="ruangan-aset" class="text-4xl font-normal text-gray1">
+      <Title>
         Ruangan/Aset
-      </h1>
+      </Title>
       <!-- filter and add button -->
       <div class="w-full flex flex-wrap my-3 ">
         <div class="w-full lg:w-1/2 my-1">
           <div class="w-1/2 lg:w-1/4">
-            <button class="btn bg-primary" @click="showModalAdd">
-              <i class="bx bx-plus bx-sm" aria-hidden="true" />
-              <span>Tambah</span>
-            </button>
+            <BaseButton variant="primary" @click="showModalAdd">
+              <template #icon>
+                <div class="btn">
+                  <span class="pr-4">
+                    Tambah
+                  </span>
+                  <jds-icon size="sm" name="plus-bold" />
+                </div>
+              </template>
+            </BaseButton>
           </div>
         </div>
         <div class="w-full lg:w-1/2 flex flex-wrap-reverse lg:flex-wrap flex-row-reverse">
@@ -182,47 +188,76 @@
     >
       <template #body>
         <div class="mb-4">
-          <label class="block text-sm" for="status">Nama</label>
-          <input v-model="form.name" type="text" class="w-full form-input bg-white rounded-md">
+          <jds-input-text
+            v-model="form.name"
+            class="w-full"
+            name="assetName"
+            label="Nama"
+            placeholder="Nama Ruangan/Aset"
+          />
+        </div>
+        <div class="asset__description mb-4">
+          <jds-text-area
+            v-model="form.description"
+            class="w-full"
+            name="description"
+            label="Deskripsi"
+            placeholder="Deskripsi"
+          />
+        </div>
+        <div class="asset__description mb-4">
+          <jds-select
+            v-model="form.status"
+            name="status"
+            :options="optionsStatusResource"
+            label="Status"
+            placeholder="Pilih Status"
+          />
+        </div>
+        <div class="w-full mb-4">
+          <label class="block text-base text-gray-800 font-sans leading-normal" for="status">Kapasitas</label>
+          <input
+            v-model="form.capacity"
+            name="capacity"
+            type="number"
+            class="w-full form-input bg-white rounded-lg border-gray-800 focus:outline-none focus:border-green-400"
+            placeholder="Masukkan Angka"
+            required
+          >
         </div>
         <div class="mb-4">
-          <label class="block text-sm" for="status">Deskripsi</label>
-          <textarea v-model="form.description" class="w-full form-input bg-white rounded-md" rows="5" />
-        </div>
-        <div class="mb-4">
-          <label class="block text-sm" for="status">Status</label>
-          <select v-model="form.status" name="status" class="w-full form-input bg-white rounded-md">
-            <option v-for="status in optionsStatusResource" :key="status.value" :value="status.value">
-              {{ status.label }}
-            </option>
-          </select>
-        </div>
-        <div class="mb-4">
-          <label class="block text-sm" for="status">Kapasitas</label>
-          <input v-model="form.capacity" type="number" class="w-full form-input bg-white rounded-md">
-        </div>
-        <div class="mb-4">
-          <label class="block text-sm" for="status">Tipe</label>
-          <select v-model="form.resource_type" name="status" class="capitalize w-full form-input bg-white rounded-md">
-            <option v-for="(type, index) in optionsResourceType" :key="index" class="capitalize" :value="type">
-              {{ type }}
-            </option>
-          </select>
+          <jds-select
+            v-model="form.resource_type"
+            name="status"
+            :options="optionsResourceType"
+            label="Tipe"
+            placeholder="Pilih Tipe"
+          />
         </div>
       </template>
       <template #buttons>
-        <ModalButton btn-type="close" @btn-click="closeAdd" />
-        <ModalButton
-          v-if="submitForm === 'store'"
-          btn-type="submit"
-          :disabled="formIsEmpty"
-          @btn-click="storeResource"
+        <BaseButton
+          label="Tutup"
+          variant="secondary"
+          class="w-full"
+          @click="closeAdd"
         />
-        <ModalButton
-          v-else
-          btn-type="update"
+        <BaseButton
+          v-if="submitForm === 'store'"
+          label="Simpan"
+          :variant="formIsEmpty ? 'secondary' :'primary'"
           :disabled="formIsEmpty"
-          @btn-click="updateResource"
+          type="submit"
+          class="w-full"
+          @click="storeResource"
+        />
+        <BaseButton
+          v-else
+          label="Perbarui"
+          :variant="formIsEmpty ? 'secondary' :'primary'"
+          :disabled="formIsEmpty"
+          class="w-full"
+          @click="updateResource"
         />
       </template>
     </BaseModal>
@@ -462,7 +497,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="postcss" scoped>
 .label-spinner {
   @apply grid justify-items-center;
 }
