@@ -59,10 +59,10 @@
                   </BaseButton>
                 </div>
                 <div>
-                  <BaseButton :variant="isHasParams ? 'danger' : 'secondary'" @click="initParams">
+                  <BaseButton :variant="hasParams ? 'danger' : 'secondary'" @click="initParams">
                     <template #icon>
                       <div class="btn">
-                        <span :class="isHasParams ? 'text-white' : 'text-green-700' ">
+                        <span :class="hasParams ? 'text-white' : 'text-green-700' ">
                           Reset
                         </span>
                       </div>
@@ -298,7 +298,7 @@ export default {
         capacity: 0,
         resource_type: 'online'
       },
-      isHasParams: false,
+      hasParams: false,
       momentFormatDateId,
       optionsStatusResource,
       optionsOrderByIdn,
@@ -378,8 +378,8 @@ export default {
       this.refreshTable()
     },
     checkParams () {
-      // check if another params not null, if true: reset button still red / isHasparams = true
-      Object.values(this.params).find(element => element !== null) === undefined ? this.isHasParams = false : this.isHasParams = true
+      // check if another params not null, if true: reset button still red / hasParams = true
+      Object.values(this.params).find(element => element !== null) === undefined ? this.hasParams = false : this.hasParams = true
     },
     initParams () {
       this.params.sortBy = null
@@ -388,7 +388,7 @@ export default {
       this.params.name = ''
       this.params.page = null
       this.params.perPage = null
-      this.isHasParams = false
+      this.hasParams = false
       this.refreshTable()
     },
     async refreshTable () {
