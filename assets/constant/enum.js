@@ -180,13 +180,34 @@ export const menus = [
 ]
 
 export const thResourceAsset = [
-  'Nama',
-  'Deskripsi',
-  'Kapasitas',
-  'Tipe',
-  'Status',
-  'Tanggal dibuat',
-  'Aksi'
+  {
+    key: 'name',
+    text: 'Nama'
+  },
+  {
+    key: 'description',
+    text: 'Deskripsi'
+  },
+  {
+    key: 'capacity',
+    text: 'Kapasitas'
+  },
+  {
+    key: 'resource_type',
+    text: 'Tipe'
+  },
+  {
+    key: 'status',
+    text: 'Status'
+  },
+  {
+    key: 'created_at',
+    text: 'Tanggal dibuat'
+  },
+  {
+    key: 'action',
+    text: 'Aksi'
+  }
 ]
 
 export const days = [

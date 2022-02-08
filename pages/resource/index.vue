@@ -6,9 +6,9 @@
         Ruangan/Aset
       </Title>
       <!-- filter and add button -->
-      <div class="w-full flex flex-wrap my-3 ">
-        <div class="w-full lg:w-1/2 my-1">
-          <div class="w-1/2 lg:w-1/4">
+      <div class="w-full flex flex-wrap my-3">
+        <div class="w-full grid grid-cols-2 py-2">
+          <div class="w-1/4">
             <BaseButton variant="primary" @click="showModalAdd">
               <template #icon>
                 <div class="btn">
@@ -21,34 +21,53 @@
             </BaseButton>
           </div>
         </div>
-        <div class="w-full lg:w-1/2 flex flex-wrap-reverse lg:flex-wrap flex-row-reverse">
-          <div class="md:grid md:grid-cols-5 flex item-center">
-            <div class="md:col-span-2 w-full">
-              <div class="w-full px-4 py-2 bg-white border-solid border border-gray4 rounded flex justify-between items-center">
-                <input v-model="params.name" class="w-full focus:outline-none" type="text" placeholder="Cari" @keyup.enter="fetchResource">
-                <em title="Cari" class="text-gray4 bx bx-search bx-sm cursor-pointer" @click="fetchResource" />
-              </div>
+        <div class="w-full">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-2">
+            <div class="w-auto pb-2">
+              <jds-search
+                v-model="params.name"
+                icon
+                :button="false"
+                placeholder="Cari Ruangan/Aset"
+                @submit="onSearch"
+              />
             </div>
-            <div class="md:col-span-3 w-full">
-              <div class="md:grid md:grid-cols-3 flex item-center">
-                <div class="md:col-span-1 ml-2">
-                  <button class="btn bg-blue" @click="showModalFilter">
-                    <i class="bx bx-filter bx-sm" aria-hidden="true" />
-                    <span>Filter</span>
-                  </button>
+            <div class="w-full">
+              <div class="flex flex-wrap xl:justify-start gap-x-2">
+                <div>
+                  <BaseButton @click="showModalFilter">
+                    <template #icon>
+                      <div class="btn">
+                        <span class="pr-4">
+                          Filter
+                        </span>
+                        <jds-icon size="sm" name="filter-outline" />
+                      </div>
+                    </template>
+                  </BaseButton>
                 </div>
-                <div class="md:col-span-1 ml-2">
-                  <button class="btn bg-yellow" @click="showModalSort">
-                    <i class="bx bx-sort-up bx-sm" aria-hidden="true" />
-                    <span>Urutkan</span>
-                  </button>
+                <div>
+                  <BaseButton @click="showModalSort">
+                    <template #icon>
+                      <div class="btn">
+                        <span class="pr-4">
+                          Urutkan
+                        </span>
+                        <jds-icon size="sm" name="sort-alphabet-asc" />
+                      </div>
+                    </template>
+                  </BaseButton>
                 </div>
-                <div class="md:col-span-1 ml-2">
-                  <button class="btn" :class="isHasParams ? 'bg-red border border-red' : 'bg-white border border-grayText'" @click.stop="resetFilter">
-                    <span class="hover:text-black" :class="isHasParams ? 'text-white' : 'text-grayText'">
-                      Reset
-                    </span>
-                  </button>
+                <div>
+                  <BaseButton :variant="isHasParams ? 'danger' : 'secondary'" @click="initParams">
+                    <template #icon>
+                      <div class="btn">
+                        <span :class="isHasParams ? 'text-white' : 'text-green-700' ">
+                          Reset
+                        </span>
+                      </div>
+                    </template>
+                  </BaseButton>
                 </div>
               </div>
             </div>
@@ -57,70 +76,37 @@
       </div>
       <!-- table -->
       <div class="align-middle inline-block min-w-full  overflow-x-auto">
-        <table class="w-full" aria-describedby="ruangan-aset">
-          <thead class="bg-primary">
-            <tr>
-              <th v-for="header in dataHeader" :key="header" scope="col" class="thead">
-                {{ header }}
-              </th>
-            </tr>
-          </thead>
-          <tbody v-if="dataResource.length > 0" class="tbody">
-            <tr v-for="resource in dataResource" :key="resource.id">
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span> {{ resource.name }} </span>
-              </td>
-              <td style="max-width:250px" class="px-6 py-4 truncate">
-                <span> {{ resource.description }} </span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span> {{ resource.capacity }} </span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span
-                  :class="{'bg-gray3': resource.resource_type === 'offline'}"
-                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue text-white capitalize"
-                >
-                  {{ resource.resource_type }}
-                </span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span
-                  :class="{'bg-red': resource.status === 'not_active'}"
-                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary text-white capitalize"
-                >
-                  {{ resource.status === 'active' ? 'aktif' : 'tidak aktif' }}
-                </span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-black">
-                <span> {{ momentFormatDateId(resource.created_at) }} </span>
-              </td>
-              <td
-                class="px-6 py-4 whitespace-nowrap text-sm font-medium"
-              >
-                <em title="Edit Ruangan/Aset" class="bx bx-edit bx-sm cursor-pointer" @click="editResource(resource)" />
-                <em title="Hapus Ruangan/Aset" class="bx bx-trash bx-sm cursor-pointer text-red" @click="deleteResouce(resource.id)" />
-              </td>
-            </tr>
-          </tbody>
-          <tbody v-else class="tbody">
-            <tr>
-              <td colspan="7" class="w-full p-4 text-center text-gray3">
-                <div v-if="loading">
-                  <div class="label-spinner">
-                    <div class="spinner" />
-                  </div>
-                </div>
-                <div v-else>
-                  Data tidak tersedia
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <jds-data-table
+          :headers="dataHeader"
+          :items="dataResource"
+          :pagination="dataPagination"
+          :loading="loading"
+          @next-page="nextPage"
+          @previous-page="previousPage"
+          @page-change="pageChange"
+          @per-page-change="perPageChange"
+        >
+          <!-- eslint-disable-next-line vue/valid-v-slot -->
+          <template #item.resource_type="{item}">
+            <BaseChips :value="item.resource_type === 'online' ? 'Online' : 'Offline'" :variant="item.resource_type === 'online' ? 'online' : 'offline'" />
+            <!-- <p>{{ (item.resource_type === 'online' ? 'Online' : 'Offline') }}</p> -->
+          </template>
+          <!-- eslint-disable-next-line vue/valid-v-slot -->
+          <template #item.status="{item}">
+            <BaseChips :value="item.status === 'active' ? 'Aktif' : 'Tidak Aktif'" :variant="item.status === 'active' ? 'active' : 'non-active'" />
+            <!-- <p>{{ (item.status === 'active' ? 'Aktif' : 'Tidak Aktif') }}</p> -->
+          </template>
+          <!-- eslint-disable-next-line vue/valid-v-slot -->
+          <template #item.created_at="{item}">
+            <p>{{ momentFormatDateId(item.created_at) }}</p>
+          </template>
+          <!-- eslint-disable-next-line vue/valid-v-slot -->
+          <template #item.action="{item}">
+            <em title="Edit Ruangan/Aset" class="bx bx-edit bx-sm cursor-pointer" @click="editResource(item)" />
+            <em title="Hapus Ruangan/Aset" class="bx bx-trash bx-sm cursor-pointer text-red" @click="deleteResouce(item.id)" />
+          </template>
+        </jds-data-table>
       </div>
-      <!-- pagination -->
-      <Pagination :active-pagination="activeData" :length-data="metaResource.last_page" @update="changeActivePagination" />
     </div>
     <!-- modal filter -->
     <BaseModal
@@ -129,20 +115,28 @@
     >
       <template #body>
         <div>
-          <label for="status" class="block text-sm">Status</label>
-          <select v-model="params.status" name="status" class="w-full form-input bg-white rounded-md">
-            <option v-for="status in optionsStatusResource" :key="status.value" :value="status.value">
-              {{ status.label }}
-            </option>
-          </select>
+          <jds-select
+            v-model="params.status"
+            name="status"
+            :options="optionsStatusResource"
+            label="Status"
+            placeholder="Pilih"
+          />
         </div>
       </template>
       <template #buttons>
-        <ModalButton btn-type="clear" @btn-click="resetFilterModal" />
-        <ModalButton
-          btn-type="set"
+        <BaseButton
+          label="Bersihkan"
+          variant="secondary"
+          class="w-full"
+          @click="resetFilterModal"
+        />
+        <BaseButton
+          label="Terapkan"
+          :variant="checkFilterIsEmpty ? 'secondary' : 'primary'"
+          class="w-full"
           :disabled="checkFilterIsEmpty"
-          @btn-click="applyFilterAndSort"
+          @click="applyFilterAndSort"
         />
       </template>
     </BaseModal>
@@ -153,29 +147,38 @@
       modal-title="Urutkan Data Ruangan/Aset"
     >
       <template #body>
-        <div class="w-full flex flex-col">
-          <label class="block text-sm" for="sort">Urutkan Berdasarkan</label>
-          <select v-model="params.sortBy" name="sort" class="w-full form-input bg-white rounded-md">
-            <option v-for="sort in optionsSortResource" :key="sort.value" :value="sort.value">
-              {{ sort.label }}
-            </option>
-          </select>
+        <div class="asset__sort w-full flex flex-col">
+          <jds-select
+            v-model="params.sortBy"
+            name="sort"
+            :options="optionsSortResource"
+            label="Urutkan Berdasarkan"
+            placeholder="Pilih"
+          />
         </div>
         <div class="w-full flex flex-col mt-3">
-          <label class="block text-sm" for="order">Urutkan dari</label>
-          <select v-model="params.orderBy" name="order" class="w-full form-input bg-white rounded-md">
-            <option v-for="order in optionsOrderByIdn" :key="order.key" class="capitalize" :value="order.key">
-              {{ order.value }}
-            </option>
-          </select>
+          <jds-select
+            v-model="params.orderBy"
+            name="order"
+            :options="optionsOrderByIdn"
+            label="Urutkan dari"
+            placeholder="Pilih"
+          />
         </div>
       </template>
       <template #buttons>
-        <ModalButton btn-type="clear" @btn-click="resetFilterModal" />
-        <ModalButton
-          btn-type="set"
+        <BaseButton
+          label="Bersihkan"
+          variant="secondary"
+          class="w-full"
+          @click="resetFilterModal"
+        />
+        <BaseButton
+          label="Terapkan"
+          :variant="checkSortIsEmpty ? 'secondary' :'primary'"
+          class="w-full"
           :disabled="checkSortIsEmpty"
-          @btn-click="applyFilterAndSort"
+          @click="applyFilterAndSort"
         />
       </template>
     </BaseModal>
@@ -265,34 +268,37 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import Pagination from '~/components/Pagination.vue'
 import { optionsStatusResource, optionsResourceType, optionsSortResource, optionsOrderByIdn, thResourceAsset } from '~/assets/constant/enum'
-import {
-  momentFormatDateId
-} from '~/utils'
+import { momentFormatDateId } from '~/utils'
 export default {
-  components: { Pagination },
   middleware: ['auth', 'admin'],
   layout: 'admin',
   data () {
     return {
-      activeData: 1,
       dataHeader: thResourceAsset,
+      meta: {},
+      dataPagination: {
+        currentPage: 1,
+        itemsPerPage: 10,
+        itemsPerPageOptions: [10, 20, 30, 40, 50],
+        totalRows: 0
+      },
       params: {
         sortBy: null,
         orderBy: null,
-        name: null,
+        name: '',
         page: null,
+        perPage: null,
         status: null
       },
       form: {
-        name: null,
-        isHasParams: false,
+        name: '',
         description: null,
         status: 'active',
         capacity: 0,
         resource_type: 'online'
       },
+      isHasParams: false,
       momentFormatDateId,
       optionsStatusResource,
       optionsOrderByIdn,
@@ -302,6 +308,7 @@ export default {
       loading: false
     }
   },
+
   computed: {
     ...mapState('resource', [
       'dataResource',
@@ -351,6 +358,25 @@ export default {
     this.fetchResource()
   },
   methods: {
+    nextPage (value) {
+      this.params.page = value
+      this.fetchResource()
+    },
+    previousPage (value) {
+      this.params.page = value
+      this.fetchResource()
+    },
+    pageChange (value) {
+      this.params.page = value
+      this.fetchResource()
+    },
+    perPageChange (value) {
+      this.params.perPage = value
+    },
+    onSearch () {
+      this.checkParams()
+      this.refreshTable()
+    },
     checkParams () {
       // check if another params not null, if true: reset button still red / isHasparams = true
       Object.values(this.params).find(element => element !== null) === undefined ? this.isHasParams = false : this.isHasParams = true
@@ -359,9 +385,14 @@ export default {
       this.params.sortBy = null
       this.params.orderBy = null
       this.params.status = null
-      this.params.name = null
+      this.params.name = ''
       this.params.page = null
+      this.params.perPage = null
       this.isHasParams = false
+      this.refreshTable()
+    },
+    async refreshTable () {
+      await this.fetchResource()
     },
     initForm () {
       this.form.name = null
@@ -395,7 +426,6 @@ export default {
             })
             this.initParams()
             this.fetchResource()
-            this.activeData = 1
           }).catch(() => {
             this.$toast.error('Terjadi Kesalahan', {
               iconPack: 'fontawesome',
@@ -414,7 +444,6 @@ export default {
         })
         this.initParams()
         this.fetchResource()
-        this.activeData = 1
       }).catch((e) => {
         const error = e.response.data
         if (error.errors && error.errors.name) {
@@ -434,7 +463,6 @@ export default {
         })
         this.initParams()
         this.fetchResource()
-        this.activeData = 1
       }
       ).catch((e) => {
         const error = e.response.data
@@ -453,9 +481,10 @@ export default {
       this.loading = true
       this.$axios.get('/asset', { params: this.params }).then((response) => {
         this.$store.commit('resource/SET_RESOURCE', response.data)
+        this.meta = response ? response.data.meta : {}
+        this.dataPagination.totalRows = this.meta.total
         this.loading = false
       })
-      this.checkParams()
     },
     resetFilterModal () {
       this.initForm()
@@ -466,27 +495,16 @@ export default {
       this.initForm()
       this.initParams()
       this.checkParams()
-      this.params.status = null
       this.fetchResource()
-      this.activeData = 1
     },
     applyFilterAndSort () {
       this.fetchResource()
       this.checkParams()
-      this.activeData = 1
-    },
-    changeActivePagination (val) {
-      this.activeData = val
-      this.params.page = val
-      this.fetchResource()
     },
     showModalFilter () {
-      this.params.status = 'active'
-      this.initParams()
       this.$modal.show('filter')
     },
     showModalSort () {
-      this.initParams()
       this.$modal.show('sort')
     },
     showModalAdd () {
@@ -497,14 +515,3 @@ export default {
   }
 }
 </script>
-<style lang="postcss" scoped>
-.label-spinner {
-  @apply grid justify-items-center;
-}
-
-.spinner {
-  @apply w-5 h-5 rounded-full border-2 border-transparent animate-spin;
-  border-top-color: #219653;
-  border-right-color: #219653;
-}
-</style>
