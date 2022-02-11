@@ -127,7 +127,7 @@
       <template #buttons>
         <BaseButton
           label="Bersihkan"
-          variant="secondary"
+          variant="danger"
           class="w-full"
           @click="resetFilterModal"
         />
@@ -169,7 +169,7 @@
       <template #buttons>
         <BaseButton
           label="Bersihkan"
-          variant="secondary"
+          variant="danger"
           class="w-full"
           @click="resetFilterModal"
         />
