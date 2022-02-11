@@ -122,9 +122,9 @@ export default {
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
-	transpile: [
-		'@jabardigitalservice/jds-design-system'
-	  ],
+    transpile: [
+      '@jabardigitalservice/jds-design-system'
+    ],
     extend (config, ctx) {
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
