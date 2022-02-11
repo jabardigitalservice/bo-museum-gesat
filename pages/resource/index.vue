@@ -241,7 +241,7 @@
       <template #buttons>
         <BaseButton
           label="Tutup"
-          variant="secondary"
+          variant="danger"
           class="w-full"
           @click="closeAdd"
         />
