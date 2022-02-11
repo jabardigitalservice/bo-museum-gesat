@@ -92,7 +92,6 @@ export const cardsDashboard = [
   {
     title: 'Reservasi Dibuat',
     value: 0,
-    bgColor: 'bg-blue-400',
     icon: icon.calendar
   }
 ]
