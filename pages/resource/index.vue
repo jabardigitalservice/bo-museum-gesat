@@ -316,6 +316,7 @@ export default {
     ]),
     formIsEmpty () {
       const isFormEmpty = [
+        this.form.status,
         this.form.name,
         this.form.capacity,
         this.form.resource_type
