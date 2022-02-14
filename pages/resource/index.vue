@@ -127,7 +127,7 @@
       <template #buttons>
         <BaseButton
           label="Bersihkan"
-          variant="secondary"
+          variant="danger"
           class="w-full"
           @click="resetFilterModal"
         />
@@ -169,7 +169,7 @@
       <template #buttons>
         <BaseButton
           label="Bersihkan"
-          variant="secondary"
+          variant="danger"
           class="w-full"
           @click="resetFilterModal"
         />
@@ -241,7 +241,7 @@
       <template #buttons>
         <BaseButton
           label="Tutup"
-          variant="secondary"
+          variant="danger"
           class="w-full"
           @click="closeAdd"
         />
@@ -316,6 +316,7 @@ export default {
     ]),
     formIsEmpty () {
       const isFormEmpty = [
+        this.form.status,
         this.form.name,
         this.form.capacity,
         this.form.resource_type
