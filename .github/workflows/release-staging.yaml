@@ -72,10 +72,10 @@ jobs:
 
     - name: GitOps ArgoCD Create Branch, Commit, Push
       run: |
-        export GIT_SSH_COMMAND="ssh -i /tmp/gitlab-deploy-ssh-key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
-        git checkout -b digiteam-reservasi-release-staging
-        git add jds-terraform-gke/k8s/digiteam-reservasi-helm/values-staging.yaml
+        cd jds-terraform-gke/k8s/digiteam-reservasi-helm
         git config user.email "github-action@github.com"
         git config user.name "Github Action"
+        git checkout -b digiteam-reservasi-release-staging
+        git add values-staging.yaml
         git commit -m "Digiteam Reservasi Release to Staging"
         git push origin digiteam-reservasi-release-staging
