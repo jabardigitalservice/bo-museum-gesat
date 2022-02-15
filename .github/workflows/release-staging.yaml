@@ -72,8 +72,9 @@ jobs:
 
     - name: GitOps ArgoCD Create Branch, Commit, Push
       run: |
+        export GIT_AUTHOR_NAME="Github Action"
         cd jds-terraform-gke/k8s/digiteam-reservasi-helm
         git checkout -b digiteam-reservasi-release-staging
         git add .
-        git commit --author="Github Action <>" -m "Digiteam Reservasi Release to Staging"
-        git push origin release-staging
+        git commit -m "Digiteam Reservasi Release to Staging"
+        git push origin digiteam-reservasi-release-staging
