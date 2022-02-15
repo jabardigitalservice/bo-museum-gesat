@@ -72,6 +72,9 @@ jobs:
 
     - name: GitOps ArgoCD Create Branch, Commit, Push
       run: |
+        echo "${{ secrets.GITLAB_ARGOCD_KEY }}" > /tmp/gitlab-deploy-ssh-key
+        chmod 600 /tmp/gitlab-deploy-ssh-key
+        export GIT_SSH_COMMAND="ssh -i /tmp/gitlab-deploy-ssh-key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
         cd jds-terraform-gke/k8s/digiteam-reservasi-helm
         git config user.email "github-action@github.com"
         git config user.name "Github Action"
