@@ -110,7 +110,7 @@ export const parentMenus = [
   {
     id: 2,
     path: '#',
-    label: 'Reservasi Command Center',
+    label: 'Reservasi Gedung Sate',
     iconClass: icon.home,
     role: [
       'admin_reservasi'
@@ -160,7 +160,7 @@ export const menus = [
   {
     parent: 2,
     path: '/command-center',
-    label: 'Pengaturan Command Center',
+    label: 'Pengaturan Gedung Sate',
     iconClass: icon.cabinet,
     role: [
       'admin_reservasi'

@@ -44,7 +44,7 @@
 }
 
 tr:nth-child(2n + 2) {
-  @apply bg-gray4;
+  @apply bg-gray5;
 }
 
 /* Override design system style*/
