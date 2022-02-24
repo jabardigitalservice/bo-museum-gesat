@@ -25,7 +25,7 @@
                   </div>
                   <div v-for="menu in menus" :id="parent.id" :key="menu.path" class="space-y-1">
                     <div v-if="parent.id == menu.parent">
-                      <NuxtLink :to="menu.path" class="group submenu hover:text-gray-200 hover:bg-gray-300">
+                      <NuxtLink :to="menu.path" exact class="group submenu hover:text-gray-200 hover:bg-gray-300">
                         <i :class="['bx bx-sm text-white', menu.iconClass]" aria-hidden="true" />
                         <div class="ml-1">
                           {{ menu.label }}
