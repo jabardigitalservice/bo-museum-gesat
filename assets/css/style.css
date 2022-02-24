@@ -11,7 +11,7 @@
 }
 
 .btn {
-  @apply w-full text-base font-sans font-medium text-white flex items-center;
+  @apply w-full p-2 text-base font-sans font-medium text-white flex items-center justify-center rounded;
 }
 
 .btn:focus {
