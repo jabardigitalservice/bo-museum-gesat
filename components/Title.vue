@@ -7,7 +7,7 @@
       <h1 class="text-2xl font-semibold font-sans text-black self-center md:text-3xl">
         <slot />
       </h1>
-      <div class="w-10 h-10 bg-green-700 rounded-full text-white text-2xl leading-relaxed font-bold font-sans text-center self-center">
+      <div class="w-10 h-10 bg-primary rounded-full text-white text-2xl leading-relaxed font-bold font-sans text-center self-center">
         {{ initialUserName }}
       </div>
     </div>

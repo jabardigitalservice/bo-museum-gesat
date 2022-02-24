@@ -49,7 +49,7 @@ export default {
 }
 
 .chips--online {
-    @apply bg-blue-700;
+    @apply bg-blue;
   }
 
 .chips--offline {
@@ -57,10 +57,10 @@ export default {
   }
 
 .chips--active {
-    @apply bg-green-700;
+    @apply bg-primary;
   }
 
 .chips--non-active {
-    @apply bg-red-700;
+    @apply bg-red;
   }
 </style>

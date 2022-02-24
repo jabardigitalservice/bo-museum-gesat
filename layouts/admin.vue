@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-screen h-screen bg-blue-50">
+  <div class="flex w-screen h-screen">
     <SidebarDesktop />
     <SidebarMobile />
     <div class="w-full overflow-x-auto">

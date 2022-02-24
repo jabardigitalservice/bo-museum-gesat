@@ -62,7 +62,7 @@
                   <BaseButton :variant="hasParams ? 'danger' : 'secondary'" @click="initParams">
                     <template #icon>
                       <div class="btn">
-                        <span :class="hasParams ? 'text-white' : 'text-green-700' ">
+                        <span :class="hasParams ? 'text-white' : 'text-primary' ">
                           Reset
                         </span>
                       </div>
