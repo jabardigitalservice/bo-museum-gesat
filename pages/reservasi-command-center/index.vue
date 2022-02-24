@@ -550,8 +550,8 @@ export default {
       }
     },
     findStatus (stat) {
-      const findStats = statusReservation.find(el => el.key === stat)
-      return findStats.value
+      const findStats = statusReservation.find(el => el.value === stat)
+      return findStats.label
     },
     getDisplayDateTime (date, withTime = true) {
       if (date && withTime) {
