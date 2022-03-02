@@ -97,16 +97,16 @@ export const cardsDashboard = [
 ]
 
 export const parentMenus = [
-  {
-    id: 1,
-    path: '#',
-    label: 'Reservasi Aset',
-    iconClass: icon.home,
-    role: [
-      'employee_reservasi',
-      'admin_reservasi'
-    ]
-  },
+  // {
+  //   id: 1,
+  //   path: '#',
+  //   label: 'Reservasi Aset',
+  //   iconClass: icon.home,
+  //   role: [
+  //     'employee_reservasi',
+  //     'admin_reservasi'
+  //   ]
+  // },
   {
     id: 2,
     path: '#',

@@ -498,6 +498,9 @@ export default {
       if (this.form.holder === '') { this.form.holder = null }
     }
   },
+  beforeCreate () {
+    this.$router.push('/reservasi-command-center')
+  },
   methods: {
     validateInputTime () {
       const userSelectedDate = momentFormatDate(this.form.date)
