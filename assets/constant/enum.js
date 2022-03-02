@@ -212,37 +212,83 @@ export const thResourceAsset = [
 export const days = [
   {
     index: 1,
-    name: 'Senin'
+    value: 'Senin',
+    text: 'Senin',
+    label: 'Senin'
   },
   {
     index: 2,
-    name: 'Selasa'
+    value: 'Selasa',
+    text: 'Selasa',
+    label: 'Selasa'
   },
   {
     index: 3,
-    name: 'Rabu'
+    value: 'Rabu',
+    text: 'Rabu',
+    label: 'Rabu'
   },
   {
     index: 4,
-    name: 'Kamis'
+    value: 'Kamis',
+    text: 'Kamis',
+    label: 'Kamis'
   },
   {
     index: 5,
-    name: 'Jumat'
+    value: 'Jumat',
+    text: 'Jumat',
+    label: 'Jumat'
   },
   {
     index: 6,
-    name: 'Sabtu'
+    value: 'Sabtu',
+    text: 'Sabtu',
+    label: 'Sabtu'
+
   },
   {
     index: 0,
-    name: 'Minggu'
+    value: 'Minggu',
+    text: 'Minggu',
+    label: 'Minggu'
   }
 ]
 
-export const repeatType = {
-  NONE: 'Tidak',
-  DAILY: 'Perhari',
-  WEEKLY: 'Perminggu',
-  MONTHLY: 'Perbulan'
-}
+export const repeatType = [
+  {
+    value: 'NONE',
+    label: 'Tidak'
+  },
+  {
+    value: 'DAILY',
+    label: 'Perhari'
+  },
+  {
+    value: 'WEEKLY',
+    label: 'Perminggu'
+  },
+  {
+    value: 'MONTHLY',
+    label: 'Perbulan'
+  }
+]
+
+export const weeks = [
+  {
+    value: 1,
+    label: 'Satu'
+  },
+  {
+    value: 2,
+    label: 'Dua'
+  },
+  {
+    value: 3,
+    label: 'Tiga'
+  },
+  {
+    value: 4,
+    label: 'Empat'
+  }
+]
