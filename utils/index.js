@@ -6,9 +6,9 @@ moment.locale(locale)
 
 /* function to convert date use moment js */
 // if input date in timezone
-export function momentFormatDate (date) {
+export function momentFormatDate (date, pattern) {
   if (moment(date).isValid()) {
-    return moment(date).format('YYYY-MM-DD')
+    return moment(date).format(pattern)
   }
   return ''
 }

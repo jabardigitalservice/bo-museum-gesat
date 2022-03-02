@@ -1,69 +1,51 @@
 <template>
   <div>
     <!-- Day -->
-    <section class="mb-4">
-      <label for="monthly-day" class="block text-sm">
-        Hari
-        <span class="text-red-800">*</span>
-      </label>
-      <select
-        id="monthly-day"
-        class="form form-input"
-        :value="formDays"
-        @change="$emit('change:form-days', Number($event.target.value))"
-      >
-        <option v-for="day in days" :key="day.index" :value="day.index">
-          {{ day.name }}
-        </option>
-      </select>
+    <section class="mb-4 repeatation__select-month">
+      <jds-select
+        :value="days.value"
+        :options="days"
+        options-header="Hari"
+        label="Hari"
+        helper-text="* Wajib diisi"
+        placeholder="Pilih"
+        @change="onChangeDay"
+      />
     </section>
 
     <!-- Week -->
-    <section class="mb-4">
-      <label for="monthly-week" class="block text-sm">
-        Minggu Ke-
-        <span class="text-red-800">*</span>
-      </label>
-      <select
-        id="monthly-week"
-        class="form form-input"
+    <section class="mb-4 repeatation__month">
+      <jds-select
         :value="formWeek"
-        @change="$emit('change:form-week', Number($event.target.value))"
-      >
-        <option value="1">
-          Satu
-        </option>
-        <option value="2">
-          Dua
-        </option>
-        <option value="3">
-          Tiga
-        </option>
-        <option value="4">
-          Empat
-        </option>
-      </select>
+        name="approval_status"
+        :options="weeks"
+        options-header="Urutan"
+        label="Minggu ke-"
+        helper-text="* Wajib diisi"
+        placeholder="Pilih"
+        @change="onChangeWeek"
+      />
     </section>
 
     <!-- Month Repetition -->
     <section class="mb-4">
       <label for="monthly-month" class="block text-sm">
         Pengulangan Tiap
-        <span class="text-red-800">*</span>
+        <span class="text-xs text-red-500">* Wajib diisi</span>
       </label>
-      <div class="grid md:grid-cols-3 sm:grid-cols-1 gap-4">
+      <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
         <input
           id="monthly-month"
           type="number"
           min="1"
           max="3"
           :value="formMonth"
-          class="form form-input md:col-span-2 sm:col-span-1"
+          class="w-full form-input bg-white rounded-lg border-gray-800 focus:outline-none hover:border-green-400 focus:border-green-400 cursor-pointer"
           @change="$emit('change:form-month', Number($event.target.value))"
         >
-        <p class="block text-sm col-span-1">
+        <p class="block text-xs col-span-1">
           Bulan Sekali
-          <span class="text-red-800">
+          <span class="text-red-500">
             (Max 3)
           </span>
         </p>
@@ -71,23 +53,19 @@
     </section>
 
     <!-- End Date -->
-    <section>
-      <label class="block text-sm">
-        Tanggal Berakhir
-        <span class="text-red-800">*</span>
-      </label>
-      <date-picker
+    <section class="repeatation__select-date-month">
+      <jds-date-input
         :value="endDate"
-        class="form form-input"
-        required
         :disabled-dates="disabledDates"
-        @selected="onSelected"
+        label="Tanggal Berakhir"
+        @input="onSelected"
       />
     </section>
   </div>
 </template>
 
 <script>
+import { days, weeks } from '@/assets/constant/enum'
 import recurringMixins from './mixins/recurringMixins'
 
 export default {
@@ -102,9 +80,39 @@ export default {
       default: null
     }
   },
+  data () {
+    return {
+      days,
+      weeks,
+      day: []
+    }
+  },
   methods: {
     onSelected (date) {
-      this.$emit('selected:form-end-date', new Date(date).toISOString())
+      this.$emit('selected:form-end-date', date)
+    },
+    onChangeDay (value) {
+      if (value === 'Senin') {
+        value = 1
+      } else if (value === 'Selasa') {
+        value = 2
+      } else if (value === 'Rabu') {
+        value = 3
+      } else if (value === 'Kamis') {
+        value = 4
+      } else if (value === 'Jumat') {
+        value = 5
+      } else if (value === 'Sabtu') {
+        value = 6
+      } else if (value === 'Minggu') {
+        value = 0
+      } else {
+        value = undefined
+      }
+      this.$emit('change:form-days', value)
+    },
+    onChangeWeek (value) {
+      this.$emit('change:form-week', value)
     }
   }
 }
