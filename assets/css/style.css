@@ -50,12 +50,69 @@ tr:nth-child(2n+2){
 
 .reservation__filter .jds-popover__content,
 .asset__description .jds-popover__content,
-.asset__sort .jds-popover__content {
-  z-index: 10 !important;
+.asset__sort .jds-popover__content,
+.start__time .jds-popover__content,
+.end__time .jds-popover__content,
+.repeat__reservation .jds-popover__content {
+  z-index: 25 !important;
+}
+
+.date__reservation .jds-popover__content,
+.repeatation___end-date-daily .jds-popover__content,
+.repeatation___end-date-weekly .jds-popover__content,
+.repeatation__month .jds-popover__content,
+.repeatation__end-date-monthly .jds-popover__content,
+.repeatation__select-day .jds-popover__content,
+.repeatation__select-week .jds-popover__content,
+.repeatation__select-month .jds-popover__content,
+.repeatation__select-date-day .jds-popover__content,
+.repeatation__select-date-week .jds-popover__content,
+.repeatation__select-date-month .jds-popover__content {
+  z-index: 25 !important;
+  background-color: white !important;
+}
+
+/* This code override style design system in BaseSelectDropdown Component */
+
+/* Start */
+
+.repeatation__select-day .jds-popover__content,
+.repeatation__select-week .jds-popover__content,
+.repeatation__select-month .jds-popover__content {
+  position: fixed !important;
+  width: 223px !important;
+}
+
+.repeatation__select-day .jds-popover__content .jds-select-content .jds-checkbox-group, 
+.repeatation__select-week .jds-popover__content .jds-select-content .jds-checkbox-group,
+.repeatation__select-month .jds-popover__content .jds-select-content .jds-checkbox-group {
+  display: block !important;
+  max-height: 200px !important;
+  overflow-y: scroll !important;
+  padding: 0px 16px 0px 16px !important;
+}
+
+/* End */
+
+.start__time .jds-popover__content .jds-select__options .jds-options__option-list,
+.end__time .jds-popover__content .jds-select__options .jds-options__option-list {
+  max-height: 200px !important;
+  overflow-y: scroll !important;
+}
+
+.reservation__description .jds-text-area__input-wrapper {
+  @apply rounded-md border-2 border-gray-400 !important;
 }
 
 .jds-data-table__column-wrapper {
   text-align: left !important;
+}
+
+.jds-form-control-label  {
+  @apply inline !important;
+}
+.jds-form-control-helper-text {
+  @apply text-red-500 inline text-xs !important;
 }
 
 .asset__description .jds-text-area__input-wrapper {

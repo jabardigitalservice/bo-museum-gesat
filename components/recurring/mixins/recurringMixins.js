@@ -44,7 +44,7 @@ const recurringMixins = {
     endDate () {
       const startDate = this.disabledDates.to
       const endDate = this.formEndDate
-      return endDate < startDate.toISOString() ? startDate : endDate
+      return startDate && endDate
     }
   }
 }
