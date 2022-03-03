@@ -443,7 +443,7 @@ export default {
       const mailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
       const isEmail = this.form.holder ? this.form.holder.match(mailFormat) : true
       const isFormTitle = this.form.title.length > 200
-      const isFormDescription = this.form.description === null ? false : this.form.description.length > 200
+      const isFormDescription = this.form.description !== null && this.form.description.length > 200
       const isFormEmpty = [
         this.form.title
       ].some((value) => {
