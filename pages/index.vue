@@ -423,6 +423,9 @@ export default {
       let isRules = false
       const { monthly } = this.reservation
       switch (this.form.repeat_type) {
+        case 'DAILY':
+          isRules = (!this.formDays.length && !this.form.days.length) || (this.form.end_date <= this.currentDate)
+          break
         case 'WEEKLY':
           isRules = !this.form.week || this.form.week > 12 || this.form.week <= 0 || /[^0-9]\d*$/.test(this.form.week) || (!this.formDays.length && !this.form.days.length) || (this.form.end_date <= this.currentDate)
           break
@@ -436,8 +439,6 @@ export default {
       const { isError } = this.reservation
       const isAssetEmpty = this.form.asset_ids ? this.form.asset_ids.length === 0 : true
       const isStartDate = this.form.date < this.currentDate || !(this.form.start_date !== '')
-      const isDaysEmpty = this.form.repeat_type === 'DAILY' ? (!this.formDays.length && !this.form.days.length) : false
-      const isEndDate = this.form.repeat_type === 'DAILY' ? (this.form.end_date <= this.currentDate) : false
       // regex to check email pattern like xxxx@xxxx.xxx or xxxx@xxxx.xx.xx
       const mailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
       const isEmail = this.form.holder ? this.form.holder.match(mailFormat) : true
@@ -451,7 +452,7 @@ export default {
         }
         return typeof value === 'undefined' || value === null
       })
-      return isError || isAssetEmpty || isDaysEmpty || isFormEmpty || isRules || !isEmail || isStartDate || isEndDate || isFormTitle || isFormDescription
+      return isError || isAssetEmpty || isFormEmpty || isRules || !isEmail || isStartDate || isFormTitle || isFormDescription
     }
   },
   watch: {
