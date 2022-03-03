@@ -91,24 +91,9 @@ export default {
     onSelected (date) {
       this.$emit('selected:form-end-date', date)
     },
-    onChangeDay (value) {
-      if (value === 'Senin') {
-        value = 1
-      } else if (value === 'Selasa') {
-        value = 2
-      } else if (value === 'Rabu') {
-        value = 3
-      } else if (value === 'Kamis') {
-        value = 4
-      } else if (value === 'Jumat') {
-        value = 5
-      } else if (value === 'Sabtu') {
-        value = 6
-      } else if (value === 'Minggu') {
-        value = 0
-      } else {
-        value = undefined
-      }
+    onChangeDay (day) {
+      const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']
+      const value = days.includes(day) ? days.indexOf(day) : undefined
       this.$emit('change:form-days', value)
     },
     onChangeWeek (value) {

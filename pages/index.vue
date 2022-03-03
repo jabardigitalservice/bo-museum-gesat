@@ -427,7 +427,7 @@ export default {
           isRules = !this.form.week || this.form.week > 12 || this.form.week <= 0 || /[^0-9]\d*$/.test(this.form.week) || (!this.formDays.length && !this.form.days.length) || (this.form.end_date <= this.currentDate)
           break
         case 'MONTHLY':
-          isRules = typeof monthly.month !== 'number' || !monthly.month || monthly.month >= 4 || monthly.month <= 0 || !Number.isInteger(monthly.month) || (this.form.end_date <= this.currentDate) || !(typeof monthly.week !== 'undefined' && monthly.week !== null)
+          isRules = typeof monthly.month !== 'number' || !monthly.month || monthly.month >= 4 || monthly.month <= 0 || !Number.isInteger(monthly.month) || (this.form.end_date <= this.currentDate) || !(typeof monthly.week !== 'undefined' && monthly.week !== null) || !(typeof monthly.days[0] !== 'undefined')
           break
         default:
           isRules = false
