@@ -467,7 +467,6 @@ export default {
     endDate () {
       const endDate = this.endDate.split('/').reverse().join('/')
       this.form.end_date = momentFormatDate(endDate, 'YYYY-MM-DD')
-      // console.log(this.form.end_date)
     },
     'form.holder' () {
       if (this.form.holder === '') { this.form.holder = null }
