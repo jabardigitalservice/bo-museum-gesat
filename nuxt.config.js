@@ -1,4 +1,7 @@
 export default {
+  env: {
+    featureCommandCenter: process.env.FEATURE_COMMAND_CENTER === 'true'
+  },
   // Disable server-side rendering (https://go.nuxtjs.dev/ssr-mode)
   ssr: false,
 
