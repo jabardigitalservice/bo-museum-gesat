@@ -1,4 +1,5 @@
 import { days } from '../../../assets/constant/enum'
+import { momentFormatDate } from '../../../utils/index'
 
 const recurringMixins = {
   props: {
@@ -43,8 +44,11 @@ const recurringMixins = {
     },
     endDate () {
       const startDate = this.disabledDates.to
-      const endDate = this.formEndDate
-      return endDate < startDate.toISOString() ? startDate : endDate
+      const dateSplit = this.formEndDate.split('/').reverse().join(', ')
+      const endDate = new Date(dateSplit)
+      const newEndDate = momentFormatDate(endDate, 'DD/MM/YYYY')
+      const newStartDate = momentFormatDate(startDate, 'DD/MM/YYYY')
+      return endDate < startDate ? newEndDate : newStartDate
     }
   }
 }
