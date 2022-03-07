@@ -258,14 +258,14 @@
       </template>
       <template #buttons>
         <template v-if="detailData.extendedProps.name === $auth.user.name || isAdminRole">
-          <BaseButton v-if="!isRecurring" variant="danger" label="Hapus" @click="deleteData" />
+          <BaseButton v-if="!isRecurring" class="w-full" variant="danger" label="Hapus" @click="deleteData" />
           <DropdownButton v-else button-type="delete">
             <template #options>
               <BaseButton variant="danger" label="Hapus reservasi ini" @click="deleteData" />
               <BaseButton variant="danger" label="Hapus seluruh perulangan" @click="deleteAllData" />
             </template>
           </DropdownButton>
-          <BaseButton type="button" label="Edit" @click="setEditInitialValues" />
+          <BaseButton type="button" class="w-full" label="Edit" @click="setEditInitialValues" />
         </template>
         <template v-else>
           <BaseButton variant="primary" label="Detail" @click="$modal.hide('detail')" />
