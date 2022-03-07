@@ -884,7 +884,7 @@ export default {
   }
 }
 </script>
-<style lang="postcss" scooped>
+<style lang="postcss">
 @media (max-width: 768px){
   .fc .fc-header-toolbar {
     display: flex;
@@ -902,5 +902,14 @@ export default {
 }
 .fc .fc-timegrid-slot-minor {
   border-style: solid !important;
+}
+.date__reservation .jds-calendar {
+  max-width: none !important;
+}
+.date__reservation .jds-calendar .jds-calendar__list-of-days,
+.date__reservation .jds-calendar .jds-calendar__days {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr) !important;
+  font-family: 'Roboto' !important;
 }
 </style>
