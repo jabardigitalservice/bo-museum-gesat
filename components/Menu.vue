@@ -56,6 +56,11 @@
 import { menus, parentMenus } from '~/assets/constant/enum'
 import { isAdmin } from '~/utils'
 export default {
+  data () {
+    return {
+      commandCenter: process.env.featureCommandCenter
+    }
+  },
   computed: {
     menus () {
       const list = menus.filter((menu) => {
@@ -73,10 +78,18 @@ export default {
       const list = parentMenus.filter((menu) => {
         if (this.isAdmin(this.$auth)) {
           if (menu.role.includes('admin_reservasi')) {
-            return menu
+            if (this.commandCenter) {
+              return menu
+            } else {
+              return menu.id === 1
+            }
           }
         } else if (menu.role.includes('employee_reservasi')) {
-          return menu
+          if (this.commandCenter) {
+            return menu
+          } else {
+            return menu.id === 1
+          }
         }
       })
       return list
