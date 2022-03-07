@@ -179,30 +179,57 @@
       <!-- Form Buttons -->
       <template #buttons>
         <BaseButton
-          variant="secondary"
+          variant="danger"
           label="Tutup"
           class="w-full"
           :disabled="reservation.isLoading"
           @click="closeFormReservation"
         />
         <template v-if="reservation.isEdit">
-          <BaseButton
-            variant="primary"
+          <button
+            v-if="!loading"
+            type="submit"
+            class="reservation__button-update"
+            :class="[ !formIsError ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
             :disabled="formIsError"
-            label="Update"
-            class="w-full Update"
             @click="handleUpdate"
-          />
+          >
+            Update
+          </button>
+          <button
+            v-else
+            class="reservation__button-spinner"
+            :class="[ !formIsError ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
+            :disabled="!formIsError"
+          >
+            <jds-spinner
+              v-show="loading"
+              size="16px"
+            />
+          </button>
         </template>
         <template v-else>
-          <BaseButton
+          <button
+            v-if="!loading"
             type="submit"
-            variant="primary"
-            label="Submit"
+            class="reservation__button-submit"
+            :class="[ !formIsError ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
             :disabled="formIsError"
-            class="w-full"
             @click="addReservation"
-          />
+          >
+            Simpan
+          </button>
+          <button
+            v-else
+            class="reservation__button-spinner"
+            :class="[ !formIsError ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
+            :disabled="!formIsError"
+          >
+            <jds-spinner
+              v-show="loading"
+              size="16px"
+            />
+          </button>
         </template>
       </template>
     </BaseModal>
@@ -408,6 +435,9 @@ export default {
     }
   },
   computed: {
+    loading () {
+      return this.reservation.isLoading
+    },
     isAdminRole () {
       return isAdmin(this.$auth)
     },
@@ -940,5 +970,11 @@ export default {
   display: grid !important;
   grid-template-columns: repeat(7, 1fr) !important;
   font-family: 'Roboto' !important;
+}
+.reservation__button-submit,
+.reservation__button-update,
+.reservation__button-spinner {
+  padding: 9px 16px;
+  @apply rounded-lg text-base w-full font-normal leading-6 outline-none;
 }
 </style>
