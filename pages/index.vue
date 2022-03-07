@@ -144,6 +144,7 @@
             name="reservation__name"
             label="Judul Kegiatan"
             :helper-text="helperText"
+            :error-message="errorMessageTitle"
             placeholder="Judul Maksimal 200 Karakter"
           />
         </section>
@@ -157,6 +158,7 @@
             name="holderEmail"
             type="text"
             label="Tambahkan Email Penanggung Jawab"
+            :error-message="errorMessageHolder"
             placeholder="contoh: anggarahardian@gmail.com"
           />
         </section>
@@ -168,6 +170,7 @@
             class="w-full"
             name="description"
             label="Catatan/Deskripsi Kegiatan"
+            :error-message="errorMessageDescription"
             placeholder="Deskripsi Maksimal 200 Karakter"
           />
         </section>
@@ -335,6 +338,9 @@ export default {
         }
       },
       helperText: '* Wajib diisi',
+      errorMessageTitle: '',
+      errorMessageDescription: '',
+      errorMessageHolder: '',
       calendarOptions: {
         locales: allLocales,
         firstDay: 0,
@@ -456,6 +462,20 @@ export default {
     }
   },
   watch: {
+    'form.title' () {
+      if (this.form.title !== null && this.form.title.length > 200) {
+        this.errorMessageTitle = 'Judul anda melebihi 200 karakter'
+      } else {
+        this.errorMessageTitle = ''
+      }
+    },
+    'form.description' () {
+      if (this.form.description !== null && this.form.description.length > 200) {
+        this.errorMessageDescription = 'Catatan/Deskripsi anda melebihi 200 karakter'
+      } else {
+        this.errorMessageDescription = ''
+      }
+    },
     'form.repeat_type' () {
       if (this.form.repeat_type === 'NONE') {
         this.formDays = this.form.days
@@ -470,7 +490,16 @@ export default {
       this.form.end_date = momentFormatDate(endDate, 'YYYY-MM-DD')
     },
     'form.holder' () {
-      if (this.form.holder === '') { this.form.holder = null }
+      const mailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+      if (this.form.holder === '') {
+        this.form.holder = null
+      } else if (this.form.holder === null) {
+        this.errorMessageHolder = ''
+      } else if (this.form.holder.match(mailFormat)) {
+        this.errorMessageHolder = ''
+      } else {
+        this.errorMessageHolder = 'Format email harus benar'
+      }
     }
   },
   methods: {
