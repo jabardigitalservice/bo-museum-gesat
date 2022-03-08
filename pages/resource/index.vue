@@ -206,6 +206,7 @@
             class="w-full"
             name="description"
             label="Deskripsi"
+            :error-message="descriptionErrorMessage"
             placeholder="Deskripsi"
           />
         </div>
@@ -300,6 +301,7 @@ export default {
         resource_type: 'online'
       },
       nameErrorMessage: '',
+      descriptionErrorMessage: '',
       hasParams: false,
       momentFormatDateId,
       optionsStatusResource,
@@ -328,7 +330,8 @@ export default {
         return typeof value === 'undefined' || value === null
       })
       const isNameForm = this.form.name !== null && this.form.name.length > 200
-      return isFormEmpty || isNameForm
+      const isFormDescription = this.form.description !== null && this.form.description.length > 200
+      return isFormEmpty || isNameForm || isFormDescription
     },
     checkFilterIsEmpty () {
       const isFormEmpty = [
@@ -363,6 +366,13 @@ export default {
         this.nameErrorMessage = 'Nama anda melebihi 200 karakter'
       } else {
         this.nameErrorMessage = ''
+      }
+    },
+    'form.description' () {
+      if (this.form.description !== null && this.form.description.length > 200) {
+        this.descriptionErrorMessage = 'Deskripsi anda melebihi 200 karakter'
+      } else {
+        this.descriptionErrorMessage = ''
       }
     }
   },
