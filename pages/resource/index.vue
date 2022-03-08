@@ -131,13 +131,27 @@
           class="w-full"
           @click="resetFilterModal"
         />
-        <BaseButton
-          label="Terapkan"
-          :variant="checkFilterIsEmpty ? 'secondary' : 'primary'"
-          class="w-full"
+        <button
+          v-if="!loading"
+          type="submit"
+          class="reservation__button-submit"
+          :class="[ !checkFilterIsEmpty ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
           :disabled="checkFilterIsEmpty"
           @click="applyFilterAndSort"
-        />
+        >
+          Terapkan
+        </button>
+        <button
+          v-else
+          class="reservation__button-spinner"
+          :class="[ !checkFilterIsEmpty ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
+          :disabled="!checkFilterIsEmpty"
+        >
+          <jds-spinner
+            v-show="loading"
+            size="16px"
+          />
+        </button>
       </template>
     </BaseModal>
 
@@ -174,13 +188,27 @@
           class="w-full"
           @click="resetFilterModal"
         />
-        <BaseButton
-          label="Terapkan"
-          :variant="checkSortIsEmpty ? 'secondary' :'primary'"
-          class="w-full"
+        <button
+          v-if="!loading"
+          type="submit"
+          class="reservation__button-submit"
+          :class="[ !checkSortIsEmpty ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
           :disabled="checkSortIsEmpty"
           @click="applyFilterAndSort"
-        />
+        >
+          Terapkan
+        </button>
+        <button
+          v-else
+          class="reservation__button-spinner"
+          :class="[ !checkSortIsEmpty ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
+          :disabled="!checkSortIsEmpty"
+        >
+          <jds-spinner
+            v-show="loading"
+            size="16px"
+          />
+        </button>
       </template>
     </BaseModal>
 
@@ -250,23 +278,52 @@
           class="w-full"
           @click="closeAdd"
         />
-        <BaseButton
-          v-if="submitForm === 'store'"
-          label="Simpan"
-          :variant="formIsError ? 'secondary' :'primary'"
-          :disabled="formIsError"
-          type="submit"
-          class="w-full"
-          @click="storeResource"
-        />
-        <BaseButton
-          v-else
-          label="Perbarui"
-          :variant="formIsError ? 'secondary' :'primary'"
-          :disabled="formIsError"
-          class="w-full"
-          @click="updateResource"
-        />
+        <template v-if="submitForm === 'store'">
+          <button
+            v-if="!loading"
+            type="submit"
+            class="reservation__button-submit"
+            :class="[ !formIsError ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
+            :disabled="formIsError"
+            @click="storeResource"
+          >
+            Simpan
+          </button>
+          <button
+            v-else
+            class="reservation__button-spinner"
+            :class="[ !formIsError ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
+            :disabled="!formIsError"
+          >
+            <jds-spinner
+              v-show="loading"
+              size="16px"
+            />
+          </button>
+        </template>
+        <tempalate v-else class="w-full">
+          <button
+            v-if="!loading"
+            type="submit"
+            class="reservation__button-update"
+            :class="[ !formIsError ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
+            :disabled="formIsError"
+            @click="updateResource"
+          >
+            Perbarui
+          </button>
+          <button
+            v-else
+            class="reservation__button-spinner"
+            :class="[ !formIsError ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
+            :disabled="!formIsError"
+          >
+            <jds-spinner
+              v-show="loading"
+              size="16px"
+            />
+          </button>
+        </tempalate>
       </template>
     </BaseModal>
   </div>
@@ -540,7 +597,7 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="postcss">
 /* Override style design system */
 /* Start */
 .asset__status .jds-popover__activator,
@@ -557,4 +614,10 @@ export default {
   width: 100% !important;
 }
 /* End */
+.reservation__button-submit,
+.reservation__button-update,
+.reservation__button-spinner {
+  padding: 9px 16px;
+  @apply rounded-lg text-base w-full font-normal leading-6 outline-none;
+}
 </style>
