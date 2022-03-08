@@ -521,18 +521,14 @@ export default {
     },
     'form.holder' () {
       const mailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-      switch (!!this.form.holder) {
-        case (this.form.holder === ''):
-          this.form.holder = null
-          break
-        case (this.form.holder === null):
-          this.errorMessageHolder = ''
-          break
-        case (!this.form.holder.match(mailFormat)):
-          this.errorMessageHolder = 'Format email harus benar'
-          break
-        default:
-          this.errorMessageHolder = ''
+      if (this.form.holder === '') {
+        this.form.holder = null
+      } else if (this.form.holder === null) {
+        this.errorMessageHolder = ''
+      } else if (!this.form.holder.match(mailFormat)) {
+        this.errorMessageHolder = 'Format email harus benar'
+      } else {
+        this.errorMessageHolder = ''
       }
     }
   },
