@@ -61,3 +61,15 @@ export default {
   }
 }
 </script>
+
+<style>
+.repeatation__select-date-week  .jds-calendar {
+  max-width: none !important;
+}
+.repeatation__select-date-week  .jds-calendar .jds-calendar__list-of-days,
+.repeatation__select-date-week  .jds-calendar .jds-calendar__days {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr) !important;
+  font-family: 'Roboto' !important;
+}
+</style>

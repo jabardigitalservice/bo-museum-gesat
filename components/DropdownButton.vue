@@ -34,11 +34,11 @@ export default {
   created () {
     switch (this.buttonType) {
       case 'edit':
-        this.buttonColor = 'bg-yellow'
+        this.buttonColor = 'bg-green-700'
         this.buttonLabel = 'Edit'
         break
       case 'delete':
-        this.buttonColor = 'bg-red'
+        this.buttonColor = 'bg-red-700'
         this.buttonLabel = 'Hapus'
     }
   },
@@ -55,9 +55,10 @@ export default {
 
 <style lang="postcss">
 .buttonClass {
-  @apply w-full flex justify-between items-center text-left py-2 px-4 mt-6 rounded-md shadow-sm text-sm text-white font-medium
+  padding: 9px 16px;
+  @apply w-full flex justify-between items-center text-left rounded-lg shadow-sm text-base leading-6 text-white font-normal;
 }
 .buttonClass:focus {
-  @apply outline-none
+  @apply outline-none;
 }
 </style>

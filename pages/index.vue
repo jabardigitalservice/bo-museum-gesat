@@ -144,6 +144,7 @@
             name="reservation__name"
             label="Judul Kegiatan"
             :helper-text="helperText"
+            :error-message="errorMessageTitle"
             placeholder="Judul Maksimal 200 Karakter"
           />
         </section>
@@ -157,6 +158,7 @@
             name="holderEmail"
             type="text"
             label="Tambahkan Email Penanggung Jawab"
+            :error-message="errorMessageHolder"
             placeholder="contoh: anggarahardian@gmail.com"
           />
         </section>
@@ -168,6 +170,7 @@
             class="w-full"
             name="description"
             label="Catatan/Deskripsi Kegiatan"
+            :error-message="errorMessageDescription"
             placeholder="Deskripsi Maksimal 200 Karakter"
           />
         </section>
@@ -176,30 +179,57 @@
       <!-- Form Buttons -->
       <template #buttons>
         <BaseButton
-          variant="secondary"
+          variant="danger"
           label="Tutup"
           class="w-full"
           :disabled="reservation.isLoading"
           @click="closeFormReservation"
         />
         <template v-if="reservation.isEdit">
-          <BaseButton
-            variant="primary"
+          <button
+            v-if="!loading"
+            type="submit"
+            class="reservation__button-update"
+            :class="[ !formIsError ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
             :disabled="formIsError"
-            label="Update"
-            class="w-full Update"
             @click="handleUpdate"
-          />
+          >
+            Update
+          </button>
+          <button
+            v-else
+            class="reservation__button-spinner"
+            :class="[ !formIsError ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
+            :disabled="!formIsError"
+          >
+            <jds-spinner
+              v-show="loading"
+              size="16px"
+            />
+          </button>
         </template>
         <template v-else>
-          <BaseButton
+          <button
+            v-if="!loading"
             type="submit"
-            variant="primary"
-            label="Submit"
+            class="reservation__button-submit"
+            :class="[ !formIsError ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
             :disabled="formIsError"
-            class="w-full"
             @click="addReservation"
-          />
+          >
+            Simpan
+          </button>
+          <button
+            v-else
+            class="reservation__button-spinner"
+            :class="[ !formIsError ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
+            :disabled="!formIsError"
+          >
+            <jds-spinner
+              v-show="loading"
+              size="16px"
+            />
+          </button>
         </template>
       </template>
     </BaseModal>
@@ -258,14 +288,14 @@
       </template>
       <template #buttons>
         <template v-if="detailData.extendedProps.name === $auth.user.name || isAdminRole">
-          <BaseButton v-if="!isRecurring" variant="danger" label="Hapus" @click="deleteData" />
+          <BaseButton v-if="!isRecurring" class="w-full" variant="danger" label="Hapus" @click="deleteData" />
           <DropdownButton v-else button-type="delete">
             <template #options>
               <BaseButton variant="danger" label="Hapus reservasi ini" @click="deleteData" />
               <BaseButton variant="danger" label="Hapus seluruh perulangan" @click="deleteAllData" />
             </template>
           </DropdownButton>
-          <BaseButton type="button" label="Edit" @click="setEditInitialValues" />
+          <BaseButton type="button" class="w-full" label="Edit" @click="setEditInitialValues" />
         </template>
         <template v-else>
           <BaseButton variant="primary" label="Detail" @click="$modal.hide('detail')" />
@@ -335,6 +365,9 @@ export default {
         }
       },
       helperText: '* Wajib diisi',
+      errorMessageTitle: '',
+      errorMessageDescription: '',
+      errorMessageHolder: '',
       calendarOptions: {
         locales: allLocales,
         firstDay: 0,
@@ -402,6 +435,9 @@ export default {
     }
   },
   computed: {
+    loading () {
+      return this.reservation.isLoading
+    },
     isAdminRole () {
       return isAdmin(this.$auth)
     },
@@ -456,6 +492,20 @@ export default {
     }
   },
   watch: {
+    'form.title' () {
+      if (this.form.title !== null && this.form.title.length > 200) {
+        this.errorMessageTitle = 'Judul anda melebihi 200 karakter'
+      } else {
+        this.errorMessageTitle = ''
+      }
+    },
+    'form.description' () {
+      if (this.form.description !== null && this.form.description.length > 200) {
+        this.errorMessageDescription = 'Catatan/Deskripsi anda melebihi 200 karakter'
+      } else {
+        this.errorMessageDescription = ''
+      }
+    },
     'form.repeat_type' () {
       if (this.form.repeat_type === 'NONE') {
         this.formDays = this.form.days
@@ -470,7 +520,16 @@ export default {
       this.form.end_date = momentFormatDate(endDate, 'YYYY-MM-DD')
     },
     'form.holder' () {
-      if (this.form.holder === '') { this.form.holder = null }
+      const mailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+      if (this.form.holder === '') {
+        this.form.holder = null
+      } else if (this.form.holder === null) {
+        this.errorMessageHolder = ''
+      } else if (!this.form.holder.match(mailFormat)) {
+        this.errorMessageHolder = 'Format email harus benar'
+      } else {
+        this.errorMessageHolder = ''
+      }
     }
   },
   methods: {
@@ -884,7 +943,7 @@ export default {
   }
 }
 </script>
-<style lang="postcss" scooped>
+<style lang="postcss">
 @media (max-width: 768px){
   .fc .fc-header-toolbar {
     display: flex;
@@ -902,5 +961,20 @@ export default {
 }
 .fc .fc-timegrid-slot-minor {
   border-style: solid !important;
+}
+.date__reservation .jds-calendar {
+  max-width: none !important;
+}
+.date__reservation .jds-calendar .jds-calendar__list-of-days,
+.date__reservation .jds-calendar .jds-calendar__days {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr) !important;
+  font-family: 'Roboto' !important;
+}
+.reservation__button-submit,
+.reservation__button-update,
+.reservation__button-spinner {
+  padding: 9px 16px;
+  @apply rounded-lg text-base w-full font-normal leading-6 outline-none;
 }
 </style>
