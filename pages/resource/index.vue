@@ -196,6 +196,7 @@
             class="w-full"
             name="assetName"
             label="Nama"
+            :error-message="nameErrorMessage"
             placeholder="Nama Ruangan/Aset"
           />
         </div>
@@ -292,12 +293,13 @@ export default {
         status: null
       },
       form: {
-        name: '',
+        name: null,
         description: null,
         status: 'active',
         capacity: 0,
         resource_type: 'online'
       },
+      nameErrorMessage: '',
       hasParams: false,
       momentFormatDateId,
       optionsStatusResource,
@@ -308,7 +310,6 @@ export default {
       loading: false
     }
   },
-
   computed: {
     ...mapState('resource', [
       'dataResource',
@@ -326,7 +327,8 @@ export default {
         }
         return typeof value === 'undefined' || value === null
       })
-      return isFormEmpty
+      const isNameForm = this.form.name !== null && this.form.name.length > 200
+      return isFormEmpty || isNameForm
     },
     checkFilterIsEmpty () {
       const isFormEmpty = [
@@ -353,6 +355,15 @@ export default {
     },
     titleAdd () {
       return this.submitForm === 'store' ? 'TAMBAH' : 'PERBARUI'
+    }
+  },
+  watch: {
+    'form.name' () {
+      if (this.form.name !== null && this.form.name.length > 200) {
+        this.nameErrorMessage = 'Nama anda melebihi 200 karakter'
+      } else {
+        this.nameErrorMessage = ''
+      }
     }
   },
   created () {
