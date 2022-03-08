@@ -153,6 +153,7 @@
             name="sort"
             :options="optionsSortResource"
             label="Urutkan Berdasarkan"
+            class="w-full"
             placeholder="Pilih"
           />
         </div>
@@ -210,11 +211,12 @@
             placeholder="Deskripsi"
           />
         </div>
-        <div class="asset__description mb-4">
+        <div class="asset__status mb-4">
           <jds-select
             v-model="form.status"
             name="status"
             :options="optionsStatusResource"
+            class="w-full"
             label="Status"
             placeholder="Pilih Status"
           />
@@ -230,12 +232,13 @@
             required
           >
         </div>
-        <div class="mb-4">
+        <div class="asset__resource-type mb-4">
           <jds-select
             v-model="form.resource_type"
             name="status"
             :options="optionsResourceType"
             label="Tipe"
+            class="w-full"
             placeholder="Pilih Tipe"
           />
         </div>
@@ -537,3 +540,21 @@ export default {
   }
 }
 </script>
+<style>
+/* Override style design system */
+/* Start */
+.asset__status .jds-popover__activator,
+.asset__status .jds-popover__activator .jds-select,
+.asset__status .jds-popover__activator .jds-select .jds-input-text {
+  width: 100% !important;
+}
+.asset__status .jds-popover__content {
+  z-index: 25 !important;
+}
+.asset__resource-type .jds-popover__activator,
+.asset__resource-type .jds-popover__activator .jds-select,
+.asset__resource-type .jds-popover__activator .jds-select .jds-input-text {
+  width: 100% !important;
+}
+/* End */
+</style>
