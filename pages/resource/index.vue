@@ -102,8 +102,8 @@
           </template>
           <!-- eslint-disable-next-line vue/valid-v-slot -->
           <template #item.action="{item}">
-            <em title="Edit Ruangan/Aset" class="bx bx-edit bx-sm cursor-pointer" @click="editResource(item)" />
-            <em title="Hapus Ruangan/Aset" class="bx bx-trash bx-sm cursor-pointer text-red" @click="deleteResouce(item.id)" />
+            <em title="Edit Ruangan/Aset" class="bx bx-edit bx-sm cursor-pointer text-green-700" @click="editResource(item)" />
+            <em title="Hapus Ruangan/Aset" class="bx bx-trash bx-sm cursor-pointer text-red-700" @click="deleteResouce(item.id)" />
           </template>
         </jds-data-table>
       </div>
