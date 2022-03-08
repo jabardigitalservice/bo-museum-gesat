@@ -248,8 +248,8 @@
         <BaseButton
           v-if="submitForm === 'store'"
           label="Simpan"
-          :variant="formIsEmpty ? 'secondary' :'primary'"
-          :disabled="formIsEmpty"
+          :variant="formIsError ? 'secondary' :'primary'"
+          :disabled="formIsError"
           type="submit"
           class="w-full"
           @click="storeResource"
@@ -257,8 +257,8 @@
         <BaseButton
           v-else
           label="Perbarui"
-          :variant="formIsEmpty ? 'secondary' :'primary'"
-          :disabled="formIsEmpty"
+          :variant="formIsError ? 'secondary' :'primary'"
+          :disabled="formIsError"
           class="w-full"
           @click="updateResource"
         />
@@ -314,7 +314,7 @@ export default {
       'dataResource',
       'metaResource'
     ]),
-    formIsEmpty () {
+    formIsError () {
       const isFormEmpty = [
         this.form.status,
         this.form.name,
