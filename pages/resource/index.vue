@@ -114,12 +114,13 @@
       modal-title="Filter Data Ruangan/Aset"
     >
       <template #body>
-        <div>
+        <div class="asset__modal-filter">
           <jds-select
             v-model="params.status"
             name="status"
             :options="optionsStatusResource"
             label="Status"
+            class="w-full"
             placeholder="Pilih"
           />
         </div>
@@ -171,12 +172,13 @@
             placeholder="Pilih"
           />
         </div>
-        <div class="w-full flex flex-col mt-3">
+        <div class="asset_order w-full flex flex-col mt-3">
           <jds-select
             v-model="params.orderBy"
             name="order"
             :options="optionsOrderByIdn"
             label="Urutkan dari"
+            class="w-full"
             placeholder="Pilih"
           />
         </div>
@@ -611,6 +613,21 @@ export default {
 .asset__resource-type .jds-popover__activator,
 .asset__resource-type .jds-popover__activator .jds-select,
 .asset__resource-type .jds-popover__activator .jds-select .jds-input-text {
+  width: 100% !important;
+}
+.asset__modal-filter .jds-popover__activator,
+.asset__modal-filter .jds-popover__activator .jds-select,
+.asset__modal-filter .jds-popover__activator .jds-select .jds-input-text {
+  width: 100% !important;
+}
+.asset__sort .jds-popover__activator,
+.asset__sort .jds-popover__activator .jds-select,
+.asset__sort .jds-popover__activator .jds-select .jds-input-text {
+  width: 100% !important;
+}
+.asset_order .jds-popover__activator,
+.asset_order .jds-popover__activator .jds-select,
+.asset_order .jds-popover__activator .jds-select .jds-input-text {
   width: 100% !important;
 }
 /* End */
