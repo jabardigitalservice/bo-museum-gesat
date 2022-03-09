@@ -102,8 +102,8 @@
           </template>
           <!-- eslint-disable-next-line vue/valid-v-slot -->
           <template #item.action="{item}">
-            <em title="Edit Ruangan/Aset" class="bx bx-edit bx-sm cursor-pointer" @click="editResource(item)" />
-            <em title="Hapus Ruangan/Aset" class="bx bx-trash bx-sm cursor-pointer text-red" @click="deleteResouce(item.id)" />
+            <em title="Edit Ruangan/Aset" class="bx bx-edit bx-sm cursor-pointer text-green-700" @click="editResource(item)" />
+            <em title="Hapus Ruangan/Aset" class="bx bx-trash bx-sm cursor-pointer text-red-700" @click="deleteResouce(item.id)" />
           </template>
         </jds-data-table>
       </div>
@@ -114,12 +114,13 @@
       modal-title="Filter Data Ruangan/Aset"
     >
       <template #body>
-        <div>
+        <div class="asset__modal-filter">
           <jds-select
             v-model="params.status"
             name="status"
             :options="optionsStatusResource"
             label="Status"
+            class="w-full"
             placeholder="Pilih"
           />
         </div>
@@ -132,12 +133,23 @@
           @click="resetFilterModal"
         />
         <BaseButton
+          v-if="!loading"
+          type="submit"
+          class="reservation__button-submit"
           label="Terapkan"
-          :variant="checkFilterIsEmpty ? 'secondary' : 'primary'"
-          class="w-full"
           :disabled="checkFilterIsEmpty"
           @click="applyFilterAndSort"
         />
+        <BaseButton
+          v-else
+          class="reservation__button-spinner"
+          :disabled="checkFilterIsEmpty"
+        >
+          <jds-spinner
+            v-show="loading"
+            size="16px"
+          />
+        </BaseButton>
       </template>
     </BaseModal>
 
@@ -153,15 +165,17 @@
             name="sort"
             :options="optionsSortResource"
             label="Urutkan Berdasarkan"
+            class="w-full"
             placeholder="Pilih"
           />
         </div>
-        <div class="w-full flex flex-col mt-3">
+        <div class="asset_order w-full flex flex-col mt-3">
           <jds-select
             v-model="params.orderBy"
             name="order"
             :options="optionsOrderByIdn"
             label="Urutkan dari"
+            class="w-full"
             placeholder="Pilih"
           />
         </div>
@@ -174,12 +188,23 @@
           @click="resetFilterModal"
         />
         <BaseButton
+          v-if="!loading"
+          type="submit"
+          class="reservation__button-submit"
           label="Terapkan"
-          :variant="checkSortIsEmpty ? 'secondary' :'primary'"
-          class="w-full"
           :disabled="checkSortIsEmpty"
           @click="applyFilterAndSort"
         />
+        <BaseButton
+          v-else
+          class="reservation__button-spinner"
+          :disabled="checkSortIsEmpty"
+        >
+          <jds-spinner
+            v-show="loading"
+            size="16px"
+          />
+        </BaseButton>
       </template>
     </BaseModal>
 
@@ -196,6 +221,7 @@
             class="w-full"
             name="assetName"
             label="Nama"
+            :error-message="nameErrorMessage"
             placeholder="Nama Ruangan/Aset"
           />
         </div>
@@ -205,14 +231,16 @@
             class="w-full"
             name="description"
             label="Deskripsi"
+            :error-message="descriptionErrorMessage"
             placeholder="Deskripsi"
           />
         </div>
-        <div class="asset__description mb-4">
+        <div class="asset__status mb-4">
           <jds-select
             v-model="form.status"
             name="status"
             :options="optionsStatusResource"
+            class="w-full"
             label="Status"
             placeholder="Pilih Status"
           />
@@ -228,12 +256,13 @@
             required
           >
         </div>
-        <div class="mb-4">
+        <div class="asset__resource-type mb-4">
           <jds-select
             v-model="form.resource_type"
             name="status"
             :options="optionsResourceType"
             label="Tipe"
+            class="w-full"
             placeholder="Pilih Tipe"
           />
         </div>
@@ -245,23 +274,46 @@
           class="w-full"
           @click="closeAdd"
         />
-        <BaseButton
-          v-if="submitForm === 'store'"
-          label="Simpan"
-          :variant="formIsEmpty ? 'secondary' :'primary'"
-          :disabled="formIsEmpty"
-          type="submit"
-          class="w-full"
-          @click="storeResource"
-        />
-        <BaseButton
-          v-else
-          label="Perbarui"
-          :variant="formIsEmpty ? 'secondary' :'primary'"
-          :disabled="formIsEmpty"
-          class="w-full"
-          @click="updateResource"
-        />
+        <template v-if="submitForm === 'store'">
+          <BaseButton
+            v-if="!loading"
+            type="submit"
+            class="reservation__button-submit"
+            label="Simpan"
+            :disabled="formIsError"
+            @click="storeResource"
+          />
+          <BaseButton
+            v-else
+            class="reservation__button-spinner"
+            :disabled="formIsError"
+          >
+            <jds-spinner
+              v-show="loading"
+              size="16px"
+            />
+          </BaseButton>
+        </template>
+        <tempalate v-else class="w-full">
+          <BaseButton
+            v-if="!loading"
+            type="submit"
+            class="reservation__button-update"
+            label="Perbarui"
+            :disabled="formIsError"
+            @click="updateResource"
+          />
+          <BaseButton
+            v-else
+            class="reservation__button-spinner"
+            :disabled="formIsError"
+          >
+            <jds-spinner
+              v-show="loading"
+              size="16px"
+            />
+          </BaseButton>
+        </tempalate>
       </template>
     </BaseModal>
   </div>
@@ -292,12 +344,14 @@ export default {
         status: null
       },
       form: {
-        name: '',
+        name: null,
         description: null,
         status: 'active',
         capacity: 0,
         resource_type: 'online'
       },
+      nameErrorMessage: '',
+      descriptionErrorMessage: '',
       hasParams: false,
       momentFormatDateId,
       optionsStatusResource,
@@ -308,13 +362,12 @@ export default {
       loading: false
     }
   },
-
   computed: {
     ...mapState('resource', [
       'dataResource',
       'metaResource'
     ]),
-    formIsEmpty () {
+    formIsError () {
       const isFormEmpty = [
         this.form.status,
         this.form.name,
@@ -326,7 +379,9 @@ export default {
         }
         return typeof value === 'undefined' || value === null
       })
-      return isFormEmpty
+      const isNameForm = this.form.name !== null && this.form.name.length > 200
+      const isFormDescription = this.form.description !== null && this.form.description.length > 200
+      return isFormEmpty || isNameForm || isFormDescription
     },
     checkFilterIsEmpty () {
       const isFormEmpty = [
@@ -353,6 +408,22 @@ export default {
     },
     titleAdd () {
       return this.submitForm === 'store' ? 'TAMBAH' : 'PERBARUI'
+    }
+  },
+  watch: {
+    'form.name' () {
+      if (this.form.name !== null && this.form.name.length > 200) {
+        this.nameErrorMessage = 'Nama anda melebihi 200 karakter'
+      } else {
+        this.nameErrorMessage = ''
+      }
+    },
+    'form.description' () {
+      if (this.form.description !== null && this.form.description.length > 200) {
+        this.descriptionErrorMessage = 'Deskripsi anda melebihi 200 karakter'
+      } else {
+        this.descriptionErrorMessage = ''
+      }
     }
   },
   created () {
@@ -516,3 +587,47 @@ export default {
   }
 }
 </script>
+<style lang="postcss">
+/* Override style design system */
+/* Start */
+.asset__status .jds-popover__activator,
+.asset__status .jds-popover__activator .jds-select,
+.asset__status .jds-popover__activator .jds-select .jds-input-text {
+  width: 100% !important;
+}
+.asset__status .jds-popover__content {
+  z-index: 25 !important;
+}
+.asset__resource-type .jds-popover__activator,
+.asset__resource-type .jds-popover__activator .jds-select,
+.asset__resource-type .jds-popover__activator .jds-select .jds-input-text {
+  width: 100% !important;
+}
+.asset__modal-filter .jds-popover__activator,
+.asset__modal-filter .jds-popover__activator .jds-select,
+.asset__modal-filter .jds-popover__activator .jds-select .jds-input-text {
+  width: 100% !important;
+}
+.asset__sort .jds-popover__activator,
+.asset__sort .jds-popover__activator .jds-select,
+.asset__sort .jds-popover__activator .jds-select .jds-input-text {
+  width: 100% !important;
+}
+.asset_order .jds-popover__activator,
+.asset_order .jds-popover__activator .jds-select,
+.asset_order .jds-popover__activator .jds-select .jds-input-text {
+  width: 100% !important;
+}
+/* End */
+.reservation__button-submit,
+.reservation__button-update,
+.reservation__button-spinner {
+  padding: 9px 16px;
+  @apply rounded-lg text-base w-full font-normal leading-6 outline-none;
+}
+.reservation__button-submit:disabled,
+.reservation__button-update:disabled,
+.reservation__button-spinner:disabled {
+  @apply bg-gray-500 text-white;
+}
+</style>

@@ -49,7 +49,6 @@ tr:nth-child(2n+2){
 /* Override design system style*/
 
 .reservation__filter .jds-popover__content,
-.asset__description .jds-popover__content,
 .asset__sort .jds-popover__content,
 .start__time .jds-popover__content,
 .end__time .jds-popover__content,
