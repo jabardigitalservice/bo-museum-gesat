@@ -132,27 +132,24 @@
           class="w-full"
           @click="resetFilterModal"
         />
-        <button
+        <BaseButton
           v-if="!loading"
           type="submit"
           class="reservation__button-submit"
-          :class="[ !checkFilterIsEmpty ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
+          label="Terapkan"
           :disabled="checkFilterIsEmpty"
           @click="applyFilterAndSort"
-        >
-          Terapkan
-        </button>
-        <button
+        />
+        <BaseButton
           v-else
           class="reservation__button-spinner"
-          :class="[ !checkFilterIsEmpty ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
-          :disabled="!checkFilterIsEmpty"
+          :disabled="checkFilterIsEmpty"
         >
           <jds-spinner
             v-show="loading"
             size="16px"
           />
-        </button>
+        </BaseButton>
       </template>
     </BaseModal>
 
@@ -190,27 +187,24 @@
           class="w-full"
           @click="resetFilterModal"
         />
-        <button
+        <BaseButton
           v-if="!loading"
           type="submit"
           class="reservation__button-submit"
-          :class="[ !checkSortIsEmpty ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
+          label="Terapkan"
           :disabled="checkSortIsEmpty"
           @click="applyFilterAndSort"
-        >
-          Terapkan
-        </button>
-        <button
+        />
+        <BaseButton
           v-else
           class="reservation__button-spinner"
-          :class="[ !checkSortIsEmpty ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
-          :disabled="!checkSortIsEmpty"
+          :disabled="checkSortIsEmpty"
         >
           <jds-spinner
             v-show="loading"
             size="16px"
           />
-        </button>
+        </BaseButton>
       </template>
     </BaseModal>
 
@@ -281,50 +275,44 @@
           @click="closeAdd"
         />
         <template v-if="submitForm === 'store'">
-          <button
+          <BaseButton
             v-if="!loading"
             type="submit"
             class="reservation__button-submit"
-            :class="[ !formIsError ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
+            label="Simpan"
             :disabled="formIsError"
             @click="storeResource"
-          >
-            Simpan
-          </button>
-          <button
+          />
+          <BaseButton
             v-else
             class="reservation__button-spinner"
-            :class="[ !formIsError ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
-            :disabled="!formIsError"
+            :disabled="formIsError"
           >
             <jds-spinner
               v-show="loading"
               size="16px"
             />
-          </button>
+          </BaseButton>
         </template>
         <tempalate v-else class="w-full">
-          <button
+          <BaseButton
             v-if="!loading"
             type="submit"
             class="reservation__button-update"
-            :class="[ !formIsError ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
+            label="Perbarui"
             :disabled="formIsError"
             @click="updateResource"
-          >
-            Perbarui
-          </button>
-          <button
+          />
+          <BaseButton
             v-else
             class="reservation__button-spinner"
-            :class="[ !formIsError ? 'text-white bg-green-700 hover:bg-green-800' : 'text-gray-500 bg-gray-200 cursor-not-allowed']"
-            :disabled="!formIsError"
+            :disabled="formIsError"
           >
             <jds-spinner
               v-show="loading"
               size="16px"
             />
-          </button>
+          </BaseButton>
         </tempalate>
       </template>
     </BaseModal>
@@ -636,5 +624,10 @@ export default {
 .reservation__button-spinner {
   padding: 9px 16px;
   @apply rounded-lg text-base w-full font-normal leading-6 outline-none;
+}
+.reservation__button-submit:disabled,
+.reservation__button-update:disabled,
+.reservation__button-spinner:disabled {
+  @apply bg-gray-500 text-white;
 }
 </style>
