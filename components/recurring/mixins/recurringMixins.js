@@ -43,12 +43,10 @@ const recurringMixins = {
       return days.join(', ')
     },
     endDate () {
-      const startDate = this.disabledDates.to
       const dateSplit = this.formEndDate.split('/').reverse().join(', ')
       const endDate = new Date(dateSplit)
       const newEndDate = momentFormatDate(endDate, 'DD/MM/YYYY')
-      const newStartDate = momentFormatDate(startDate, 'DD/MM/YYYY')
-      return endDate < startDate ? newEndDate : newStartDate
+      return newEndDate
     }
   }
 }
