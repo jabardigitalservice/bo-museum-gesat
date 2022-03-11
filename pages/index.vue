@@ -24,7 +24,7 @@
               v-model="start_date"
               name="formDateReservation"
               placeholder="Tanggal Akhir"
-              label="Waktu dan Tanggal"
+              label="Waktu dan Tanggal Mulai"
               @input="validateInputTime"
             />
           </div>
@@ -115,6 +115,17 @@
               @change:form-month="reservation.monthly.month = $event"
             />
           </div>
+        </section>
+
+        <!-- Alert -->
+        <section
+          v-if="endDateIsError"
+          class="w-full p-4 bg-red-500 mb-6 flex gap-4 place-items-center"
+        >
+          <i class="bx bx-error-circle bx-sm text-white" aria-hidden="true" />
+          <p class="text-white text-sm">
+            Rentang tanggal tidak valid(tanggal berakhir tidak boleh kurang dari tanggal mulai)
+          </p>
         </section>
 
         <!-- Spaces -->
@@ -460,13 +471,13 @@ export default {
       const { monthly } = this.reservation
       switch (this.form.repeat_type) {
         case 'DAILY':
-          isRules = (!this.formDays.length && !this.form.days.length) || (this.form.end_date <= this.currentDate)
+          isRules = (!this.formDays.length && !this.form.days.length) || (this.form.end_date <= this.form.date)
           break
         case 'WEEKLY':
-          isRules = !this.form.week || this.form.week > 12 || this.form.week <= 0 || /[^0-9]\d*$/.test(this.form.week) || (!this.formDays.length && !this.form.days.length) || (this.form.end_date <= this.currentDate)
+          isRules = !this.form.week || this.form.week > 12 || this.form.week <= 0 || /[^0-9]\d*$/.test(this.form.week) || (!this.formDays.length && !this.form.days.length) || (this.form.end_date <= this.form.date)
           break
         case 'MONTHLY':
-          isRules = typeof monthly.month !== 'number' || !monthly.month || monthly.month >= 4 || monthly.month <= 0 || !Number.isInteger(monthly.month) || (this.form.end_date <= this.currentDate) || !(typeof monthly.week !== 'undefined' && monthly.week !== null) || !(typeof monthly.days[0] !== 'undefined')
+          isRules = typeof monthly.month !== 'number' || !monthly.month || monthly.month >= 4 || monthly.month <= 0 || !Number.isInteger(monthly.month) || (this.form.end_date <= this.form.date) || !(typeof monthly.week !== 'undefined' && monthly.week !== null) || !(typeof monthly.days[0] !== 'undefined')
           break
         default:
           isRules = false
@@ -489,6 +500,24 @@ export default {
         return typeof value === 'undefined' || value === null
       })
       return isError || isAssetEmpty || isFormEmpty || isRules || !isEmail || isStartDate || isFormTitle || isFormDescription
+    },
+    endDateIsError () {
+      let isError = false
+      switch (this.form.repeat_type) {
+        case 'DAILY':
+          isError = this.endDate !== '' && this.form.end_date <= this.form.date
+          break
+        case 'WEEKLY':
+          isError = this.endDate !== '' && this.form.end_date <= this.form.date
+          break
+        case 'MONTHLY':
+          isError = this.endDate !== '' && this.form.end_date <= this.form.date
+          break
+        default:
+          isError = false
+          break
+      }
+      return isError
     }
   },
   watch: {
@@ -853,6 +882,7 @@ export default {
         this.form.date = momentFormatDate(toMoment(selectInfo.start, selectInfo.view.calendar).format(this.dateFormat.withoutTime), 'YYYY-MM-DD')
         this.start_date = momentFormatDate(toMoment(selectInfo.start, selectInfo.view.calendar).format(this.dateFormat.withoutTime), 'DD/MM/YYYY')
         this.form.end_date = toMoment(selectInfo.start, selectInfo.view.calendar).format(this.dateFormat.withoutTime)
+        this.endDate = momentFormatDate(toMoment(selectInfo.start, selectInfo.view.calendar).format(this.dateFormat.withoutTime), 'DD/MM/YYYY')
         this.form.repeat_type = 'NONE'
         this.form.week = '1'
         this.form.days = []
