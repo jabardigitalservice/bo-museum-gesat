@@ -1,5 +1,5 @@
 <template>
-  <div class="hidden fix-width-sidebar-desktop md:block md:overflow-auto h-screen py-4 bg-white shadow-lg shadow-gray-400">
+  <div class="hidden fix-width-sidebar-desktop md:block md:overflow-auto h-screen py-4 bg-green-700 shadow-lg shadow-gray-400">
     <Menu />
   </div>
 </template>
