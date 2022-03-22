@@ -3,67 +3,38 @@
     <div>
       <label class="block text-sm">
         Pengulangan Tiap
-        <span class="text-red">*</span>
+        <span class="text-xs text-red-500">* Wajib diisi</span>
       </label>
       <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
         <input
           type="number"
-          class="w-full form-input bg-white rounded-md cursor-pointer"
+          class="w-full form-input bg-white rounded-lg border-gray-800 focus:outline-none hover:border-green-400 focus:border-green-400 cursor-pointer"
           :value="formWeek"
           @input="$emit('input:form-week', $event.target.value)"
         >
-        <p class="block text-sm col-span-1">
+        <p class="block text-xs col-span-1">
           Minggu Sekali
-          <span class="text-red">
+          <span class="text-xs text-red-500">
             (Max 12)
           </span>
         </p>
       </div>
     </div>
     <div>
-      <label class="block text-sm">
-        Hari
-        <span class="text-red">*</span>
-      </label>
-
-      <!-- Multiple Select Dropdown -->
-      <div>
-        <div v-show="dropdownOpened" class="absolute inset-0 w-full h-full" @click="toggleDropdown" />
-        <!-- Select Dropdown -->
-        <div class="relative">
-          <button class="w-full form-input bg-white rounded-md cursor-pointer" @click="toggleDropdown">
-            <div class="flex justify-between text-left">
-              <p>
-                <span v-for="(selectedDay, index) in selectedDays" :key="index">{{ selectedDay }}</span>
-              </p>
-              <i class="bx bxs-chevron-down" aria-hidden="true" />
-            </div>
-          </button>
-
-          <!-- Select Options -->
-          <div
-            v-show="dropdownOpened"
-            class="absolute flex flex-col shadow-lg border-2 border-gray-500 p-2 overflow-auto bg-white h-56 w-full z-50"
-          >
-            <label v-for="day in days" :key="day.index" class="cursor-pointer p-1 hover:bg-blue">
-              <input :value="day.index" type="checkbox" :checked="checkedDays(day.index)" @change="$emit('change:form-days', Number($event.target.value))">
-              {{ day.name }}
-            </label>
-          </div>
-        </div>
+      <div class="repeatation__select-week">
+        <BaseSelectDropdown
+          orientation="vertical"
+          :options="days"
+          @change="onChange"
+        />
       </div>
     </div>
-    <div>
-      <label class="block text-sm">
-        Tanggal Berakhir
-        <span class="text-red">*</span>
-      </label>
-      <date-picker
+    <div class="repeatation__select-date-week">
+      <jds-date-input
         :value="endDate"
-        class="form-input rounded-md"
-        required
         :disabled-dates="disabledDates"
-        @selected="onSelected"
+        label="Tanggal Berakhir"
+        @input="onSelected"
       />
     </div>
   </div>
@@ -80,21 +51,25 @@ export default {
       default: null
     }
   },
-  data () {
-    return {
-      dropdownOpened: false
-    }
-  },
   methods: {
     onSelected (date) {
-      this.$emit('selected:form-end-date', new Date(date).toISOString())
+      this.$emit('selected:form-end-date', date)
     },
-    toggleDropdown () {
-      this.dropdownOpened = !this.dropdownOpened
-    },
-    checkedDays (id) {
-      return this.formDays.includes(id)
+    onChange (value) {
+      this.$emit('change:form-days', value)
     }
   }
 }
 </script>
+
+<style>
+.repeatation__select-date-week  .jds-calendar {
+  max-width: none !important;
+}
+.repeatation__select-date-week  .jds-calendar .jds-calendar__list-of-days,
+.repeatation__select-date-week  .jds-calendar .jds-calendar__days {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr) !important;
+  font-family: 'Roboto' !important;
+}
+</style>
