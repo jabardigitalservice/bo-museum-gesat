@@ -108,7 +108,7 @@ export const parentMenus = [
   //   ]
   // },
   {
-    id: 2,
+    id: 1,
     path: '#',
     label: 'Reservasi Gedung Sate',
     iconClass: icon.home,
@@ -120,7 +120,7 @@ export const parentMenus = [
 
 export const menus = [
   {
-    parent: 1,
+    parent: 2,
     path: '/',
     label: 'Kalender Reservasi',
     iconClass: icon.calendar,
@@ -130,7 +130,7 @@ export const menus = [
     ]
   },
   {
-    parent: 1,
+    parent: 2,
     path: '/reservasi',
     label: 'List Reservasi',
     iconClass: icon.calendar,
@@ -140,7 +140,7 @@ export const menus = [
     ]
   },
   {
-    parent: 2,
+    parent: 1,
     path: '/reservasi-gedung-sate',
     label: 'List Reservasi',
     iconClass: icon.calendar,
@@ -149,7 +149,7 @@ export const menus = [
     ]
   },
   {
-    parent: 1,
+    parent: 2,
     path: '/resource',
     label: 'Ruangan/Aset',
     iconClass: icon.cabinet,
@@ -158,8 +158,8 @@ export const menus = [
     ]
   },
   {
-    parent: 2,
-    path: '/command-center',
+    parent: 1,
+    path: '/gedung-sate',
     label: 'Pengaturan Gedung Sate',
     iconClass: icon.cabinet,
     role: [

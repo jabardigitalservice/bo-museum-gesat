@@ -83,7 +83,7 @@ tr:nth-child(2n + 2) {
   width: 223px !important;
 }
 
-.repeatation__select-day .jds-popover__content .jds-select-content .jds-checkbox-group, 
+.repeatation__select-day .jds-popover__content .jds-select-content .jds-checkbox-group,
 .repeatation__select-week .jds-popover__content .jds-select-content .jds-checkbox-group,
 .repeatation__select-month .jds-popover__content .jds-select-content .jds-checkbox-group {
   display: block !important;
@@ -112,7 +112,7 @@ tr:nth-child(2n + 2) {
   @apply inline !important;
 }
 .jds-form-control-helper-text {
-  @apply text-red-500 inline text-xs !important;
+  @apply text-red inline text-xs !important;
 }
 
 .asset__description .jds-text-area__input-wrapper {
