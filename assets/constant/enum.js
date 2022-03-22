@@ -141,7 +141,7 @@ export const menus = [
   },
   {
     parent: 2,
-    path: '/reservasi-command-center',
+    path: '/reservasi-gedung-sate',
     label: 'List Reservasi',
     iconClass: icon.calendar,
     role: [

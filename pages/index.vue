@@ -331,6 +331,9 @@ export default {
   components: {
     FullCalendar
   },
+  middleware ({ redirect }) {
+    redirect('/reservasi-gedung-sate')
+  },
   data () {
     return {
       form: {
@@ -497,9 +500,6 @@ export default {
     'form.holder' () {
       if (this.form.holder === '') { this.form.holder = null }
     }
-  },
-  beforeCreate () {
-    this.$router.push('/reservasi-command-center')
   },
   methods: {
     validateInputTime () {
