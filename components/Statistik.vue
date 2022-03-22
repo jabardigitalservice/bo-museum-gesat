@@ -5,7 +5,7 @@
         <div
           v-for="(card, i) in cards"
           :key="i"
-          class="md:col-span-1 text-white p-4 rounded-md bg-blue-400"
+          class="md:col-span-1 text-white p-4 rounded-md bg-blue"
         >
           <div class="flex item-center">
             <div class="w-full">

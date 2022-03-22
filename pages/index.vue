@@ -60,7 +60,7 @@
         <!-- Alert -->
         <section
           v-if="reservation.isError"
-          class="w-full p-4 bg-red-500 mb-6 flex gap-4 place-items-center"
+          class="w-full p-4 bg-red mb-6 flex gap-4 place-items-center"
         >
           <i class="bx bx-error-circle bx-sm text-white" aria-hidden="true" />
           <p class="text-white text-sm">
@@ -120,7 +120,7 @@
         <!-- Alert -->
         <section
           v-if="endDateIsError"
-          class="w-full p-4 bg-red-500 mb-6 flex gap-4 place-items-center"
+          class="w-full p-4 bg-red mb-6 flex gap-4 place-items-center"
         >
           <i class="bx bx-error-circle bx-sm text-white" aria-hidden="true" />
           <p class="text-white text-sm">
@@ -332,6 +332,9 @@ export default {
   layout: 'admin',
   components: {
     FullCalendar
+  },
+  middleware ({ redirect }) {
+    redirect('/reservasi-gedung-sate')
   },
   data () {
     return {

@@ -62,7 +62,7 @@
                   <BaseButton :variant="hasParams ? 'danger' : 'secondary'" @click="initParams">
                     <template #icon>
                       <div class="btn">
-                        <span :class="hasParams ? 'text-white' : 'text-green-700' ">
+                        <span :class="hasParams ? 'text-white' : 'text-primary' ">
                           Reset
                         </span>
                       </div>
@@ -103,7 +103,7 @@
           <!-- eslint-disable-next-line vue/valid-v-slot -->
           <template #item.action="{item}">
             <em title="Edit Ruangan/Aset" class="bx bx-edit bx-sm cursor-pointer text-green-700" @click="editResource(item)" />
-            <em title="Hapus Ruangan/Aset" class="bx bx-trash bx-sm cursor-pointer text-red-700" @click="deleteResouce(item.id)" />
+            <em title="Hapus Ruangan/Aset" class="bx bx-trash bx-sm cursor-pointer text-red" @click="deleteResouce(item.id)" />
           </template>
         </jds-data-table>
       </div>

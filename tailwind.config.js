@@ -6,34 +6,21 @@ module.exports = {
       roboto: ['Roboto', 'serif']
     },
     colors: {
-      body: '#788896',
       transparent: 'transparent',
+      current: 'currentColor',
+      primary: '#219653',
+      red: '#EB5757',
+      blue: '#2F80ED',
+      yellow: '#F2C94C',
       white: '#FFFFFF',
       black: '#000000',
-      blue: {
-        50: '#E3F2FD',
-        100: '#BBDEFB',
-        200: '#90CAF9',
-        300: '#64B5F6',
-        400: '#42A5F5',
-        500: '#2196F3',
-        600: '#1E88E5',
-        700: '#1976D2',
-        800: '#1565C0',
-        900: '#0D47A1'
-      },
-      red: {
-        50: '#FFEBEE',
-        100: '#FFCDD2',
-        200: '#EF9A9A',
-        300: '#E57373',
-        400: '#EF5350',
-        500: '#F44336',
-        600: '#E53935',
-        700: '#D32F2F',
-        800: '#C62828',
-        900: '#B71B1C'
-      },
+      gray1: '#333333',
+      gray2: '#4F4F4F',
+      gray3: '#828282',
+      gray4: '#BDBDBD',
+      gray5: '#E0E0E0',
+      gray6: '#F2F2F2',
+      grayText: '#A0AEC0',
       pink: {
         50: '#FFE6EC',
         100: '#FFBFCF',
@@ -45,30 +32,6 @@ module.exports = {
         700: '#D62A59',
         800: '#C12357',
         900: '#9D1951'
-      },
-      yellow: {
-        50: '#FFF9E1',
-        100: '#FFEEB4',
-        200: '#FFE483',
-        300: '#FFDA4F',
-        400: '#FFD026',
-        500: '#FFC800',
-        600: '#FFB900',
-        700: '#FFA600',
-        800: '#FF9500',
-        900: '#FF7500'
-      },
-      green: {
-        50: '#E6F6EC',
-        100: '#C3E9D0',
-        200: '#9BDBB3',
-        300: '#70CD94',
-        400: '#4DC27E',
-        500: '#1FB767',
-        600: '#16A75C',
-        700: '#069550',
-        800: '#008444',
-        900: '#006430'
       },
       gray: {
         50: '#FAFAFA',

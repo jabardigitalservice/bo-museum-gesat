@@ -48,7 +48,7 @@
                 <BaseButton :variant="isHasParams ? 'danger' : 'secondary'" @click="initParams">
                   <template #icon>
                     <div class="btn">
-                      <span :class="isHasParams ? 'text-white' : 'text-green-700' ">
+                      <span :class="isHasParams ? 'text-white' : 'text-primary' ">
                         Reset
                       </span>
                     </div>
@@ -90,25 +90,25 @@
           <!-- eslint-disable-next-line vue/valid-v-slot -->
           <template #item.action="{item}">
             <em
-              class="bx bx-info-circle bx-sm cursor-pointer text-blue-400"
+              class="bx bx-info-circle bx-sm cursor-pointer text-blue"
               title="Klik untuk melihat detail reservasi"
               @click="showModalDetail(item)"
             />
             <em
               v-if="!isAdmin && item.approval_status === 'NOT_YET_APPROVED'"
-              class="bx bx-trash bx-sm cursor-pointer text-red-700"
+              class="bx bx-trash bx-sm cursor-pointer text-red"
               title="Klik untuk menghapus reservasi"
               @click="deleteData(item.id)"
             />
             <em
               v-if="isAdmin && item.approval_status === 'NOT_YET_APPROVED'"
-              class="bx bx-calendar-check bx-sm cursor-pointer text-green-700"
+              class="bx bx-calendar-check bx-sm cursor-pointer text-primary"
               title="Setujui reservasi"
               @click="verifikasiData('approve', item.id)"
             />
             <em
               v-if="isAdmin && item.approval_status === 'NOT_YET_APPROVED'"
-              class="bx bx-calendar-x bx-sm cursor-pointer text-red-700"
+              class="bx bx-calendar-x bx-sm cursor-pointer text-red"
               title="Tolak reservasi"
               @click="verifikasiData('reject', item.id)"
             />
@@ -231,7 +231,7 @@
     <BaseModal modal-name="detail" modal-title="Detail Reservasi">
       <template #body>
         <div v-if="isAdmin" class="md:(grid grid-cols-5) text-sm mb-4">
-          <div class="md:col-span-2 text-blue-400">
+          <div class="md:col-span-2 text-blue">
             Nama
           </div>
           <div class="md:col-span-3">
@@ -239,7 +239,7 @@
           </div>
         </div>
         <div class="md:(grid grid-cols-5) text-sm mb-4">
-          <div class="md:col-span-2 text-blue-400">
+          <div class="md:col-span-2 text-blue">
             Judul Kegiatan
           </div>
           <div class="md:col-span-3">
@@ -247,7 +247,7 @@
           </div>
         </div>
         <div class="md:grid md:grid-cols-5 text-sm mb-4">
-          <div class="md:col-span-2 text-blue-400">
+          <div class="md:col-span-2 text-blue">
             Ruangan/Aset
           </div>
           <div class="md:col-span-3">
@@ -255,7 +255,7 @@
           </div>
         </div>
         <div class="md:(grid grid-cols-5)text-sm mb-4">
-          <div class="md:col-span-2 text-blue-400">
+          <div class="md:col-span-2 text-blue">
             Tanggal dan Waktu Kegiatan
           </div>
           <div class="md:col-span-3">
@@ -263,7 +263,7 @@
           </div>
         </div>
         <div class="md:(grid grid-cols-5) text-sm mb-4">
-          <div class="md:col-span-2 text-blue-400">
+          <div class="md:col-span-2 text-blue">
             Email Penanggung Jawab
           </div>
           <div class="md:col-span-3">
@@ -271,7 +271,7 @@
           </div>
         </div>
         <div class="md:(grid grid-cols-5) text-sm mb-4">
-          <div class="md:col-span-2 text-blue-400">
+          <div class="md:col-span-2 text-blue">
             Catatan/Deskripsi Kegiatan
           </div>
           <div class="md:col-span-3">
@@ -279,7 +279,7 @@
           </div>
         </div>
         <div v-if="false" class="md:(grid grid-cols-5) text-sm mb-4">
-          <div class="md:col-span-2 text-blue-400">
+          <div class="md:col-span-2 text-blue">
             Status
           </div>
           <div class="md:col-span-3">
@@ -287,7 +287,7 @@
           </div>
         </div>
         <div v-if="false" class="md:(grid grid-cols-5) text-sm mb-4">
-          <div class="md:col-span-2 text-blue-400">
+          <div class="md:col-span-2 text-blue">
             Catatan Admin FO
           </div>
           <div class="md:col-span-3">
@@ -295,7 +295,7 @@
           </div>
         </div>
         <div class="md:(grid grid-cols-5) text-sm mb-4">
-          <div class="md:col-span-2 text-blue-400">
+          <div class="md:col-span-2 text-blue">
             Tanggal Reservasi Dibuat
           </div>
           <div class="md:col-span-3">
@@ -303,7 +303,7 @@
           </div>
         </div>
         <div class="md:(grid grid-cols-5) text-sm mb-4">
-          <div class="md:col-span-2 text-blue-400">
+          <div class="md:col-span-2 text-blue">
             Tanggal Pembaruan
           </div>
           <div class="md:col-span-3">
@@ -311,7 +311,7 @@
           </div>
         </div>
         <div v-if="false" class="md:(grid grid-cols-5) text-sm">
-          <div class="md:col-span-2 text-blue-400">
+          <div class="md:col-span-2 text-blue">
             Tanggal Verifikasi Admin
           </div>
           <div class="md:col-span-3">
@@ -734,7 +734,7 @@ export default {
 }
 
 .btn-primary {
-  @apply w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-green-700 text-white;
+  @apply w-full flex justify-center py-2 px-4 mt-6 rounded-md shadow-sm text-sm font-medium bg-primary text-white;
 }
 
 .btn-primary:focus {

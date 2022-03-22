@@ -97,20 +97,20 @@ export const cardsDashboard = [
 ]
 
 export const parentMenus = [
+  // {
+  //   id: 1,
+  //   path: '#',
+  //   label: 'Reservasi Aset',
+  //   iconClass: icon.home,
+  //   role: [
+  //     'employee_reservasi',
+  //     'admin_reservasi'
+  //   ]
+  // },
   {
     id: 1,
     path: '#',
-    label: 'Reservasi Aset',
-    iconClass: icon.home,
-    role: [
-      'employee_reservasi',
-      'admin_reservasi'
-    ]
-  },
-  {
-    id: 2,
-    path: '#',
-    label: 'Reservasi Command Center',
+    label: 'Reservasi Gedung Sate',
     iconClass: icon.home,
     role: [
       'admin_reservasi'
@@ -120,7 +120,7 @@ export const parentMenus = [
 
 export const menus = [
   {
-    parent: 1,
+    parent: 2,
     path: '/',
     label: 'Kalender Reservasi',
     iconClass: icon.calendar,
@@ -130,7 +130,7 @@ export const menus = [
     ]
   },
   {
-    parent: 1,
+    parent: 2,
     path: '/reservasi',
     label: 'List Reservasi',
     iconClass: icon.calendar,
@@ -140,8 +140,8 @@ export const menus = [
     ]
   },
   {
-    parent: 2,
-    path: '/reservasi-command-center',
+    parent: 1,
+    path: '/reservasi-gedung-sate',
     label: 'List Reservasi',
     iconClass: icon.calendar,
     role: [
@@ -149,7 +149,7 @@ export const menus = [
     ]
   },
   {
-    parent: 1,
+    parent: 2,
     path: '/resource',
     label: 'Ruangan/Aset',
     iconClass: icon.cabinet,
@@ -158,9 +158,9 @@ export const menus = [
     ]
   },
   {
-    parent: 2,
-    path: '/command-center',
-    label: 'Pengaturan Command Center',
+    parent: 1,
+    path: '/gedung-sate',
+    label: 'Pengaturan Gedung Sate',
     iconClass: icon.cabinet,
     role: [
       'admin_reservasi'

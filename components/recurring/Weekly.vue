@@ -3,7 +3,7 @@
     <div>
       <label class="block text-sm">
         Pengulangan Tiap
-        <span class="text-xs text-red-500">* Wajib diisi</span>
+        <span class="text-xs text-red">* Wajib diisi</span>
       </label>
       <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
         <input
@@ -14,7 +14,7 @@
         >
         <p class="block text-xs col-span-1">
           Minggu Sekali
-          <span class="text-xs text-red-500">
+          <span class="text-xs text-red">
             (Max 12)
           </span>
         </p>

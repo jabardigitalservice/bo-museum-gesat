@@ -38,7 +38,7 @@ export default {
         this.buttonLabel = 'Edit'
         break
       case 'delete':
-        this.buttonColor = 'bg-red-700'
+        this.buttonColor = 'bg-red'
         this.buttonLabel = 'Hapus'
     }
   },

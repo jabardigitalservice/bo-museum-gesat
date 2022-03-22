@@ -172,7 +172,7 @@
     <!-- SORT MODAL -->
     <BaseModal
       modal-name="sort"
-      modal-title="Urutkan Data Reservasi Command Center"
+      modal-title="Urutkan Data Reservasi Gedung Sate"
     >
       <template #body>
         <div class="mb-4">
@@ -550,8 +550,8 @@ export default {
       }
     },
     findStatus (stat) {
-      const findStats = statusReservation.find(el => el.key === stat)
-      return findStats.value
+      const findStats = statusReservation.find(el => el.value === stat)
+      return findStats.label
     },
     getDisplayDateTime (date, withTime = true) {
       if (date && withTime) {
@@ -581,5 +581,10 @@ export default {
   @apply w-5 h-5 rounded-full border-2 border-transparent animate-spin;
   border-top-color: #219653;
   border-right-color: #219653;
+}
+
+.tbody{
+  display: table-row-group;
+  vertical-align: middle;
 }
 </style>

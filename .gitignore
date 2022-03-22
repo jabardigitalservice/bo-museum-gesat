@@ -94,3 +94,6 @@ sonar-project.properties
 # Sertakan pula generated files dari SonarScanner
 .sonar/
 .scannerwork/
+
+# Vscode settings
+.vscode
